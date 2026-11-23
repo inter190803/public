@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M365 Copilot × Gemini Enterprise ハイブリッド・ハーネス設計書（2026年版）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#F0F4F8',
+              text: '#112A46',
+              accent: '#0078D4',
+              card: '#FFFFFF',
+              success: '#107C10',
+              warning: '#D83B01',
+              danger: '#D13438',
+              gemini: '#1A73E8',
+              claude: '#7C3AED'
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)'
+          }
+        }
+      }
+    }
+  </script>
+  <style id="page-style">
+    @page { size: portrait; margin: 15mm; }
+  </style>
+  <style>
+    body {
+      background-color: #F0F4F8;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #112A46;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      line-height: 1.75;
+    }
+
+    @media screen {
+      html { scroll-behavior: smooth; }
+      body {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+      .layout-wrapper {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sidebar-container {
+        width: 280px;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.94);
+        border-right: 1px solid #e2e8f0;
+        flex-shrink: 0;
+      }
+      .main-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2.25rem 2.75rem;
+        position: relative;
+      }
+      @media (max-width: 767px) {
+        body, .layout-wrapper, .sidebar-container, .main-content {
+          height: auto;
+          overflow: visible;
+          display: block;
+          width: 100%;
+        }
+        .sidebar-container { display: none; }
+        .main-content { padding: 1.25rem; }
+      }
+    }
+
+    @media print {
+      html, body, .layout-wrapper, .sidebar-container, .main-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      body {
+        background-color: white !important;
+        background-image: none !important;
+      }
+      .no-print, .sidebar-container, header { display: none !important; }
+      .main-content {
+        padding: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+      .content-block {
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 1.5rem !important;
+        padding: 1.25rem !important;
+      }
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.45rem 0.75rem;
+      border-left: 2px solid transparent;
+      border-radius: 0 0.375rem 0.375rem 0;
+      color: #475569;
+      font-size: 0.85rem;
+      transition: all 0.15s ease;
+    }
+    .toc-link:hover {
+      background-color: #f1f5f9;
+      color: #0078D4;
+    }
+    .toc-link.active {
+      border-left-color: #0078D4;
+      background-color: #eff6ff;
+      color: #0078D4;
+      font-weight: 700;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    .copy-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #112A46;
+      color: #fff;
+      padding: 0.6rem 1.1rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 50;
+    }
+    .copy-toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm z-10 no-print">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-brand-accent text-white flex items-center justify-center font-bold text-sm shadow-sm">
+        AI
+      </div>
+      <div>
+        <h1 class="text-base md:text-lg font-bold text-brand-text leading-tight">
+          M365 Copilot × Gemini Enterprise ハイブリッド・ハーネス設計書
+        </h1>
+        <p class="text-xs text-slate-500">
+          制約環境（有償Copilot + Cowork 2万cr + Gemini Enterprise + ChatGPT 1,000cr）で高品質マルチエージェント品質を再現する実践アーキテクチャ｜2026-11-23
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button type="button" onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition">
+        PDF印刷 / 保存
+      </button>
+    </div>
+  </header>
+
+  <div class="layout-wrapper">
+    <!-- Left TOC Sidebar -->
+    <aside class="sidebar-container no-print">
+      <nav aria-label="目次">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-2">Contents</p>
+        <ul class="space-y-1">
+          <li><a href="#sec-executive" class="toc-link active">1. 結論・全体像（3層ハイブリッド構成）</a></li>
+          <li><a href="#sec-inventory" class="toc-link">2. 保有アセット棚卸しと2026年最新仕様</a></li>
+          <li><a href="#sec-mapping" class="toc-link">3. 現環境（Gaf/Anthropic/Gemini）との対応表</a></li>
+          <li><a href="#sec-architecture" class="toc-link">4. ハーネス再現の核心：共有ステート＆引き継ぎ設計</a></li>
+          <li><a href="#sec-credit-math" class="toc-link">5. Cowork 2万クレジット配分＆シミュレーター</a></li>
+          <li><a href="#sec-routing" class="toc-link">6. 業務別ルーティング基準（Go/No-Goゲート）</a></li>
+          <li><a href="#sec-playbooks" class="toc-link">7. 即導入テンプレート（フォルダ・Skill・プロンプト）</a></li>
+          <li><a href="#sec-pitfalls" class="toc-link">8. クレジット枯渇とガバナンスの地雷対策</a></li>
+          <li><a href="#sec-roadmap" class="toc-link">9. 導入ステップ（初週〜1ヶ月）</a></li>
+          <li><a href="#sec-references" class="toc-link">10. 一次情報・公式リファレンス</a></li>
+        </ul>
+      </nav>
+      <div class="mt-6 p-3.5 rounded-lg bg-blue-50 border border-blue-200 text-xs text-slate-700">
+        <p class="font-bold text-brand-accent mb-1">設計の黄金律</p>
+        <p><strong>「Coworkに考えさせない」</strong><br>調査・構造化・レビューは定額の Copilot Chat（Work IQ＋Researcher）と Gemini Enterprise で100%完了させ、Cowork には「確定仕様の1ショット実行」だけを任せる。</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- Section 1: Executive Summary -->
+        <section id="sec-executive" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-brand-accent">アーキテクチャ結論</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-brand-success">追加コストゼロで即構築可能</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">2026年11月最新仕様準拠</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-brand-text mb-4">
+            1. 結論：「定額2大チャット＋共有ステート＋Cowork 1ショット実行」の3層ハイブリッド・ハーネス
+          </h2>
+          <p class="text-slate-700 mb-6">
+            現在の「Gaf（自律実行）＋ Anthropic（推論・批判的レビュー）＋ Gemini（大容量設計・構造化）」という高品質ハーネスを、<strong>有償 M365 Copilot ＋ Copilot Cowork（2万クレジット）＋ Gemini Enterprise（M365コネクタ付・チャット中心）＋ ChatGPT Enterprise（1,000クレジット）</strong>の制約環境で極力近づける解は明確です。鍵となるのは、2026年時点で両環境が共有できる<strong>3つの隠れた接続点</strong>を意図的に組み合わせることです。
+          </p>
+
+          <!-- KPI Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <p class="text-xs font-semibold text-slate-500">定額・無制限軸（Layer 1）</p>
+              <p class="text-2xl font-extrabold text-brand-accent mt-1">2基盤</p>
+              <p class="text-xs text-slate-600 mt-1">M365 Copilot Chat（Work IQ・Researcher込）＋ Gemini Enterprise</p>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <p class="text-xs font-semibold text-slate-500">Cowork 月間弾薬（Layer 2）</p>
+              <p class="text-2xl font-extrabold text-brand-warning mt-1">20,000 cr</p>
+              <p class="text-xs text-slate-600 mt-1">PayGo換算 $200相当。事前仕込み徹底で月40〜100回実行可能</p>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <p class="text-xs font-semibold text-slate-500">Cowork カスタムスキル上限</p>
+              <p class="text-2xl font-extrabold text-brand-success mt-1">最大50個</p>
+              <p class="text-xs text-slate-600 mt-1">セッション開始時に自動検出。現環境のスキル群を直接移植</p>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <p class="text-xs font-semibold text-slate-500">ChatGPT 非常用枠（Layer 3）</p>
+              <p class="text-2xl font-extrabold text-slate-700 mt-1">1,000 cr</p>
+              <p class="text-xs text-slate-600 mt-1">高度機能は緊急時限定。コアチャット自体はクレジット非消費</p>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-brand-accent bg-blue-50 p-4 rounded-r-lg space-y-2 text-sm">
+            <p class="font-bold text-brand-text">この構成を成立させる「3つの切り札（2026年公式仕様）」</p>
+            <ol class="list-decimal list-inside space-y-1.5 text-slate-700">
+              <li>
+                <strong>Copilot Cowork の「過去チャット引き継ぎ（Reference previous chats）」</strong>：定額の Copilot Chat で Work IQ を使って調査・議論・下書きを100%終わらせ、その会話スレッドを Cowork に直接引き継いで「ファイル生成・送信・調整」だけを実行できる（<a href="https://learn.microsoft.com/en-us/copilot/cowork/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Learn: Copilot Cowork overview</a>）。
+              </li>
+              <li>
+                <strong>定額内 Researcher エージェントの「GPT × Claude マルチモデル Critique」</strong>：有償 M365 Copilot ライセンスに含まれる Researcher は、OpenAI モデルと Anthropic Claude モデルによる相互審査（Critique）に対応しており、<strong>追加クレジット0で Anthropic 品質の検証ループ</strong>を回せる（<a href="https://support.microsoft.com/ja-jp/microsoft-365-copilot/use-claude-with-researcher-in-microsoft-365-copilot" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft サポート</a> / <a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/introducing-multi-model-intelligence-in-researcher/4506011" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Copilot Blog</a>）。
+              </li>
+              <li>
+                <strong>OneDrive / SharePoint を「共有ステートバス（Shared State Bus）」化</strong>：Copilot（Work IQ）と Gemini Enterprise（M365コネクタ）の両方が同じ OneDrive / SharePoint フォルダを直接参照できるため、<code>_AI_Harness/</code> フォルダを置けば<strong>コピペなしで異種モデル間のバトンリレー（設計→生成→交差検証→実行）</strong>が成立する（<a href="https://docs.cloud.google.com/gemini/enterprise/docs/connectors/introduction-to-connectors-and-data-stores" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Google Cloud: Gemini Enterprise Connectors</a>）。
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Section 2: Asset Inventory -->
+        <section id="sec-inventory" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            2. 保有アセット棚卸しと2026年11月時点の正確な仕様・課金境界
+          </h2>
+          <p class="text-sm text-slate-600 mb-5">
+            最も重要なのは<strong>「定額（0追加クレジット）でどこまでやれるか」と「何がクレジットを消費するか」の正確な線引き</strong>です。ここを誤ると2万クレジットは数日で蒸発します。
+          </p>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg mb-5">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">環境 / ツール</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">保有枠・課金境界</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">強み・使える隠れ機能（2026年最新）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">ハーネス内の役割</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold text-brand-accent whitespace-nowrap">M365 Copilot 有償版<br><span class="text-xs font-normal text-slate-500">($30/月シート定額)</span></th>
+                  <td class="px-4 py-3">
+                    <span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-brand-success font-bold text-xs mb-1">追加クレジット 0</span><br>
+                    Copilot Chat・Work IQ・Officeアプリ内Copilot・Researcher・Analyst・Facilitatorはシート定額内（<a href="https://www.microsoft.com/en-us/copilot/pricing/enterprise" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">公式プラン</a> / <a href="https://koiyal.com/blog/copilot-credits-for-executives" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">解説</a>）。
+                  </td>
+                  <td class="px-4 py-3">
+                    ・<strong>Work IQ</strong>でメール/Teams/会議/SharePointの文脈を即時把握<br>
+                    ・<strong>Researcher</strong>でGPT×Claudeの相互検証（Critique）が可能<br>
+                    ・<strong>Analyst</strong>でPythonベースのデータ分析<br>
+                    ・<strong>Copilot Notebooks / Pages</strong>で案件コンテキスト固定
+                  </td>
+                  <td class="px-4 py-3 font-semibold">
+                    【Layer 1A：社内文脈エンジン】<br>
+                    Work IQ 情報収集、深掘り調査、データ分析、Cowork前の下ごしらえ
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold text-brand-gemini whitespace-nowrap">Gemini Enterprise<br><span class="text-xs font-normal text-slate-500">(チャット＋M365連携)</span></th>
+                  <td class="px-4 py-3">
+                    <span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-brand-success font-bold text-xs mb-1">チャット軸（常時利用）</span><br>
+                    Anthropic不可。高度エージェント枠は制限あるが、チャット＋M365コネクタ検索が主戦場（<a href="https://docs.cloud.google.com/gemini/enterprise/docs/release-notes" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Release Notes</a>）。
+                  </td>
+                  <td class="px-4 py-3">
+                    ・<strong>Gemini 4 / Gemini 4 Neon</strong>（2026年11月展開）の超長文処理＆論理構成力<br>
+                    ・<strong>M365コネクタ</strong>（Outlook/SharePoint/OneDrive/Teams）で権限準拠のまま直接参照可能<br>
+                    ・HTML/Mermaid/コード生成・日本語ニュアンス調整に強い
+                  </td>
+                  <td class="px-4 py-3 font-semibold">
+                    【Layer 1B：設計・批判的レビュー】<br>
+                    全体設計（Architect）、異種モデル交差検証（Critic）、Cowork用仕様書＆スキル作成
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold text-brand-warning whitespace-nowrap">Copilot Cowork<br><span class="text-xs font-normal text-slate-500">(2026年6月16日 GA)</span></th>
+                  <td class="px-4 py-3">
+                    <span class="inline-block px-2 py-0.5 rounded bg-orange-100 text-brand-warning font-bold text-xs mb-1">20,000 クレジット枠</span><br>
+                    PayGo $0.01/cr（$200相当）。課金は「モデル・コンテキスト量・ツール呼出・実行時間」の4要素合算（<a href="https://www.aguidetocloud.com/blog/microsoft-copilot-cowork-pricing-cost-management/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">料金構造</a>）。
+                  </td>
+                  <td class="px-4 py-3">
+                    ・<strong>Claude Opus 4.8 / Sonnet 4.6 / GPT-5.5 / Auto / Cowork 1</strong>等のマルチモデル搭載<br>
+                    ・Word/Excel/PPT/PDFの新規生成＆既存ファイル直接編集<br>
+                    ・Outlook送信・会議調整・Teams投稿の承認付き自律実行<br>
+                    ・<strong>Custom Skills（最大50個）</strong>＆<strong>過去チャット参照</strong>＆<strong><code>/cost</code></strong>可視化
+                  </td>
+                  <td class="px-4 py-3 font-semibold">
+                    【Layer 2：ラストワンマイル実行機】<br>
+                    事前確定した仕様を1ショットで複数M365アプリへ自律展開（Gafの代替）
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-700 whitespace-nowrap">ChatGPT Enterprise<br><span class="text-xs font-normal text-slate-500">(フレックス課金枠)</span></th>
+                  <td class="px-4 py-3">
+                    <span class="inline-block px-2 py-0.5 rounded bg-red-100 text-brand-danger font-bold text-xs mb-1">1,000 クレジット（極小）</span><br>
+                    ただしコアモデル・検索・ファイル添付・Canvas自体は<strong>クレジット非消費</strong>（<a href="https://help.openai.com/en/articles/11487671-flexible-pricing-for-the-enterprise-edu-and-business-plans" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">OpenAI公式</a>）。
+                  </td>
+                  <td class="px-4 py-3">
+                    ・コアチャット＆Canvasによる第3の視点チェック（非消費枠）<br>
+                    ・1,000クレジットは上位推論モデル・Deep Research・Codex等の高度処理のみに消費
+                  </td>
+                  <td class="px-4 py-3 font-semibold">
+                    【Layer 3：非常用精密リザーブ】<br>
+                    難解なスクリプト/DAXデバッグや、年数回の超重要意思決定の最終サニティチェック
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="border-l-4 border-brand-warning bg-orange-50 p-4 rounded-r-lg text-sm text-slate-800">
+            <p class="font-bold text-brand-warning mb-1">重要チェックポイント（テナント設定の確認事項）</p>
+            <p>
+              2026年1月以降、日本を含む非EU/EFTA/UKテナントでは M365 Copilot の Anthropic Claude モデルは既定で有効化されていますが（<a href="https://aismiley.co.jp/ai_news/use-claude-in-copilot/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">AIsmiley解説</a>）、企業のセキュリティ方針で管理者が無効化している場合があります。また、Copilot Chat 上で「上位モデルを手動選択」すると Copilot Credits が消費される設定になるケースがあるため、<strong>初回実行後に必ず <code>/cost</code> や利用状況画面でクレジット消費有無を1回確認</strong>してください。
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 3: Mapping Current Environment to Copilot Environment -->
+        <section id="sec-mapping" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            3. 現環境（Gaf / Anthropic / Gemini）から Copilot 制約環境への完全マッピング
+          </h2>
+          <p class="text-sm text-slate-600 mb-5">
+            現在のハーネスが「高品質かつ高効率」である理由は、<strong>①オーケストレーション（役割分担）、②スキルによる再現性、③異種モデルによる相互検証（Generator ≠ Critic）、④永続ステート管理、⑤自律実行</strong>の5要素が揃っているからです。これを制約環境へ1対1で置き換えます。
+          </p>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">ハーネス構成要素</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">現在の理想環境</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">Copilot 制約環境での代替実装</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">再現度</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">① 永続ステート＆指示書<br><span class="text-xs font-normal text-slate-500">state.md / todo.md / specs</span></th>
+                  <td class="px-4 py-3">Google Drive <code>Antigravity/</code> ＋ メモリ管理</td>
+                  <td class="px-4 py-3">OneDrive / SharePoint <code>_AI_Harness/</code> フォルダ ＋ <strong>Copilot Notebooks</strong>（両AIから直接参照可能な共有ステート）</td>
+                  <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-emerald-100 text-brand-success font-bold text-xs">90% 再現</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">② 専門スキル化<br><span class="text-xs font-normal text-slate-500">SKILL.md による品質固定</span></th>
+                  <td class="px-4 py-3">カスタムスキル（YAML/Markdown定義）</td>
+                  <td class="px-4 py-3"><strong>Copilot Cowork Custom Skills（最大50個）</strong>＋ Copilot Chat 用プロンプトライブラリ（<code>_AI_Harness/skills/</code>）</td>
+                  <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-emerald-100 text-brand-success font-bold text-xs">95% 再現</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">③ 文脈収集＆一次調査<br><span class="text-xs font-normal text-slate-500">Context Gathering</span></th>
+                  <td class="px-4 py-3">Workspaceツール＋Web検索＋Gemini</td>
+                  <td class="px-4 py-3"><strong>M365 Copilot Chat（Work IQ）</strong>＋ <strong>Researcher</strong>（定額内・社内＋Web深掘り）</td>
+                  <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-emerald-100 text-brand-success font-bold text-xs">100% 以上</span><br><span class="text-xs text-slate-500">社内文脈は優位</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">④ 推論・構造化・Critic<br><span class="text-xs font-normal text-slate-500">Anthropic（Claude）の役割</span></th>
+                  <td class="px-4 py-3">Anthropic Claude による精緻な推論・批判的添削</td>
+                  <td class="px-4 py-3">
+                    <strong>二段構えで代替</strong>：<br>
+                    ・定額調査時：<strong>Researcher の Claude Critique</strong><br>
+                    ・日常レビュー：<strong>Gemini Enterprise（Gemini 4系）</strong>による異種モデル交差検証（Copilot出力の穴・論理破綻を監査）<br>
+                    ・最終実行時：Cowork内の Claude モデル（Auto/Sonnet/Opus）
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-blue-100 text-brand-accent font-bold text-xs">85% 再現</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">⑤ 自律実行＆複数アプリ操作<br><span class="text-xs font-normal text-slate-500">Gaf（ガフ）の役割</span></th>
+                  <td class="px-4 py-3">Gaf（Meta Muse）＋ publish-requests パイプライン</td>
+                  <td class="px-4 py-3"><strong>Copilot Cowork（2万クレジット枠）</strong>のピンポイント1ショット実行（Office一括生成・既存ファイル編集・Outlook/Teams/会議連携・Appスキル）</td>
+                  <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-orange-100 text-brand-warning font-bold text-xs">80% 再現</span><br><span class="text-xs text-slate-500">回数制約あり</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 4: Core Architecture & Handoff Pipeline -->
+        <section id="sec-architecture" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            4. ハーネス再現の核心：4ステップ「ゼロ消費仕込み → 1ショット実行」パイプライン
+          </h2>
+          <p class="text-sm text-slate-600 mb-6">
+            Cowork のクレジットは<strong>「①モデル、②読み込むコンテキスト量、③ツール呼び出し回数、④実行時間」</strong>の掛け算で膨張します（<a href="https://www.aguidetocloud.com/blog/microsoft-copilot-cowork-pricing-cost-management/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">A Guide to Cloud</a>）。したがって、<strong>「探索・試行錯誤・手戻り」をすべて Layer 1（0追加クレジット）で吸収し、Layer 2（Cowork）を純粋な「確定済み仕様のコンパイラ＆実行機」にする</strong>のが最強の設計です。
+          </p>
+
+          <!-- Process Flow Diagram (Flexbox + SVG Arrows) -->
+          <div class="flex flex-col lg:flex-row items-stretch justify-between gap-3 mb-6">
+            <!-- Step 1 -->
+            <div class="flex-1 p-4 rounded-xl bg-blue-50 border border-blue-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-brand-accent text-white">STEP 1</span>
+                  <span class="text-xs font-bold text-brand-success">0 cr</span>
+                </div>
+                <h3 class="font-bold text-brand-text text-sm mb-1.5">文脈収集＆一次ドラフト</h3>
+                <p class="text-xs text-slate-600">
+                  <strong>M365 Copilot Chat（Work IQ）</strong>または <strong>Researcher / Analyst</strong> で、社内のメール・Teams・会議議事録・Excelから必要情報を抽出し、構造化メモを作る。
+                </p>
+              </div>
+              <p class="text-[11px] text-brand-accent font-semibold mt-3 pt-2 border-t border-blue-200">出力：Copilot Pages / チャット履歴</p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flex items-center justify-center text-slate-300 lg:w-6">
+              <svg aria-hidden="true" class="w-6 h-6 rotate-90 lg:rotate-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex-1 p-4 rounded-xl bg-indigo-50 border border-indigo-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-brand-gemini text-white">STEP 2</span>
+                  <span class="text-xs font-bold text-brand-success">0 cr</span>
+                </div>
+                <h3 class="font-bold text-brand-text text-sm mb-1.5">異種モデル監査＆仕様圧縮</h3>
+                <p class="text-xs text-slate-600">
+                  <strong>Gemini Enterprise（M365コネクタ）</strong>で Step 1 の出力と一次資料を突き合わせ、論理の抜け・数値矛盾を監査（Critic）。Cowork に渡す<strong>1枚仕様書（Execution Brief）</strong>へ圧縮。
+                </p>
+              </div>
+              <p class="text-[11px] text-brand-gemini font-semibold mt-3 pt-2 border-t border-indigo-200">出力：_AI_Harness/specs/案.md</p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flex items-center justify-center text-slate-300 lg:w-6">
+              <svg aria-hidden="true" class="w-6 h-6 rotate-90 lg:rotate-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex-1 p-4 rounded-xl bg-orange-50 border border-orange-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-brand-warning text-white">STEP 3（必要な時のみ）</span>
+                  <span class="text-xs font-bold text-brand-warning">125〜500 cr</span>
+                </div>
+                <h3 class="font-bold text-brand-text text-sm mb-1.5">Cowork 1ショット自律実行</h3>
+                <p class="text-xs text-slate-600">
+                  <strong>過去チャット参照</strong>＋<strong>Custom Skill</strong>＋<strong>仕様書1枚</strong>だけを指定して Cowork を起動。複数Officeファイル生成・既存資料更新・Outlook/Teams展開を一気通貫で実行。
+                </p>
+              </div>
+              <p class="text-[11px] text-brand-warning font-semibold mt-3 pt-2 border-t border-orange-200">出力：完成PPT/Excel/Word・承認送信</p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flex items-center justify-center text-slate-300 lg:w-6">
+              <svg aria-hidden="true" class="w-6 h-6 rotate-90 lg:rotate-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="flex-1 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-brand-success text-white">STEP 4</span>
+                  <span class="text-xs font-bold text-brand-success">0 cr</span>
+                </div>
+                <h3 class="font-bold text-brand-text text-sm mb-1.5">コスト検算＆スキル還流</h3>
+                <p class="text-xs text-slate-600">
+                  Cowork 終了直後に <strong><code>/cost</code></strong> で消費クレジットを確認。うまくいった指示手順は Custom Skill や <code>_AI_Harness/skills/</code> に昇格させ、次回のクレジット消費をさらに削減。
+                </p>
+              </div>
+              <p class="text-[11px] text-brand-success font-semibold mt-3 pt-2 border-t border-emerald-200">出力：実績ログ・改善版Skill</p>
+            </div>
+          </div>
+
+          <!-- Two-Path Decision Callout -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-sm">
+              <p class="font-bold text-brand-accent mb-1">💡 8割の日常業務は「STEP 1 ＋ STEP 2」だけで完結させる</p>
+              <p class="text-slate-600">
+                単発のメール返信、会議要約、議事録整理、1つのWord/Excelドラフト、方針の壁打ち、PowerShell/DAXコード作成などは <strong>STEP 3（Cowork）を踏まない</strong>のが鉄則です。アプリ内 Copilot と Gemini Enterprise の往復だけで十分高品質かつ <strong>0追加クレジット</strong>で完了します。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-sm">
+              <p class="font-bold text-brand-warning mb-1">🚀 残り2割の「ここぞ」で Cowork に集中投下する</p>
+              <p class="text-slate-600">
+                「方針展開パッケージ一式（経営層向けPPT＋部門展開メール＋Teams告知＋説明会日程調整）」「複数Excelの横断突合と異常値レポート作成」「既存PowerPointの大幅改訂」など、<strong>人間がやると2〜4時間かかる複合実行</strong>にだけ Cowork を切ります。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Credit Budget Math & Interactive Simulator -->
+        <section id="sec-credit-math" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            5. Copilot Cowork 20,000クレジットの最適配分＆インタラクティブ試算
+          </h2>
+          <p class="text-sm text-slate-600 mb-5">
+            Microsoft 公開の実測目安では、Cowork 1タスクの消費クレジットは <strong>Light：約125〜200 cr（$1〜$3）</strong>、<strong>Medium：約500 cr（$4〜$7）</strong>、<strong>Heavy：約1,200 cr（$7〜$15+）</strong> とされています（<a href="https://customnetworks.com/blog/how-much-does-copilot-cowork-cost.html" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">CNI Blog: Microsoft公開データ分析</a> / <a href="https://samexpert.com/copilot-cowork-licensing-pricing/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">SAMexpert</a>）。20,000クレジットを月末まで枯渇させずに最大ROIを出すための推奨ポートフォリオと、手元で調整できるシミュレーターを用意しました。
+          </p>
+
+          <!-- Recommended Portfolio Table -->
+          <div class="overflow-x-auto border border-slate-200 rounded-lg mb-6">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th scope="col" class="px-4 py-2.5 font-bold border-b border-slate-200">バケット（用途区分）</th>
+                  <th scope="col" class="px-4 py-2.5 font-bold border-b border-slate-200">想定単価</th>
+                  <th scope="col" class="px-4 py-2.5 font-bold border-b border-slate-200">月間回数目安</th>
+                  <th scope="col" class="px-4 py-2.5 font-bold border-b border-slate-200">配分クレジット</th>
+                  <th scope="col" class="px-4 py-2.5 font-bold border-b border-slate-200">具体的な投入対象</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-bold text-brand-accent">Light（事前仕込み済み1ショット）</th>
+                  <td class="px-4 py-2.5 whitespace-nowrap">約 150 cr / 回</td>
+                  <td class="px-4 py-2.5 whitespace-nowrap">月 30 回</td>
+                  <td class="px-4 py-2.5 font-bold whitespace-nowrap">4,500 cr（22.5%）</td>
+                  <td class="px-4 py-2.5">Chat引き継ぎ済みの単体資料仕上げ、会議調整＋案内メール一括、定型Teams連絡</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-bold text-brand-warning">Medium（複合アプリ連携・資料群）</th>
+                  <td class="px-4 py-2.5 whitespace-nowrap">約 500 cr / 回</td>
+                  <td class="px-4 py-2.5 whitespace-nowrap">月 16 回</td>
+                  <td class="px-4 py-2.5 font-bold whitespace-nowrap">8,000 cr（40.0%）</td>
+                  <td class="px-4 py-2.5">月次予算・GAP分析資料更新、勤怠/請求突合チェック＆修正案作成、方針展開セット一式</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-bold text-brand-claude">Heavy（勝負案件・App構築）</th>
+                  <td class="px-4 py-2.5 whitespace-nowrap">約 1,200 cr / 回</td>
+                  <td class="px-4 py-2.5 whitespace-nowrap">月 4 回</td>
+                  <td class="px-4 py-2.5 font-bold whitespace-nowrap">4,800 cr（24.0%）</td>
+                  <td class="px-4 py-2.5">経営会議向け包括デッキ＋根拠Excel一括生成、Cowork Appスキルによる部門用ミニアプリ試作</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-bold text-slate-600">安全バッファ（突発・検証枠）</th>
+                  <td class="px-4 py-2.5">—</td>
+                  <td class="px-4 py-2.5">予備</td>
+                  <td class="px-4 py-2.5 font-bold whitespace-nowrap">2,700 cr（13.5%）</td>
+                  <td class="px-4 py-2.5">月末繁忙期の突発対応、新Custom Skillのテスト実行、予期せぬリトライ吸収</td>
+                </tr>
+                <tr class="bg-blue-50 font-bold">
+                  <th scope="row" class="px-4 py-2.5 text-brand-text">合計</th>
+                  <td class="px-4 py-2.5">—</td>
+                  <td class="px-4 py-2.5 whitespace-nowrap">月 50 回（週12回強）</td>
+                  <td class="px-4 py-2.5 text-brand-accent whitespace-nowrap">20,000 cr（100%）</td>
+                  <td class="px-4 py-2.5 font-normal text-slate-700">1営業日あたり約2〜2.5回の高付加価値Cowork実行を安定維持</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Interactive Simulator -->
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 no-print">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <h3 class="font-bold text-brand-text text-base">🎛️ 20,000クレジット月間配分シミュレーター</h3>
+              <button type="button" id="sim-reset" class="text-xs px-2.5 py-1 rounded bg-white border border-slate-300 hover:bg-slate-100 text-slate-600">推奨値にリセット</button>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5 mb-5">
+              <div>
+                <label for="sim-light" class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                  <span>Light タスク（150 cr/回）</span>
+                  <span id="val-light" class="text-brand-accent">30 回</span>
+                </label>
+                <input type="range" id="sim-light" min="0" max="80" value="30" class="w-full accent-blue-600">
+                <p class="text-[11px] text-slate-500 mt-1">小計: <span id="sub-light" class="font-bold">4,500</span> cr</p>
+              </div>
+              <div>
+                <label for="sim-medium" class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                  <span>Medium タスク（500 cr/回）</span>
+                  <span id="val-medium" class="text-brand-warning">16 回</span>
+                </label>
+                <input type="range" id="sim-medium" min="0" max="40" value="16" class="w-full accent-orange-600">
+                <p class="text-[11px] text-slate-500 mt-1">小計: <span id="sub-medium" class="font-bold">8,000</span> cr</p>
+              </div>
+              <div>
+                <label for="sim-heavy" class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                  <span>Heavy タスク（1,200 cr/回）</span>
+                  <span id="val-heavy" class="text-brand-claude">4 回</span>
+                </label>
+                <input type="range" id="sim-heavy" min="0" max="16" value="4" class="w-full accent-purple-600">
+                <p class="text-[11px] text-slate-500 mt-1">小計: <span id="sub-heavy" class="font-bold">4,800</span> cr</p>
+              </div>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 rounded-full h-3.5 overflow-hidden mb-2">
+              <div id="sim-bar" class="h-3.5 rounded-full bg-brand-accent transition-all duration-200" style="width: 86.5%;"></div>
+            </div>
+            <div class="flex flex-wrap items-center justify-between text-xs">
+              <p>合計消費予測: <strong id="sim-total" class="text-base text-brand-text">17,300</strong> / 20,000 cr（残バッファ: <strong id="sim-rem" class="text-brand-success">2,700</strong> cr）</p>
+              <p id="sim-status" class="font-bold text-brand-success">✅ 適正レンジ（安全バッファ確保済み）</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Routing Matrix -->
+        <section id="sec-routing" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            6. 業務シナリオ別ルーティング基準（迷わず最適ツールを選ぶ Go / No-Go ゲート）
+          </h2>
+          <p class="text-sm text-slate-600 mb-5">
+            日常のマネジメント業務・企画業務・技術検討において、どのツールを起点にし、どこで Cowork を切るべきかの即断マトリクスです。
+          </p>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">業務シナリオ</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">第1手（0 cr）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">検証・整形（0 cr）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 font-bold border-b border-slate-200">Cowork 投入判断</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">方針展開・部門通達パッケージ<br><span class="text-xs font-normal text-slate-500">本部長方針→課長/メンバー展開</span></th>
+                  <td class="px-4 py-3"><strong>Copilot Chat（Work IQ）</strong>で関連議事録・過去方針を抽出</td>
+                  <td class="px-4 py-3"><strong>Gemini Enterprise</strong>で対象層別（管理職/一般）のメッセージ構造とFAQを設計</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-orange-100 text-brand-warning font-bold text-xs">GO（Medium）</span><br>PPT＋展開メール＋Teams投稿＋説明会予約を一括生成</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">予算・GAP管理＆数値分析<br><span class="text-xs font-normal text-slate-500">予実差異・要因分解</span></th>
+                  <td class="px-4 py-3"><strong>Copilot Analyst</strong> または Excel内 Copilot で差異集計・異常値抽出</td>
+                  <td class="px-4 py-3"><strong>Gemini Enterprise</strong>で要因仮説の抜け漏れチェック＆対策案の構造化</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-blue-100 text-brand-accent font-bold text-xs">条件付GO（Light）</span><br>報告用PPTを複数ファイルから自動生成する時だけ使用</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">月次締め・勤怠/請求の事前監査<br><span class="text-xs font-normal text-slate-500">抜け漏れ・案件名/休憩時間確認</span></th>
+                  <td class="px-4 py-3"><strong>Copilot Analyst</strong>でExcel一覧の異常パターン検出（Python実行）</td>
+                  <td class="px-4 py-3"><strong>Copilot Chat（Work IQ）</strong>で未提出者・関連メールの突合</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-xs">原則 NO-GO</span><br>定型チェックは Analyst＋Power Automate / PowerShell で0cr化</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">メール・チャット依頼の期限管理<br><span class="text-xs font-normal text-slate-500">日々のトリアージ・フォロー</span></th>
+                  <td class="px-4 py-3"><strong>Copilot Chat（Work IQ）</strong>で「未返信・期限迫る依頼」を毎朝一覧化</td>
+                  <td class="px-4 py-3">必要時のみ Outlook / Teams 内 Copilot で返信ドラフト作成</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-xs">原則 NO-GO</span><br>Daily BriefingをCoworkで毎日自動実行すると月3,000〜5,000cr消える</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">経営層向け提案・新規企画調査<br><span class="text-xs font-normal text-slate-500">外部市場＋社内資産の統合</span></th>
+                  <td class="px-4 py-3"><strong>Researcher（GPT×Claude Critique）</strong>で一次調査レポート生成</td>
+                  <td class="px-4 py-3"><strong>Gemini Enterprise</strong>で反論想定（Devil's Advocate）＆HTML/構成案作成</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-purple-100 text-brand-claude font-bold text-xs">GO（Medium〜Heavy）</span><br>確定構成から役員会PPT＋根拠Word＋配布メールを一気通貫生成</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-bold">技術検証・スクリプト/HTML作成<br><span class="text-xs font-normal text-slate-500">PowerShell / DAX / HTML資料</span></th>
+                  <td class="px-4 py-3"><strong>Gemini Enterprise</strong>で設計・コード/HTML一括生成</td>
+                  <td class="px-4 py-3"><strong>ChatGPT Enterprise（コア非消費枠）</strong>でエッジケース検証</td>
+                  <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-xs">原則 NO-GO</span><br>例外：部門共有の簡易WebアプリをM365権限内で即公開したい時のみ Cowork App Skill を使用</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 7: Ready-to-Use Templates -->
+        <section id="sec-playbooks" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            7. 明日から使える即導入テンプレート（共有フォルダ・Custom Skill・引き継ぎプロンプト）
+          </h2>
+          <p class="text-sm text-slate-600 mb-5">
+            現在のハーネス構造をそのまま M365 上へ移植するための実体テンプレートです。各ブロックは展開してそのままコピーできます。
+          </p>
+
+          <!-- Accordion 1: Shared State Folder Structure -->
+          <details class="group bg-white border border-slate-200 rounded-lg p-4 mb-4" open>
+            <summary class="flex items-center justify-between cursor-pointer font-bold text-brand-text text-base">
+              <span>📁 テンプレート①：OneDrive / SharePoint 共有ハーネスフォルダ構成（Shared State Bus）</span>
+              <span class="text-xs text-brand-accent group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="mt-3 pt-3 border-t border-slate-100">
+              <p class="text-xs text-slate-600 mb-2">
+                Copilot（Work IQ）と Gemini Enterprise（M365コネクタ）の両方から同じパスで参照できる専用ディレクトリを OneDrive（個人ハーネス）または部門 SharePoint（チーム共有）に作成します。
+              </p>
+              <div class="relative">
+                <button type="button" onclick="copyCode('code-folder')" class="no-print absolute top-2.5 right-2.5 px-2.5 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600 text-white">コピー</button>
+                <pre id="code-folder" class="bg-slate-800 text-slate-100 font-mono text-xs p-4 rounded-md overflow-x-auto leading-relaxed">_AI_Harness/
+├── 00_context/
+│   ├── profile_and_roles.md      # 部門ミッション・管掌領域・関係者ロール定義（機密除外）
+│   ├── style_guide.md            # 文体・資料トーン・禁止表現・表記ルール
+│   └── active_state.md           # 進行中案件の現在地（Antigravity/memory/state.md 相当）
+├── 01_skills/                    # Copilot Cowork Custom Skills の原本（最大50個まで登録）
+│   ├── skill_policy_cascade.md   # 方針展開パッケージ生成スキル
+│   ├── skill_exec_deck.md        # 経営報告PPT生成スキル
+│   └── skill_meeting_prep.md     # 重要会議ブリーフィングスキル
+├── 02_specs/                     # Step2でGemini Enterpriseが確定した「Cowork実行用仕様書」
+│   └── YYYY-MM-DD_案件名_spec.md  # 1案件1枚に圧縮（Coworkの読込クレジットを最小化）
+└── 03_outputs/                   # Cowork / Copilot が生成した最終成果物と /cost 実績ログ
+    └── credit_ledger.xlsx        # 月次2万クレジットの簡易消費トラッカー</pre>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 2: Gemini Enterprise Critic & Spec Compression Prompt -->
+          <details class="group bg-white border border-slate-200 rounded-lg p-4 mb-4">
+            <summary class="flex items-center justify-between cursor-pointer font-bold text-brand-text text-base">
+              <span>🔍 テンプレート②：Gemini Enterprise 用「異種モデル批判的レビュー＆Cowork仕様圧縮」プロンプト</span>
+              <span class="text-xs text-brand-accent group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="mt-3 pt-3 border-t border-slate-100">
+              <p class="text-xs text-slate-600 mb-2">
+                Anthropic 不在の Gemini Enterprise 側で「厳格な Critic（批判的審査官）」を演じさせつつ、Cowork 投入時のトークン浪費を防ぐ圧縮仕様書を一発で吐き出させるプロンプトです。
+              </p>
+              <div class="relative">
+                <button type="button" onclick="copyCode('code-gemini')" class="no-print absolute top-2.5 right-2.5 px-2.5 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600 text-white">コピー</button>
+                <pre id="code-gemini" class="bg-slate-800 text-slate-100 font-mono text-xs p-4 rounded-md overflow-x-auto leading-relaxed"># 役割
+あなたはシニア戦略コンサルタント兼 AIハーネス設計者（Critic ＆ Architect）です。
+M365 Copilot が出力した以下のドラフトを批判的に監査し、Copilot Cowork が「1ショット・最小クレジット」で最終成果物を生成できる確定仕様書（Execution Brief）へ変換してください。
+
+# 監査観点（厳格にチェック）
+1. 論理の飛躍・根拠なき断定・数値の整合性ミスがないか（M365上の一次資料と矛盾しないか）
+2. 読み手（役員／部門長／現場）が即座に意思決定・行動できる具体性があるか
+3. 冗長な表現や、Cowork実行時に不要な背景ノイズが混ざっていないか
+
+# 出力フォーマット
+## Part 1: Critic 指摘事項（最大5点・重要度順）
+- [重大/中] 指摘内容 → 修正方針
+
+## Part 2: Cowork 1ショット実行用 確定仕様書（Execution Brief）
+- ゴール（1行）
+- 生成対象ファイルと保存先（例：_AI_Harness/03_outputs/xxx.pptx）
+- 構成案（スライド枚数／見出し／各要素の確定テキスト・数値のみ）
+- 制約事項（推測禁止・追加検索禁止・承認前送信禁止）</pre>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 3: Cowork Custom Skill Template -->
+          <details class="group bg-white border border-slate-200 rounded-lg p-4 mb-4">
+            <summary class="flex items-center justify-between cursor-pointer font-bold text-brand-text text-base">
+              <span>⚡ テンプレート③：Copilot Cowork 用「省クレジット・1ショット実行」Custom Skill 定義</span>
+              <span class="text-xs text-brand-accent group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="mt-3 pt-3 border-t border-slate-100">
+              <p class="text-xs text-slate-600 mb-2">
+                Cowork の最大50個まで登録できる Custom Skills に組み込むことで、無駄な広域検索（Work IQ フルスキャン）を抑止し、クレジット消費を 30〜50% 削減します。
+              </p>
+              <div class="relative">
+                <button type="button" onclick="copyCode('code-skill')" class="no-print absolute top-2.5 right-2.5 px-2.5 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600 text-white">コピー</button>
+                <pre id="code-skill" class="bg-slate-800 text-slate-100 font-mono text-xs p-4 rounded-md overflow-x-auto leading-relaxed"># Skill Name: OneShot_Spec_Executor
+# Trigger: ユーザーが「確定仕様書（Execution Brief）」または過去チャットを指定して成果物生成・展開を依頼した時
+
+## Credit-Saving Guardrails (CRITICAL)
+1. **広域検索の禁止**: ユーザーが明示したファイル・過去チャットスレッド以外の Work IQ 検索は行わない。情報が不足している場合は推測で検索を広げず、即座に停止してユーザーへ確認する。
+2. **思考ループの最小化**: 構成の作り直しや複数案の比較生成は行わず、指定された Execution Brief の構成を忠実に1回でビルドする。
+3. **承認ゲート**: メール送信・Teams投稿・会議招待の実行前は必ずドラフト提示と明示的承認を求める。
+4. **出力先固定**: 生成ファイルは指定された OneDrive / SharePoint フォルダ（既定: _AI_Harness/03_outputs/）へ保存する。
+
+## Execution Steps
+1. 指定された過去チャット / Execution Brief を読み込む。
+2. 必要な Office スキル（PowerPoint / Word / Excel / Email）のみを最小回数で呼び出す。
+3. 完了後、生成ファイルへのリンクと実行サマリーを簡潔に報告する（ユーザーは直後に `/cost` で実績確認する）。</pre>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 4: Handoff Invocation Prompt -->
+          <details class="group bg-white border border-slate-200 rounded-lg p-4">
+            <summary class="flex items-center justify-between cursor-pointer font-bold text-brand-text text-base">
+              <span>🎯 テンプレート④：Cowork 起動時の「過去チャット引き継ぎ」1ショット発注プロンプト</span>
+              <span class="text-xs text-brand-accent group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="mt-3 pt-3 border-t border-slate-100">
+              <div class="relative">
+                <button type="button" onclick="copyCode('code-handoff')" class="no-print absolute top-2.5 right-2.5 px-2.5 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600 text-white">コピー</button>
+                <pre id="code-handoff" class="bg-slate-800 text-slate-100 font-mono text-xs p-4 rounded-md overflow-x-auto leading-relaxed">【スキル指定】OneShot_Spec_Executor を使用してください。
+【参照コンテキスト（これ以外は検索不要）】
+- 仕様書ファイル: /_AI_Harness/02_specs/2026-11-XX_〇〇_spec.md
+- 参照チャット: （Copilot Chatの該当スレッドを選択）
+
+【実行指示】
+1. 仕様書の構成どおりに PowerPoint（全〇枚）を作成し、/_AI_Harness/03_outputs/ に保存してください。
+2. 同内容の部門展開メール下書き（宛先：〇〇）を Outlook に作成してください（送信は承認後）。
+3. 追加の社内検索や別案作成は不要です。仕様書準拠で最短ステップで完了させてください。</pre>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <!-- Section 8: Credit & Governance Pitfalls -->
+        <section id="sec-pitfalls" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-3">
+            8. 2万クレジットを溶かさないための「5大NG行為」と回避策
+          </h2>
+          <div class="space-y-3 text-sm">
+            <div class="border-l-4 border-brand-danger bg-red-50 p-4 rounded-r-lg">
+              <p class="font-bold text-brand-danger">NG①：Cowork のスケジュール実行・イベント駆動を常用する</p>
+              <p class="text-slate-700 mt-1">
+                「毎朝8時にDaily Briefingを自動生成」「特定メール受信時に自動要約」を Cowork で組むと、1回150〜300cr × 20営業日 ＝ <strong>単体で月3,000〜6,000crが自動消滅</strong>します。定期通知は Power Automate ＋ 定額 Copilot Chat の手動プロンプトに逃がしてください（<a href="https://www.zation.io/blog/token-economics-microsoft/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Zation: Microsoft token economics</a>）。
+              </p>
+            </div>
+            <div class="border-l-4 border-brand-warning bg-orange-50 p-4 rounded-r-lg">
+              <p class="font-bold text-brand-warning">NG②：Cowork に「ふわっとした調査・壁打ち」を投げる</p>
+              <p class="text-slate-700 mt-1">
+                「最近の部門課題をメールとTeamsから調べて提案書にして」と丸投げすると、Cowork が Work IQ を広域検索し、複数ツールを反復呼び出しして一発で <strong>Heavy（1,200〜2,000+ cr）</strong> に跳ね上がります。必ず定額の Copilot Chat / Researcher で事実を絞り込んでから渡してください。
+              </p>
+            </div>
+            <div class="border-l-4 border-brand-warning bg-orange-50 p-4 rounded-r-lg">
+              <p class="font-bold text-brand-warning">NG③：常に最上位モデル（Opus 固定）で Cowork を回す</p>
+              <p class="text-slate-700 mt-1">
+                Microsoft の公式分析でも、全ステップを最上位モデル高推論で回すのが最も高コストと明示されています（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/16/what-ai-at-work-really-costs/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Copilot Blog: What AI at work really costs</a>）。基本は <strong>Auto ルーティング</strong>（または Sonnet 4.6 / 低コスト特化の Cowork 1）を使い、Opus 級は経営判断の最終仕上げに限定してください。
+              </p>
+            </div>
+            <div class="border-l-4 border-brand-accent bg-blue-50 p-4 rounded-r-lg">
+              <p class="font-bold text-brand-accent">NG④：M365 と Gemini Enterprise 間で同じ機密データを無秩序にコピペする</p>
+              <p class="text-slate-700 mt-1">
+                両環境ともエンタープライズデータ保護（EDP / ネイティブ権限尊重）を備えていますが、ローカルPCへ機密ファイルを大量ダウンロードして手動転記すると統制が崩れます。<strong>必ず M365 コネクタ経由で SharePoint / OneDrive の権限境界内を参照</strong>させてください。
+              </p>
+            </div>
+            <div class="border-l-4 border-slate-400 bg-slate-50 p-4 rounded-r-lg">
+              <p class="font-bold text-slate-700">NG⑤：`/cost` を見ずに月末にクレジット枯渇を知る</p>
+              <p class="text-slate-700 mt-1">
+                Cowork のタスク完了直後に <code>/cost</code> を打つ習慣をつけるだけで、「どの指示がクレジットを食うか」の体感精度が1週間で劇的に上がります。週次で 5,000 cr（月2万の25%）をペースメーカー上限に設定するのが安全です。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 9: Rollout Roadmap -->
+        <section id="sec-roadmap" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-2xl font-extrabold text-brand-text mb-4">
+            9. 段階的立ち上げロードマップ（初日〜1ヶ月）
+          </h2>
+          <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <span class="inline-block px-2 py-0.5 rounded bg-brand-accent text-white text-xs font-bold mb-2">Week 1：基盤構築（消費目安 1,000 cr）</span>
+              <h3 class="font-bold text-brand-text mb-2">共有バス＆基本検証</h3>
+              <ul class="list-disc list-inside space-y-1 text-slate-600 text-xs">
+                <li>OneDrive に <code>_AI_Harness/</code> を作成し、Copilot と Gemini Enterprise 両方からの参照疎通を確認</li>
+                <li>Researcher で Claude Critique が有効か確認</li>
+                <li><code>OneShot_Spec_Executor</code> を Cowork Custom Skill に登録し、Lightタスク2〜3回で <code>/cost</code> を実測</li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <span class="inline-block px-2 py-0.5 rounded bg-brand-gemini text-white text-xs font-bold mb-2">Week 2〜3：実戦ループ（消費目安 8,000 cr）</span>
+              <h3 class="font-bold text-brand-text mb-2">代表3業務のスキル化</h3>
+              <ul class="list-disc list-inside space-y-1 text-slate-600 text-xs">
+                <li>「方針展開」「予算/GAP報告」「重要会議準備」の3業務で Step1→Step2→Step3 の往復を定着</li>
+                <li>効果の高かった指示を Custom Skill（3〜5個）へ昇格</li>
+                <li>月次締め系は Analyst（0cr）側へ完全分離</li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <span class="inline-block px-2 py-0.5 rounded bg-brand-success text-white text-xs font-bold mb-2">Week 4〜：最適化（月2万cr内で安定運転）</span>
+              <h3 class="font-bold text-brand-text mb-2">ROI最大化＆チーム展開</h3>
+              <ul class="list-disc list-inside space-y-1 text-slate-600 text-xs">
+                <li><code>credit_ledger.xlsx</code> から「1クレジットあたりの削減時間」が高いタスクTOP5を特定</li>
+                <li>ROIの低い用途は定額チャットへ戻し、余剰枠で Heavy 案件や App Skill 試作に挑戦</li>
+                <li>部門メンバーへ Custom Skill と運用ルールを横展開</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 10: References -->
+        <section id="sec-references" class="content-block bg-white rounded-xl p-6 md:p-8 shadow-soft border border-slate-200 break-inside-avoid">
+          <h2 class="text-xl font-extrabold text-brand-text mb-3">10. 一次情報・公式リファレンス（2026年11月確認）</h2>
+          <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-600">
+            <li><a href="https://learn.microsoft.com/en-us/copilot/cowork/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Learn — Copilot Cowork overview（Custom Skills最大50個・過去チャット参照・Appスキル等）</a></li>
+            <li><a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/16/what-ai-at-work-really-costs/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Copilot Blog — What AI at work really costs（2026年11月16日・定額×Work IQ×Autoルーティング）</a></li>
+            <li><a href="https://learn.microsoft.com/ja-jp/microsoft-365/copilot/extensibility/work-iq/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Learn — Work IQ の概要（2026年11月19日更新）</a></li>
+            <li><a href="https://learn.microsoft.com/ja-jp/copilot/plan/usage-based-billing-overview-copilot-credits" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Learn — Copilot クレジットの使用量ベースの課金とコスト管理</a></li>
+            <li><a href="https://support.microsoft.com/ja-jp/microsoft-365-copilot/use-claude-with-researcher-in-microsoft-365-copilot" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft サポート — Microsoft Copilot のリサーチツール（Researcher）で Claude を使用する</a></li>
+            <li><a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/introducing-multi-model-intelligence-in-researcher/4506011" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Microsoft Tech Community — Introducing multi-model intelligence in Researcher</a></li>
+            <li><a href="https://www.aguidetocloud.com/blog/microsoft-copilot-cowork-pricing-cost-management/" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">A Guide to Cloud — Microsoft Copilot Cowork 2026 Pricing Guide（Light/Medium/Heavy レンジ・4大課金ドライバー・/cost）</a></li>
+            <li><a href="https://customnetworks.com/blog/how-much-does-copilot-cowork-cost.html" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">CNI Blog — How Much Does Microsoft Copilot Cowork Cost?（実測平均クレジット解説）</a></li>
+            <li><a href="https://docs.cloud.google.com/gemini/enterprise/docs/release-notes" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Google Cloud — Gemini Enterprise Release Notes（Gemini 4 Neon・M365データストア）</a></li>
+            <li><a href="https://docs.cloud.google.com/gemini/enterprise/docs/connectors/introduction-to-connectors-and-data-stores" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Google Cloud — Gemini Enterprise Connectors and Data Stores（M365コネクタ概要）</a></li>
+            <li><a href="https://help.openai.com/en/articles/11487671-flexible-pricing-for-the-enterprise-edu-and-business-plans" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">OpenAI Help Center — Flexible pricing for Enterprise, Edu, and Business plans（コア機能はクレジット非消費）</a></li>
+          </ul>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="copy-toast" class="copy-toast" role="status" aria-live="polite">クリップボードにコピーしました</div>
+
+  <script>
+    // 1. ScrollSpy (Intersection Observer)
+    (function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.toc-link');
+      const mainContainer = document.querySelector('.main-content');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+            });
+          }
+        });
+      }, {
+        root: window.innerWidth >= 768 ? mainContainer : null,
+        rootMargin: '-15% 0px -70% 0px',
+        threshold: 0.05
+      });
+
+      sections.forEach(sec => observer.observe(sec));
+    })();
+
+    // 2. Accordion Print Handling
+    (function() {
+      let closedBeforePrint = [];
+      window.addEventListener('beforeprint', () => {
+        closedBeforePrint = [];
+        document.querySelectorAll('details').forEach(d => {
+          if (!d.open) {
+            closedBeforePrint.push(d);
+            d.open = true;
+          }
+        });
+      });
+      window.addEventListener('afterprint', () => {
+        closedBeforePrint.forEach(d => { d.open = false; });
+        closedBeforePrint = [];
+      });
+    })();
+
+    // 3. Copy Utility
+    function copyCode(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        const toast = document.getElementById('copy-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1800);
+      });
+    }
+
+    // 4. Credit Budget Simulator
+    (function() {
+      const sLight = document.getElementById('sim-light');
+      const sMed = document.getElementById('sim-medium');
+      const sHeavy = document.getElementById('sim-heavy');
+      const resetBtn = document.getElementById('sim-reset');
+
+      function updateSim() {
+        const l = parseInt(sLight.value, 10);
+        const m = parseInt(sMed.value, 10);
+        const h = parseInt(sHeavy.value, 10);
+
+        const subL = l * 150;
+        const subM = m * 500;
+        const subH = h * 1200;
+        const total = subL + subM + subH;
+        const rem = 20000 - total;
+        const pct = Math.min(100, (total / 20000) * 100);
+
+        document.getElementById('val-light').textContent = l + ' 回';
+        document.getElementById('val-medium').textContent = m + ' 回';
+        document.getElementById('val-heavy').textContent = h + ' 回';
+        document.getElementById('sub-light').textContent = subL.toLocaleString();
+        document.getElementById('sub-medium').textContent = subM.toLocaleString();
+        document.getElementById('sub-heavy').textContent = subH.toLocaleString();
+        document.getElementById('sim-total').textContent = total.toLocaleString();
+
+        const remEl = document.getElementById('sim-rem');
+        const barEl = document.getElementById('sim-bar');
+        const stEl = document.getElementById('sim-status');
+
+        remEl.textContent = rem.toLocaleString();
+        barEl.style.width = pct + '%';
+
+        if (rem < 0) {
+          remEl.className = 'text-brand-danger font-bold';
+          barEl.className = 'h-3.5 rounded-full bg-brand-danger transition-all duration-200';
+          stEl.className = 'font-bold text-brand-danger';
+          stEl.textContent = '🚨 予算超過（' + Math.abs(rem).toLocaleString() + ' cr オーバー）— 定額チャットへ逃がしてください';
+        } else if (rem < 2000) {
+          remEl.className = 'text-brand-warning font-bold';
+          barEl.className = 'h-3.5 rounded-full bg-brand-warning transition-all duration-200';
+          stEl.className = 'font-bold text-brand-warning';
+          stEl.textContent = '⚠️ バッファ薄め（突発案件で枯渇リスクあり）';
+        } else {
+          remEl.className = 'text-brand-success font-bold';
+          barEl.className = 'h-3.5 rounded-full bg-brand-accent transition-all duration-200';
+          stEl.className = 'font-bold text-brand-success';
+          stEl.textContent = '✅ 適正レンジ（安全バッファ確保済み）';
+        }
+      }
+
+      [sLight, sMed, sHeavy].forEach(el => el.addEventListener('input', updateSim));
+      resetBtn.addEventListener('click', () => {
+        sLight.value = 30;
+        sMed.value = 16;
+        sHeavy.value = 4;
+        updateSim();
+      });
+      updateSim();
+    })();
+  </script>
+</body>
+</html>
