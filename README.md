@@ -9,4 +9,4 @@
 - トップ一覧: https://inter190803.github.io/public/
 
 ## 公開成果物一覧
-- （現在公開中の成果物はまだありません）
+- [Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート](https://inter190803.github.io/public/reports/copilot-workspaces-research.html) (`reports/copilot-workspaces-research.html`)

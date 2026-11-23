@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#F0F4F8',
+              text: '#112A46',
+              accent: '#0078D4',
+              card: '#FFFFFF',
+              success: '#107C10',
+              warning: '#D83B01',
+              danger: '#D13438'
+            }
+          },
+          boxShadow: {
+            'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)'
+          }
+        }
+      }
+    }
+  </script>
+  <style id="page-style">
+    @page { size: portrait; margin: 15mm; }
+  </style>
+  <style>
+    body {
+      background-color: #F0F4F8;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #112A46;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    }
+
+    @media screen {
+      html { scroll-behavior: smooth; }
+      body { height: 100vh; overflow: hidden; display: flex; flex-direction: column; margin: 0; }
+      .layout-wrapper { flex: 1; display: flex; overflow: hidden; }
+      .sidebar-container {
+        width: 280px;
+        flex-shrink: 0;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.94);
+        border-right: 1px solid #e2e8f0;
+      }
+      .main-content { flex: 1; overflow-y: auto; padding: 2rem 2.5rem; position: relative; }
+      @media (max-width: 767px) {
+        body, .layout-wrapper, .sidebar-container, .main-content {
+          height: auto; overflow: visible; display: block; width: 100%;
+        }
+        .sidebar-container { display: none; }
+        .main-content { padding: 1rem; }
+      }
+    }
+
+    @media print {
+      html, body, .layout-wrapper, .sidebar-container, .main-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      body { background-color: white !important; background-image: none !important; }
+      .no-print, .sidebar-container, header.app-header { display: none !important; }
+      .main-content { padding: 0 !important; width: 100% !important; margin: 0 !important; }
+      .content-block {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        margin-bottom: 1.5rem !important;
+        padding: 1.25rem !important;
+      }
+      .max-h-\[600px\] { max-height: none !important; overflow: visible !important; }
+    }
+
+    .nav-link.active {
+      color: #0078D4;
+      font-weight: 700;
+      background-color: #EFF6FF;
+      border-left: 3px solid #0078D4;
+    }
+
+    .badge-fact {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      background-color: #DBEAFE;
+      color: #1E40AF;
+      border: 1px solid #93C5FD;
+      vertical-align: middle;
+    }
+    .badge-infer {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      background-color: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="app-header bg-white border-b border-slate-200 px-4 md:px-6 py-3 flex items-center justify-between gap-3 z-20 shrink-0">
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="w-9 h-9 rounded-lg bg-brand-accent text-white flex items-center justify-center shrink-0 shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+      </div>
+      <div class="min-w-0">
+        <h1 class="text-sm md:text-base font-bold text-brand-text truncate">
+          Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート
+        </h1>
+        <p class="text-xs text-slate-500 truncate">
+          調査日: 2026-11-22 ／ 対象: Microsoft 365 Copilot 保有者・M365 部門管理者 ／ 引き継ぎID: 2026-11-22-003
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 shrink-0 no-print">
+      <button type="button" onclick="toggleMobileToc()" class="md:hidden px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50">
+        目次
+      </button>
+      <button type="button" onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-brand-accent text-white hover:bg-blue-700 transition flex items-center gap-1.5 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+        </svg>
+        <span>PDF / 印刷</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile TOC Drawer -->
+  <div id="mobile-toc" class="hidden md:hidden bg-white border-b border-slate-200 px-4 py-3 no-print">
+    <nav aria-label="モバイル目次" class="grid grid-cols-1 gap-1 text-xs">
+      <a href="#sec-summary" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100 font-semibold">1. エグゼクティブサマリー</a>
+      <a href="#sec-changes" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">2. 変更点：ノートブック → ワークスペース</a>
+      <a href="#sec-philosophy" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">3. 設計思想とエコシステム全体像</a>
+      <a href="#sec-usage" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">4. 活用方法・実務ワークフロー &amp; 診断</a>
+      <a href="#sec-licensing" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">5. ライセンス別の違いと混在チームの壁</a>
+      <a href="#sec-specs" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">6. 詳細仕様・対応形式・上限・制限</a>
+      <a href="#sec-admin" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">7. IT管理者向けガバナンス・Purview・SPE</a>
+      <a href="#sec-checklist" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">8. 展開チェックリスト &amp; FAQ</a>
+      <a href="#sec-sources" onclick="toggleMobileToc()" class="py-1.5 px-2 rounded hover:bg-slate-100">9. 一次情報・出典一覧</a>
+    </nav>
+  </div>
+
+  <div class="layout-wrapper">
+    <!-- Left Sidebar -->
+    <aside class="sidebar-container no-print">
+      <nav aria-label="目次" class="space-y-1">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-2 pb-1">目次 / Contents</div>
+        <a href="#sec-summary" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">1. エグゼクティブサマリー</a>
+        <a href="#sec-changes" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">2. 変更点：ノートブック → ワークスペース</a>
+        <a href="#sec-philosophy" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">3. 設計思想とエコシステム全体像</a>
+        <a href="#sec-usage" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">4. 活用方法・実務ワークフロー</a>
+        <a href="#sec-licensing" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">5. ライセンス別の違いと混在チーム</a>
+        <a href="#sec-specs" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">6. 詳細仕様・対応形式・上限・制限</a>
+        <a href="#sec-admin" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">7. IT管理者向けガバナンス・SPE</a>
+        <a href="#sec-checklist" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">8. 展開チェックリスト &amp; FAQ</a>
+        <a href="#sec-sources" class="nav-link block px-3 py-2 text-xs rounded-r-md text-slate-700 hover:bg-slate-100 transition">9. 一次情報・出典一覧</a>
+      </nav>
+
+      <div class="mt-6 p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-2">
+        <div class="font-bold text-slate-700">情報の信頼性区分</div>
+        <div><span class="badge-fact">事実</span> Microsoft Learn / Support / Message Center / Ignite 2026 公式情報で確認済みの仕様</div>
+        <div><span class="badge-infer">推測</span> 公式仕様に基づく実務影響・運用推奨・見込み</div>
+      </div>
+
+      <div class="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200 text-xs space-y-1">
+        <div class="font-bold text-blue-900">対象ロールアウト ID</div>
+        <div class="font-mono text-[11px] text-blue-800">MC1326520 (旧 Notebooks)</div>
+        <div class="font-mono text-[11px] text-blue-800">MC1559638 (新 Workspaces)</div>
+        <div class="text-[11px] text-blue-700 pt-1">Frontier: 2026年11月〜<br>全世界 GA: 2026年12月〜</div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="max-w-5xl mx-auto space-y-8 pb-16">
+
+        <!-- Section 1: Executive Summary -->
+        <section id="sec-summary" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">01 / Executive Summary</span>
+            <div class="flex items-center gap-2">
+              <span class="badge-fact">事実</span>
+              <span class="badge-infer">推測</span>
+            </div>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            結論：「単なる名称変更」ではなく、個人用ノートから“チーム共同作業ハブ”への構造転換
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-700 mb-6">
+            <span class="badge-fact">事実</span> Microsoft は 2026年10月後半〜11月（Microsoft Ignite 2026 および Message Center <strong>MC1559638</strong>）にかけて、従来の <strong>Copilot ノートブック（Copilot Notebooks）</strong>を <strong>Copilot ワークスペース（Copilot Workspaces）</strong> へと改称・機能拡張しました。背景には、個人単位の調べもの・タスク管理を担う <strong>Copilot プロジェクト（Copilot Projects）</strong> との役割分離があり、ワークスペースは複数メンバーが同一コンテキスト・ライブカーソル・アクティビティフィード・グループ所有権を共有しながら AI と協働する「チームファースト」の作業空間として再定義されています。既存のノートブックは<strong>自動移行</strong>され、ファイルや共有設定はそのまま引き継がれます。
+          </p>
+
+          <!-- KPI Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="text-xs text-slate-500 font-semibold mb-1">進化の本質</div>
+              <div class="text-lg md:text-xl font-bold text-brand-accent">個人 → チーム共創</div>
+              <div class="text-[11px] text-slate-600 mt-1">個人用 Projects と明確分離</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="text-xs text-slate-500 font-semibold mb-1">展開スケジュール</div>
+              <div class="text-lg md:text-xl font-bold text-brand-text">2026.11 → 12</div>
+              <div class="text-[11px] text-slate-600 mt-1">11月 Frontier / 12月 GA 開始</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="text-xs text-slate-500 font-semibold mb-1">グラウンディング上限</div>
+              <div class="text-lg md:text-xl font-bold text-brand-success">先頭 100件</div>
+              <div class="text-[11px] text-slate-600 mt-1">登録枠は最大 300 / Chat 50</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="text-xs text-slate-500 font-semibold mb-1">既存ノート移行</div>
+              <div class="text-lg md:text-xl font-bold text-brand-text">手動作業 0</div>
+              <div class="text-[11px] text-slate-600 mt-1">共有権限・内容とも自動引継</div>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-brand-accent bg-blue-50 p-4 rounded-r-md text-sm text-slate-800 space-y-2">
+            <div class="font-bold text-blue-900">M365 部門長・管理者としての重要ポイント（先回りサマリー）</div>
+            <ul class="list-disc pl-5 space-y-1 text-xs md:text-sm">
+              <li><span class="badge-fact">事実</span> <strong>既存環境の管理者作業は不要</strong>：MC1559638 においてテナント側での移行設定は不要と案内されています（社内マニュアル・用語の書き換えのみ推奨）。</li>
+              <li><span class="badge-fact">事実</span> <strong>実体は「Loop」と同じ SharePoint Embedded コンテナー</strong>：データ保存先、Purview 監査ログ、PowerShell（<code class="bg-blue-100 px-1 rounded">Get-SPOContainer</code>）上では依然としてアプリ名 <code class="bg-blue-100 px-1 rounded">Loop</code> 配下のユーザー所有コンテナーとして扱われます。</li>
+              <li><span class="badge-fact">事実</span> <strong>混在チーム（有料ライセンス有無）で使える範囲が変わる</strong>：Copilot Chat のみのユーザーも標準資料のワークスペース利用は可能ですが、Teams 会議・SharePoint 参照や Audio Overviews 等は有料ライセンス限定です。</li>
+              <li><span class="badge-infer">推測</span> <strong>プロキシ / SASE 環境での要注意点</strong>：ライブカーソル・チームプレゼンスの実現に <code class="bg-blue-100 px-1 rounded">*.svc.ms</code> / <code class="bg-blue-100 px-1 rounded">*.office.com</code> 宛ての WebSocket 通信が必須のため、NW 制御がある組織では事前疎通確認が推奨されます。</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 2: Changes -->
+        <section id="sec-changes" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">02 / Evolution &amp; Changes</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            変更点：「Copilot ノートブック」から「Copilot ワークスペース」へ何が変わったか
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-700 mb-6">
+            従来の Copilot ノートブック（MC1326520 / 2026年6〜8月展開）は、チャット・ファイル・ページ・会議メモを1か所に集約してグラウンディングする「永続コンテキストの器」として登場しました。しかし実務では「OneNote のノートブックと紛らわしい」「個人の調べものには良いが、複数人で同じプロジェクトを同時推進する機能（更新履歴やプレゼンス、所有権の共有）が弱い」という課題がありました。今回の <strong>Copilot ワークスペース（MC1559638）</strong> への改称は、これらを解消する<strong>機能拡張を伴う進化</strong>です。
+          </p>
+
+          <!-- Timeline Flow SVG -->
+          <div class="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg overflow-x-auto">
+            <div class="text-xs font-bold text-slate-600 mb-3">ロールアウト・進化タイムライン（2026年〜2027年）</div>
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 min-w-[640px]">
+              <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                <div class="text-[11px] font-bold text-slate-400">2026年 6月〜8月</div>
+                <div class="text-sm font-bold text-slate-800">MC1326520 展開</div>
+                <div class="text-xs text-slate-600 mt-1">初期 <strong>Copilot Notebooks</strong> 公開。3カラムUI、OneNote同期、音声概要、参照グラウンディング。</div>
+              </div>
+              <svg class="w-6 h-6 text-slate-300 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-blue-50 p-3 rounded-lg border border-blue-300 shadow-sm">
+                <div class="text-[11px] font-bold text-brand-accent">2026年 10月末〜11月</div>
+                <div class="text-sm font-bold text-blue-900">Ignite &amp; MC1559638 Frontier</div>
+                <div class="text-xs text-blue-800 mt-1"><strong>Copilot Workspaces</strong> へ改称発表。Frontier プログラム先行展開開始。活動フィード・ライブカーソル・グループ所有。</div>
+              </div>
+              <svg class="w-6 h-6 text-slate-300 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-white p-3 rounded-lg border border-emerald-300 shadow-sm">
+                <div class="text-[11px] font-bold text-brand-success">2026年 12月〜</div>
+                <div class="text-sm font-bold text-slate-800">全世界 GA 展開</div>
+                <div class="text-xs text-slate-600 mt-1">標準リリース環境へ順次拡大。推奨ワークスペース提示、Project 参照取り込み。</div>
+              </div>
+              <svg class="w-6 h-6 text-slate-300 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                <div class="text-[11px] font-bold text-slate-400">2027年 初頭〜</div>
+                <div class="text-sm font-bold text-slate-800">Office アプリ編集深化</div>
+                <div class="text-xs text-slate-600 mt-1">ワークスペース内での Word / Excel / PowerPoint 本格作成・共同編集機能を順次拡充。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparison Table -->
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg mb-6">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-1/5">比較軸</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-2/5">旧：Copilot ノートブック（Notebooks）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-2/5">新：Copilot ワークスペース（Workspaces）</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-xs md:text-sm">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">位置づけ・設計思想</th>
+                  <td class="px-4 py-3 text-slate-600">個人または軽微な共有向けの「情報整理・調査メモ空間」</td>
+                  <td class="px-4 py-3 text-slate-800 font-medium"><strong>チームファースト（Multiplayer）</strong>の継続的協働・共創ハブ</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">UI ナビゲーション表記</th>
+                  <td class="px-4 py-3 text-slate-600">Microsoft Copilot アプリ左メニュー「ノートブック（Notebooks）」</td>
+                  <td class="px-4 py-3 text-slate-800">順次「<strong>ワークスペース（Workspaces）</strong>」へ自動切替（ワッフルメニュー含む）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">リアルタイム協働機能</th>
+                  <td class="px-4 py-3 text-slate-600">共有ボタンでリンク・ファイルを共有可能（同時編集の可視性は限定的）</td>
+                  <td class="px-4 py-3 text-slate-800"><strong>ライブカーソル／チームプレゼンス</strong>表示で、誰がどこを編集中かリアルタイム可視化</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">変更追跡・進捗把握</th>
+                  <td class="px-4 py-3 text-slate-600">個別のページ・ファイルの最終更新を確認する形</td>
+                  <td class="px-4 py-3 text-slate-800"><strong>アクティビティフィード（Activity Feed）</strong>で更新・未解決事項・担当者アクションを俯瞰</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">所有権モデル</th>
+                  <td class="px-4 py-3 text-slate-600">作成者個人の所有（User-owned コンテナー起点）が中心</td>
+                  <td class="px-4 py-3 text-slate-800"><strong>グループ所有権（Group ownership）</strong>に対応し、チーム単位の継続運用を強化</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">個人用機能との分離</th>
+                  <td class="px-4 py-3 text-slate-600">個人メモも共有メモも Notebooks 内に混在しがち</td>
+                  <td class="px-4 py-3 text-slate-800">個人用は <strong>Copilot Projects</strong> へ分離。Project を丸ごと参照として Workspace へ取り込み可能</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">Office 文書編集連携</th>
+                  <td class="px-4 py-3 text-slate-600">主に参照資料の要約と Copilot ページ（.page）への出力</td>
+                  <td class="px-4 py-3 text-slate-800">Copilot チャットと並走しながら <strong>Word / Excel / PowerPoint の作成・共同編集</strong>を強化（2027年初頭にかけて拡充）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">AIによる提案・発見</th>
+                  <td class="px-4 py-3 text-slate-600">ユーザーが手動で新規作成・管理</td>
+                  <td class="px-4 py-3 text-slate-800"><strong>推奨ワークスペース（Suggested Workspaces）</strong>により関連する組織内ワークストリームを自動提示</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">既存データへの影響</th>
+                  <td class="px-4 py-3 text-slate-600">―</td>
+                  <td class="px-4 py-3 text-brand-success font-semibold">自動移行（データ・参照・共有設定すべて保持。未共有ノートはプライベートのまま）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 3: Design Philosophy -->
+        <section id="sec-philosophy" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">03 / Architecture &amp; Design Philosophy</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            設計思想：なぜ Microsoft は「Workspaces」へ再編したのか（Work IQ と 3つの課題解決）
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-700 mb-6">
+            Microsoft Ignite 2026 で打ち出された「Copilot is the new operating system for work」というビジョンの核心には、<strong>人間と自律型エージェント（Autopilot 等）が同じ場・同じ記憶で協働する</strong>という設計思想があります。Copilot Workspaces は単なる UI 改善ではなく、従来の生成AIチャットが抱えていた3つの構造的課題を解決するために設計されています。
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
+              <div class="text-xs font-bold text-brand-accent mb-1">課題 1：毎回プロンプトをやり直す疲労</div>
+              <h3 class="text-sm font-bold text-slate-800 mb-2">コンテキストの永続化と境界固定</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                通常のチャットはフロー型で流れ去り、毎回ファイルを再添付する必要があります。ワークスペースは「指定した資料群」を境界として固定し、その範囲内のみを根拠（グラウンディング）にすることで、ハルシネーションや無関係データの混入を防ぎつつ文脈を維持します。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
+              <div class="text-xs font-bold text-brand-accent mb-1">課題 2：個人最適化（Single-player）の限界</div>
+              <h3 class="text-sm font-bold text-slate-800 mb-2">マルチプレイヤー・チーム協働</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                1人の頭の中だけで AI と壁打ちしても、チーム合意や引き継ぎには使えません。Workspaces はチームメンバー全員が同じ参照知識・同じ編集キャンバス・同じ AI 対話結果を共有し、誰かが進めた結果を別メンバーが即座に引き継げる設計になっています。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
+              <div class="text-xs font-bold text-brand-accent mb-1">課題 3：個人メモと共有業務の混在</div>
+              <h3 class="text-sm font-bold text-slate-800 mb-2">Projects と Workspaces の明確分離</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                下書きや試行錯誤はホームタブ上の個人用 <strong>Copilot Projects</strong> で安全に完結させ、チーム展開の段階になったら <strong>Copilot Workspaces</strong> へ持ち込む（あるいは Project を丸ごと参照追加する）2段階のワークフローを前提としています。
+              </p>
+            </div>
+          </div>
+
+          <!-- Work IQ 4 Pillars -->
+          <div class="p-5 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 text-white mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 class="text-sm md:text-base font-bold">Work IQ（組織知能レイヤー）における Workspaces の位置づけ</h3>
+              <span class="text-[11px] bg-blue-500/30 border border-blue-400/40 px-2 py-0.5 rounded-full">Ignite 2026 公式アーキテクチャ</span>
+            </div>
+            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+              Microsoft 365 内のファイル・メール・会議・チャットおよび Dynamics 365 / Power Platform を横断推論する知能基盤「Work IQ」は、以下4本の柱で構成されており、Workspaces はそのうちの「エージェント的推論・複雑課題解決の実行場」を担います。
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div class="p-3 rounded-lg bg-white/10 border border-white/10">
+                <div class="font-bold text-blue-300 mb-1">1. Chat</div>
+                <div class="text-slate-200">対話インターフェースおよび Agent-to-Agent (A2A) 連携プロトコルの窓口。</div>
+              </div>
+              <div class="p-3 rounded-lg bg-white/10 border border-white/10">
+                <div class="font-bold text-blue-300 mb-1">2. Context</div>
+                <div class="text-slate-200">組織データをエージェントがすぐ使える入力へ自動構造化・グラウンディング。</div>
+              </div>
+              <div class="p-3 rounded-lg bg-white/10 border border-white/10">
+                <div class="font-bold text-blue-300 mb-1">3. Tools</div>
+                <div class="text-slate-200">権限を尊重しながら M365 エンティティや業務システムへ安全にアクションを実行。</div>
+              </div>
+              <div class="p-3 rounded-lg bg-blue-600/40 border border-blue-400">
+                <div class="font-bold text-white mb-1">4. Workspaces ★</div>
+                <div class="text-blue-100">人間とエージェント（Autopilot等）が継続的コンテキストを共有し共創する作業空間。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5-Product Comparison Matrix -->
+          <h3 class="text-base font-bold text-brand-text mb-3">関連5機能の位置づけ比較（Projects / Workspaces / Pages / Loop / OneNote）</h3>
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-xs md:text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-3 border-b border-slate-200">機能・サービス</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-3 border-b border-slate-200">主な利用単位</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-3 border-b border-slate-200">主な役割</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-3 border-b border-slate-200">実体ストレージ</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-3 border-b border-slate-200">使い分けの目安</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3 py-3 font-bold text-slate-800">Copilot Projects</th>
+                  <td class="px-3 py-3">個人（プライベート）</td>
+                  <td class="px-3 py-3">個人チャット・メモ・タスクの整理</td>
+                  <td class="px-3 py-3 text-slate-600">Copilot アプリ（ホームタブ）</td>
+                  <td class="px-3 py-3">誰にも見せる前の下書き・個人調査・自分の業務管理</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-blue-50/40">
+                  <th scope="row" class="px-3 py-3 font-bold text-brand-accent">Copilot Workspaces<br><span class="text-[11px] font-normal text-slate-500">（旧 Notebooks）</span></th>
+                  <td class="px-3 py-3 font-semibold">チーム / グループ<br><span class="text-[11px] font-normal text-slate-500">（個人利用も可）</span></td>
+                  <td class="px-3 py-3">参照資料の固定＋AI協働＋ライブ共同編集</td>
+                  <td class="px-3 py-3 text-slate-600">ユーザー所有 SharePoint Embedded（<code class="bg-slate-100 px-1 rounded">.pod</code>）</td>
+                  <td class="px-3 py-3">複数名で資料を持ち寄り、AIと提案書・方針・分析を進める場</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3 py-3 font-bold text-slate-800">Copilot Pages</th>
+                  <td class="px-3 py-3">個人〜チーム共有</td>
+                  <td class="px-3 py-3">チャット回答の永続キャンバス化・共同編集</td>
+                  <td class="px-3 py-3 text-slate-600">ユーザー所有 SharePoint Embedded（<code class="bg-slate-100 px-1 rounded">.page</code>）</td>
+                  <td class="px-3 py-3">単発のチャット成果物を編集・共有可能な1枚ドキュメントにする</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3 py-3 font-bold text-slate-800">Microsoft Loop</th>
+                  <td class="px-3 py-3">個人 / チーム / テナント</td>
+                  <td class="px-3 py-3">構造化ドキュメント・タスク表・コンポーネント同期</td>
+                  <td class="px-3 py-3 text-slate-600">SharePoint Embedded（マイワークスペース / 共有）</td>
+                  <td class="px-3 py-3">Teams/Outlook等へ埋め込む動的コンポーネントや定常Wiki管理</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3 py-3 font-bold text-slate-800">OneNote</th>
+                  <td class="px-3 py-3">個人 / チーム</td>
+                  <td class="px-3 py-3">階層型ノート・手書き・リッチノート管理</td>
+                  <td class="px-3 py-3 text-slate-600">OneDrive / SharePoint ライブラリ</td>
+                  <td class="px-3 py-3">従来の自由筆記・階層ノート。Workspaces とも双方向同期して利用可</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 4: Usage & Workflows -->
+        <section id="sec-usage" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">04 / Practical Workflows &amp; Interactive Advisor</span>
+            <div class="flex gap-1.5">
+              <span class="badge-fact">事実</span>
+              <span class="badge-infer">推測</span>
+            </div>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            活用方法：実務での仕事の進め方と推奨ワークフロー
+          </h2>
+
+          <!-- 2-Stage Workflow Diagram -->
+          <div class="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg overflow-x-auto">
+            <div class="text-xs font-bold text-slate-600 mb-3">推奨される「個人 → チーム」2段階ワークフロー</div>
+            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 min-w-[620px]">
+              <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200">
+                <div class="text-[11px] font-bold text-slate-500">STEP 1：個人で仕込む</div>
+                <div class="text-sm font-bold text-slate-800">Copilot Projects</div>
+                <p class="text-xs text-slate-600 mt-1">雑多なメモ、初期調査チャット、個人タスクをホームタブで整理。まだ人に見せない生データを育てる。</p>
+              </div>
+              <svg class="w-6 h-6 text-slate-400 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                <div class="text-[11px] font-bold text-brand-accent">STEP 2：チーム空間へ昇格</div>
+                <div class="text-sm font-bold text-blue-900">Copilot Workspaces</div>
+                <p class="text-xs text-blue-800 mt-1">Project や確定資料・会議記録を参照として追加し、カスタム指示（出力形式・トーン）を設定してメンバーを招待。</p>
+              </div>
+              <svg class="w-6 h-6 text-slate-400 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+                <div class="text-[11px] font-bold text-brand-success">STEP 3：成果物生成・共創</div>
+                <div class="text-sm font-bold text-emerald-900">Pages / Office / 音声概要</div>
+                <p class="text-xs text-emerald-800 mt-1">ライブカーソルで同時編集しつつ Word/Excel/PPT 化、または Audio Overviews で音声化して関係者へ展開。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 Concrete Use Cases -->
+          <h3 class="text-base font-bold text-brand-text mb-3">部門長・M365管理者における具体的活用パターン（6選）</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-xs md:text-sm">
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">1. 上位方針展開・部門予算/GAP管理 <span class="badge-infer">推測</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                本部長方針資料（PPTX/PDF）、部門予算Excel、前期GAP振り返りメールを参照に固定。カスタム指示に「課長向け伝達事項・数値根拠・期限を表形式で出力」と設定し、課長陣と同じワークスペースで部署別アクションを共同編集。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">2. M365 技術導入プロジェクト（Intune / Defender 等） <span class="badge-infer">推測</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                設計書（Word）、検証結果（Excel）、ベンダー定例の Teams 会議文字起こし、公式LearnのURLを1か所に集約。新任メンバーが参画してもワークスペースのアクティビティフィードと Copilot への質問だけで経緯を一発把握。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">3. 会議起点の議事録・決定事項・課題管理 <span class="badge-fact">事実</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                Teams 会議（トランスクリプト・チャット・会議中共有ファイル）をそのまま参照として追加可能（有料ライセンス）。複数回の定例会議を横断して「前回からの未決課題リスト」を Copilot Pages へ生成し、全員でライブ更新。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">4. カスタム指示（Custom Instructions）による品質標準化 <span class="badge-fact">事実</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                ワークスペースごとにプロンプトの前提条件（出力フォーマット、禁止事項、対象読者、トーン＆マナー）を固定可能。誰が質問してもチーム標準の形式で回答・成果物が出る環境を構築。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">5. Audio Overviews（音声概要）による高速キャッチアップ <span class="badge-fact">事実</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                ワークスペース内の参照資料（Word や OneNote ページ等最低1件以上）から、1名解説または2名対談ポッドキャスト形式の音声を生成（商業用 Entra ID アカウント向け）。長文資料を通勤中・移動中に耳で把握可能。
+              </p>
+            </div>
+            <div class="p-4 rounded-lg border border-slate-200 hover:border-brand-accent transition">
+              <div class="font-bold text-brand-text mb-1">6. OneNote との双方向連携による現場メモ集約 <span class="badge-fact">事実</span></div>
+              <p class="text-slate-600 leading-relaxed">
+                iPhone / iPad 版 OneNote からも Copilot ノートブック／ワークスペース機能が利用可能。外出先で OneNote にメモした内容を、デスクに戻って Web 版 `m365.cloud.microsoft` のワークスペースでチームと AI 加工する連携がスムーズ。
+              </p>
+            </div>
+          </div>
+
+          <!-- Interactive Tool: Which Copilot Space Should I Use? -->
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-300 no-print">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2 py-0.5 text-[11px] font-bold bg-brand-accent text-white rounded">インタラクティブ診断</span>
+              <h3 class="text-sm md:text-base font-bold text-brand-text">どの機能を使うべきか？ 目的別ツール選定チェッカー</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-xs">
+              <div>
+                <label for="adv-scope" class="block font-semibold text-slate-700 mb-1">1. 作業メンバー</label>
+                <select id="adv-scope" onchange="updateAdvisor()" class="w-full p-2 rounded border border-slate-300 bg-white">
+                  <option value="team">チーム・複数名で協働する</option>
+                  <option value="solo">自分1人で完結する</option>
+                  <option value="external">社外ゲストを含めて共有したい</option>
+                </select>
+              </div>
+              <div>
+                <label for="adv-duration" class="block font-semibold text-slate-700 mb-1">2. 継続性・資料規模</label>
+                <select id="adv-duration" onchange="updateAdvisor()" class="w-full p-2 rounded border border-slate-300 bg-white">
+                  <option value="ongoing">数週間〜数か月の継続プロジェクト（複数資料）</option>
+                  <option value="once">今日1回だけの単発質問・単一文書化</option>
+                  <option value="wiki">Teams/Outlook に埋め込む定常ナレッジ</option>
+                </select>
+              </div>
+              <div>
+                <label for="adv-notes" class="block font-semibold text-slate-700 mb-1">3. 手書き・階層構造の要否</label>
+                <select id="adv-notes" onchange="updateAdvisor()" class="w-full p-2 rounded border border-slate-300 bg-white">
+                  <option value="no">不要（AI要約・ドキュメント作成中心）</option>
+                  <option value="yes">必要（セクション階層・手書き・自由筆記）</option>
+                </select>
+              </div>
+            </div>
+            <div id="adv-result" class="p-4 rounded-lg bg-white border border-blue-200 text-xs md:text-sm">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Licensing Differences -->
+        <section id="sec-licensing" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">05 / Licensing Comparison</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            ライセンスによる違い：M365 Copilot 保有者 vs 非保有者（Copilot Chat）
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-700 mb-4">
+            従来は有料の <strong>Microsoft 365 Copilot アドオンライセンス</strong> 保有者専用だったノートブック機能が、基本の <strong>Microsoft 365 Copilot Chat（対象となる Microsoft 365 Business / Enterprise 契約に標準付帯）</strong> ユーザーにも開放されました。これにより「有料ライセンス保有者と非保有者が混在する部門」でもワークスペースを基盤とした共同作業が可能になった一方、<strong>参照できるデータソースの種類・件数上限・AI機能</strong>には明確な境界線が引かれています。
+          </p>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg mb-6">
+            <table class="w-full text-xs md:text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-1/4">項目</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-[37.5%]">ライセンスなし<br><span class="font-normal text-slate-500">（Copilot Chat / 標準 M365）</span></th>
+                  <th scope="col" class="sticky top-0 bg-blue-100 text-blue-900 px-4 py-3 border-b border-blue-200 w-[37.5%]">M365 Copilot ライセンスあり ★<br><span class="font-normal text-blue-700">（有料アドオン保有者＝ユーザー前提）</span></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">ワークスペース作成・利用資格</th>
+                  <td class="px-4 py-3">可能（ただしアカウントに <strong>SharePoint または OneDrive のサービスプラン</strong> 付与が必須）</td>
+                  <td class="px-4 py-3 font-medium text-blue-900">フル利用可能（SharePoint / OneDrive / Exchange Online 連携含む）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">ワークスペースあたりの参照登録数</th>
+                  <td class="px-4 py-3 font-semibold text-amber-700">最大 50件まで</td>
+                  <td class="px-4 py-3 font-semibold text-brand-success">最大 300件まで登録可（※アクティブなグラウンディングは先頭 100件）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">手動アップロード・標準ファイル</th>
+                  <td class="px-4 py-3">Word / Excel / PowerPoint / PDF / テキスト（.txt, .md, .rtf）/ 画像・動画（JPEG, PNG, MP4）</td>
+                  <td class="px-4 py-3">左記すべてに対応</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">Loop / OneNote ページ・メール</th>
+                  <td class="px-4 py-3">Loop ページ、OneNote ページ・セクション、添付付きメールスレッド等</td>
+                  <td class="px-4 py-3">左記に加え、<strong>OneNote ノートブック全体</strong>の横断参照が可能</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">Teams 会議・チャット参照</th>
+                  <td class="px-4 py-3 text-brand-danger font-semibold">利用不可（Teamsチャット、会議招待・議題・出席者、会議文字起こし・AI要約・会議中共有ファイルは対象外）</td>
+                  <td class="px-4 py-3 text-brand-success font-semibold">完全対応（Teams 会議の招待状、トランスクリプト、チャット、共有ファイルを直接追加可）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">SharePoint / OneDrive / 外部URL</th>
+                  <td class="px-4 py-3 text-brand-danger font-semibold">利用不可（外部 URL、SharePoint サイト/ページ、OneDrive 組織内ストレージの直接紐付けは制限）</td>
+                  <td class="px-4 py-3 text-brand-success font-semibold">完全対応（内部/外部 URL、SharePoint サイト・ページ、OneDrive を横断グラウンディング）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">Work IQ による自動推論</th>
+                  <td class="px-4 py-3">制限あり（手動追加した標準ファイル範囲のみ）</td>
+                  <td class="px-4 py-3">完全対応（Microsoft Graph 全体のメール・チャット・会議・ファイルを横断推論）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">Audio Overviews / Live Capture</th>
+                  <td class="px-4 py-3 text-brand-danger">利用不可または大幅に制限</td>
+                  <td class="px-4 py-3 text-brand-success">利用可能（商業用 Entra ID ユーザー、1日最大20回目安）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">高度なエージェント・処理速度</th>
+                  <td class="px-4 py-3">Deep Research / アナリスト等は不可。標準処理速度（ピーク時制限あり）</td>
+                  <td class="px-4 py-3">高度なエージェント利用可。<strong>優先アクセス（高速・安定処理）</strong></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold text-slate-800 bg-slate-50/50">共有されたワークスペースでの閲覧差</th>
+                  <td class="px-4 py-3">共有は受けられるが、中に含まれる<strong>プレミアムソース（Teams/SP/内部URL等）へはアクセス不可</strong></td>
+                  <td class="px-4 py-3">共有されたプレミアムソースも含めフルアクセス・グラウンディング可能</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Interactive Mixed Team Simulator -->
+          <div class="p-5 rounded-xl bg-amber-50 border border-amber-300 no-print">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-0.5 text-[11px] font-bold bg-brand-warning text-white rounded">混在チーム注意点シミュレーター</span>
+              <h3 class="text-sm md:text-base font-bold text-amber-950">ライセンス保有者がワークスペースを共有すると、非保有メンバーはどこで詰まるか？</h3>
+            </div>
+            <p class="text-xs text-amber-900 mb-3">ワークスペースに入れようとしているソースを選択すると、ライセンス非保有メンバー（Copilot Chat のみ）への影響が表示されます。</p>
+            <div class="flex flex-wrap gap-2 mb-3 text-xs">
+              <button type="button" onclick="showMixSim('office')" class="mix-btn px-3 py-1.5 rounded bg-white border border-amber-300 font-semibold hover:bg-amber-100">Word / Excel / PPT / PDF</button>
+              <button type="button" onclick="showMixSim('teams')" class="mix-btn px-3 py-1.5 rounded bg-white border border-amber-300 font-semibold hover:bg-amber-100">Teams 会議文字起こし・チャット</button>
+              <button type="button" onclick="showMixSim('sharepoint')" class="mix-btn px-3 py-1.5 rounded bg-white border border-amber-300 font-semibold hover:bg-amber-100">SharePoint サイト / URL</button>
+              <button type="button" onclick="showMixSim('onenote')" class="mix-btn px-3 py-1.5 rounded bg-white border border-amber-300 font-semibold hover:bg-amber-100">OneNote セクション・ページ</button>
+              <button type="button" onclick="showMixSim('count')" class="mix-btn px-3 py-1.5 rounded bg-white border border-amber-300 font-semibold hover:bg-amber-100">参照件数 51件以上</button>
+            </div>
+            <div id="mix-sim-output" class="p-3 rounded bg-white border border-amber-200 text-xs md:text-sm text-slate-800">
+              上のボタンをクリックして、ライセンス混在チームでの挙動差を確認してください。
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Detailed Specs & Limits -->
+        <section id="sec-specs" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">06 / Specifications, Formats &amp; Limits</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            網羅仕様：対応形式・上限値・共有ルール・提供クライアント
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-2">1. 対応ファイル形式・参照ソース一覧</h3>
+              <ul class="text-xs md:text-sm space-y-2 text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <li><strong>Microsoft Office / Copilot 形式</strong>：<code class="bg-white px-1 border rounded">.docx</code>, <code class="bg-white px-1 border rounded">.pptx</code>, <code class="bg-white px-1 border rounded">.xlsx</code>, <code class="bg-white px-1 border rounded">.loop</code>, <code class="bg-white px-1 border rounded">.page</code>, OneNote ページ／セクション／ノートブック</li>
+                <li><strong>ドキュメント・テキスト</strong>：<code class="bg-white px-1 border rounded">.pdf</code>, <code class="bg-white px-1 border rounded">.txt</code>, <code class="bg-white px-1 border rounded">.md</code>, <code class="bg-white px-1 border rounded">.rtf</code></li>
+                <li><strong>画像・動画メディア</strong>：<code class="bg-white px-1 border rounded">.jpeg</code>, <code class="bg-white px-1 border rounded">.png</code>, <code class="bg-white px-1 border rounded">.mp4</code></li>
+                <li><strong>M365 エコシステム参照（有料ライセンス中心）</strong>：Web URL、SharePoint サイト・ページ、OneDrive コンテンツ、Outlook メールスレッド（添付含む）、Teams チャット・会議（招待、議題、出席者、トランスクリプト、AI要約、共有ファイル）、Copilot Project</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-2">2. 定量上限・パフォーマンス目安（重要仕様）</h3>
+              <ul class="text-xs md:text-sm space-y-2 text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <li><strong>アクティブなグラウンディング上限</strong>：1ワークスペースあたり<strong>先頭 100件の参照のみ</strong>が回答生成の根拠に使用されます。101件目以降は無視されるため、不要な過去資料の整理または順序調整が必要です（※一部資料に「最大300件」の記載があるのは登録可能枠であり、Microsoft Learn の技術仕様上は先頭100件ルールが適用されます）。</li>
+                <li><strong>Copilot Chat の上限</strong>：ライセンス非保有者は最大 <strong>50件</strong> まで。</li>
+                <li><strong>ドキュメント長の目安</strong>：M365 Copilot 標準準拠（要約・参照は <strong>最大 約150万語 または 300ページ</strong>、Q&amp;A・一般分析の最適長は <strong>約7,500語未満</strong>、リライト最適長は <strong>約3,000語未満</strong>）。</li>
+                <li><strong>Audio Overviews</strong>：最低1件の参照ファイルが必須。日次利用上限の目安は <strong>1日20回まで</strong>（構成・ライセンスにより変動）。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="border-l-4 border-brand-danger bg-red-50 p-4 rounded-r-md text-xs md:text-sm">
+              <div class="font-bold text-red-900 mb-1">3. 共有・外部ゲストアクセスの厳格な制約 <span class="badge-fact">事実</span></div>
+              <ul class="list-disc pl-5 space-y-1 text-red-900">
+                <li><strong>外部共有（ゲストアクセス）は非対応</strong>：Microsoft 公式ドキュメントに「Copilot ノートブック（ワークスペース）は外部共有をサポートしていません」と明記されています。社外パートナーを交えた共同作業には Teams 共有チャネルや通常の SharePoint / OneDrive 共有を使う必要があります。</li>
+                <li><strong>リンク先ファイルの共有権限が必要</strong>：ワークスペースを共有すると内部のリンク先ファイルへのアクセスも自動付与されますが、共有する本人が各元ファイルに対する共有権限を持っている必要があります。</li>
+                <li><strong>OneNote 連携の落とし穴</strong>：参照に OneNote のセクションやページを含めた場合、受信者がその中身を読むには <strong>OneNote ノートブック全体</strong>を別途共有する必要があります。</li>
+              </ul>
+            </div>
+
+            <div class="border-l-4 border-brand-success bg-emerald-50 p-4 rounded-r-md text-xs md:text-sm">
+              <div class="font-bold text-emerald-950 mb-1">4. 提供クライアント・プラットフォーム対応 <span class="badge-fact">事実</span></div>
+              <ul class="list-disc pl-5 space-y-1 text-emerald-950">
+                <li><strong>Web / Copilot アプリ</strong>：<code class="bg-white px-1 rounded">m365.cloud.microsoft</code> の左ナビゲーションおよび上部のアプリ起動ツール（ワッフルメニュー）からアクセス。</li>
+                <li><strong>OneNote 統合</strong>：デスクトップ版・Web版および <strong>iOS（iPhone / iPad）版 OneNote</strong> から拡張ワークスペース機能へアクセスし、Web版と双方向同期。</li>
+                <li><strong>モバイル（iOS / Android）</strong>：Teams 会議の参照追加や、自然言語でのページ編集指示（例：「このページを短くして」）、チャットからのページ自動作成に対応。</li>
+                <li><strong>対象プラン範囲</strong>：商用 Entra ID（Work / School）に加え、一般向け Microsoft 365 Personal / Family / Premium / Pro でも一部展開。</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 7: IT Admin Governance -->
+        <section id="sec-admin" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">07 / IT Admin Governance, Storage &amp; Purview</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-3">
+            IT管理者向け：ストレージ構造・Cloud Policy・Purview・ネットワーク要件
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-700 mb-5">
+            Microsoft 365 を管理する立場から最も重要なのは、「ワークスペースのデータが物理的にどこに保存され、どの管理ポリシー・セキュリティ統制の配下に置かれるか」を正確に把握することです。Copilot ワークスペース（旧ノートブック）および Copilot ページは、実体として <strong>SharePoint Embedded（Loop 基盤）</strong> 上に構築されています。
+          </p>
+
+          <!-- Architecture Diagram -->
+          <div class="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg overflow-x-auto">
+            <div class="text-xs font-bold text-slate-600 mb-3">ストレージ・管理・コンプライアンスの内部構造</div>
+            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 min-w-[620px] text-xs">
+              <div class="flex-1 bg-white p-3 rounded border border-slate-300">
+                <div class="font-bold text-slate-800">ユーザー体験層</div>
+                <div class="mt-1 space-y-1 text-slate-600">
+                  <div>• Copilot Workspaces (<code class="bg-slate-100 px-1 rounded">.pod</code>)</div>
+                  <div>• Copilot Pages (<code class="bg-slate-100 px-1 rounded">.page</code>)</div>
+                  <div>• Loop マイワークスペース</div>
+                </div>
+              </div>
+              <svg class="w-6 h-6 text-slate-400 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-blue-50 p-3 rounded border border-blue-300">
+                <div class="font-bold text-blue-900">物理ストレージ層</div>
+                <div class="mt-1 text-blue-800">
+                  <strong>ユーザー所有 SharePoint Embedded コンテナー</strong><br>
+                  管理上のアプリ名：<code class="bg-white px-1 rounded font-bold">Loop</code><br>
+                  組織全体の SharePoint クォータを消費
+                </div>
+              </div>
+              <svg class="w-6 h-6 text-slate-400 shrink-0 mx-auto rotate-90 md:rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              <div class="flex-1 bg-white p-3 rounded border border-slate-300">
+                <div class="font-bold text-slate-800">統制・監査層</div>
+                <div class="mt-1 space-y-1 text-slate-600">
+                  <div>• Cloud Policy (<code class="bg-slate-100 px-1 rounded">config.office.com</code>)</div>
+                  <div>• Purview (保持 / DLP / eDiscovery / 監査)</div>
+                  <div>• PowerShell (<code class="bg-slate-100 px-1 rounded">Get-SPOContainer</code>)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Policy Table -->
+          <h3 class="text-sm font-bold text-slate-800 mb-2">1. Microsoft 365 クラウドポリシー（Cloud Policy）による作成制御</h3>
+          <p class="text-xs text-slate-600 mb-3">
+            Microsoft 365 Apps 管理センター（<code class="bg-slate-100 px-1 rounded">config.office.com</code>）のクラウドポリシーでは、Loop 本体とは独立して Copilot ページ／ノートブック（ワークスペース）の有効・無効を制御できます。
+          </p>
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg mb-5">
+            <table class="w-full text-xs md:text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200">ポリシー名</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200">既定値</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200">制御内容と運用のポイント</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold text-slate-800">Create and view Copilot Pages and Copilot Notebooks<br><span class="text-[11px] font-normal text-slate-500">（Copilot ページと Copilot ノートブックを作成して表示する）</span></th>
+                  <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs">有効 (Enabled)</span></td>
+                  <td class="px-4 py-2.5">無効化するとユーザーによる新規作成・表示を停止可能。<strong>Loop アプリ自体を無効化しても本ポリシーが有効なら、Copilot 専用の個人 SharePoint Embedded コンテナーのみ払い出される</strong>。完全停止するには Loop 側ポリシーと両方無効にする必要あり。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold text-slate-800">Enable code previews for AI-generated content in Microsoft Copilot Chat and Copilot Pages</th>
+                  <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs">有効 (Enabled)</span></td>
+                  <td class="px-4 py-2.5">AI が生成した HTML / コード等のライブプレビュー描画を制御。セキュリティポリシー上サンドボックス外での描画を制限したい場合に無効化を検討。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PowerShell Code Block -->
+          <h3 class="text-sm font-bold text-slate-800 mb-2">2. PowerShell による SharePoint Embedded コンテナー監査</h3>
+          <p class="text-xs text-slate-600 mb-2">
+            SharePoint 管理センター（SharePoint Embedded &gt; Active/Deleted containers）および PowerShell では、所有アプリケーション ID <code class="bg-slate-100 px-1 rounded">a187e399-0c36-4b98-8f04-1edc167a0996</code>（Loop）を指定して、ワークスペース・ページの保存コンテナーを一覧取得できます。
+          </p>
+          <div class="bg-slate-800 text-slate-100 font-mono text-xs p-4 rounded-md overflow-x-auto mb-6">
+<pre># Copilot Pages / Workspaces / Loop マイワークスペースのユーザー所有コンテナーを全件取得
+Get-SPOContainer -OwningApplicationId 'a187e399-0c36-4b98-8f04-1edc167a0996' | Where-Object { $_.OwnershipType -eq 'UserOwned' }</pre>
+          </div>
+
+          <!-- Purview & Network Grid -->
+          <h3 class="text-sm font-bold text-slate-800 mb-2">3. Microsoft Purview 対応状況・ネットワーク・Exchange 要件</h3>
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-xs md:text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200 w-1/4">統制項目</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200 w-1/6">対応状況</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-2.5 border-b border-slate-200">実務上の注意点・設定仕様</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">保持ポリシー / 法的ホールド / eDiscovery</th>
+                  <td class="px-4 py-2.5 text-brand-success font-bold">対応</td>
+                  <td class="px-4 py-2.5">Purview で <strong>「All SharePoint Sites」</strong> を対象にすると全 SharePoint Embedded コンテナーを包含。個別指定したい場合は SharePoint 管理センターからコンテナー URL を取得して追加。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">保持ラベル（Retention Labels）</th>
+                  <td class="px-4 py-2.5 text-amber-700 font-bold">一部制限あり</td>
+                  <td class="px-4 py-2.5">SharePoint/OneDrive 向けの自動適用・発行ラベルは <code class="bg-slate-100 px-1 rounded">.page</code> ファイルにも効くが、Copilot ページ UI 上から手動でラベル確認・変更する操作は制限（Loop アプリ経由が必要）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">データ損失防止（Purview DLP）</th>
+                  <td class="px-4 py-2.5 text-brand-success font-bold">対応</td>
+                  <td class="px-4 py-2.5">ポリシーヒント付きでサポート。機密情報タイプ（SIT）や秘密度ラベルに基づくプロンプト／グラウンディング制御が可能。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">秘密度ラベル（Sensitivity Labels）</th>
+                  <td class="px-4 py-2.5 text-brand-success font-bold">対応</td>
+                  <td class="px-4 py-2.5">Copilot ページでの手動付与および暗号化尊重に対応。暗号化ファイルを参照する場合、Copilot はアクセス者の <code class="bg-slate-100 px-1 rounded">EXTRACT</code> および <code class="bg-slate-100 px-1 rounded">VIEW</code> 権限を厳格にチェック。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">監査ログ（Audit）</th>
+                  <td class="px-4 py-2.5 text-brand-success font-bold">対応</td>
+                  <td class="px-4 py-2.5">検索時はアプリ名 <code class="bg-slate-100 px-1 rounded">Loop</code> または拡張子 <code class="bg-slate-100 px-1 rounded">"SourceFileExtension":"page"</code> / <code class="bg-slate-100 px-1 rounded">"loop"</code> をフィルタ指定。</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-red-50/40">
+                  <th scope="row" class="px-4 py-2.5 font-semibold text-red-900">情報バリア（Information Barriers）</th>
+                  <td class="px-4 py-2.5 text-brand-danger font-bold">非対応 ⚠️</td>
+                  <td class="px-4 py-2.5 text-red-900">SharePoint Embedded コンテナー内のコンテンツに対して IB はサポートされない。組織的に部門間遮断が必須な場合は Cloud Policy で機能無効化を Microsoft が推奨。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">ネットワーク / WebSocket 要件</th>
+                  <td class="px-4 py-2.5 text-brand-warning font-bold">必須要件</td>
+                  <td class="px-4 py-2.5">ライブカーソル・プレゼンス等リアルタイム編集のため、<code class="bg-slate-100 px-1 rounded">*.svc.ms</code> および <code class="bg-slate-100 px-1 rounded">*.office.com</code> への <strong>WebSocket トラフィック</strong> 許可が必須。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-2.5 font-semibold">Exchange Online メールボックス</th>
+                  <td class="px-4 py-2.5 text-amber-700 font-bold">条件付き必須</td>
+                  <td class="px-4 py-2.5"><code class="bg-slate-100 px-1 rounded">@メンション</code> などのフルコラボレーション機能は Exchange Online メールボックスが必要（オンプレミスメールボックス環境では機能制限）。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 8: Checklist & FAQ -->
+        <section id="sec-checklist" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">08 / Admin Checklist &amp; Troubleshooting FAQ</span>
+            <div class="flex gap-1.5">
+              <span class="badge-fact">事実</span>
+              <span class="badge-infer">推測</span>
+            </div>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-4">
+            展開前チェックリスト ＆ よくある質問・トラブルシューティング
+          </h2>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4 mb-4" open>
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none flex items-center justify-between">
+              <span>展開前・移行期チェックリスト（M365管理者・部門長向け）</span>
+              <span class="text-xs text-slate-400 font-normal">クリックで開閉</span>
+            </summary>
+            <div class="mt-3 pt-3 border-t border-slate-100 text-xs md:text-sm space-y-2 text-slate-700">
+              <label class="flex items-start gap-2"><input type="checkbox" class="mt-1"> <span><strong>OneDrive / SharePoint サービスプラン確認</strong>：Copilot Workspaces を作成させたいユーザーに OneDrive / SharePoint のライセンスが割り当てられ、OneDrive 作成が禁止されていないか確認（禁止されているとワークスペースを作成できない）。</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" class="mt-1"> <span><strong>プロキシ / SASE の WebSocket 許可確認</strong>：<code class="bg-slate-100 px-1 rounded">*.svc.ms</code> / <code class="bg-slate-100 px-1 rounded">*.office.com</code> への WebSocket 通信が遮断されていないか確認。</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" class="mt-1"> <span><strong>Information Barriers（IB）利用有無の確認</strong>：IB を厳格適用しているテナント／部門がないか確認し、必要なら Cloud Policy による制御方針を策定。</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" class="mt-1"> <span><strong>Purview 保持ポリシーのスコープ確認</strong>：「All SharePoint Sites」対象になっているか（または対象コンテナーが含まれるか）、監査検索で <code class="bg-slate-100 px-1 rounded">Loop</code> を追える体制になっているか確認。</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" class="mt-1"> <span><strong>社内ガイドライン・用語の改訂</strong>：MC1559638 に伴い、社内ポータルの利用ガイド表記を「Copilot ノートブック」→「Copilot ワークスペース」へ更新し、「Projects（個人）」との使い分けを周知。</span></label>
+            </div>
+          </details>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4 mb-3">
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none">Q1. これまでに作った「Copilot ノートブック」は消えたり作り直しになりますか？</summary>
+            <div class="mt-2 pt-2 border-t border-slate-100 text-xs md:text-sm text-slate-600 leading-relaxed">
+              <span class="badge-fact">事実</span> いいえ。既存の Copilot ノートブックは自動的に Copilot ワークスペースへ移行され、追加済みの参照ファイル、生成したページ、設定済みの共有権限はすべてそのまま保持されます。未共有だった個人用ノートが勝手に全員公開されることもありません。
+            </div>
+          </details>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4 mb-3">
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none">Q2. 左メニューに「ワークスペース」が見当たらない場合はどうすればよいですか？</summary>
+            <div class="mt-2 pt-2 border-t border-slate-100 text-xs md:text-sm text-slate-600 leading-relaxed">
+              <span class="badge-fact">事実</span> Microsoft Copilot アプリ（<code class="bg-slate-100 px-1 rounded">m365.cloud.microsoft</code>）の左ナビゲーションに表示されない場合は、画面左上のアプリ起動ツール（9点ワッフルメニュー）から「ワークスペース」を選択してください。なお、テナントへの段階的ロールアウト（2026年11月 Frontier → 12月 GA）途中では旧称「ノートブック」のまま表示される期間があります。
+            </div>
+          </details>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4 mb-3">
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none">Q3. 参照ファイルを120件入れたのに、後半の資料について Copilot が答えてくれません。</summary>
+            <div class="mt-2 pt-2 border-t border-slate-100 text-xs md:text-sm text-slate-600 leading-relaxed">
+              <span class="badge-fact">事実</span> 仕様上、登録自体は最大300件（Copilot Chat は50件）まで可能と案内されるケースがありますが、<strong>アクティブなグラウンディング（回答生成の検索対象）に使用されるのは先頭 100件の参照まで</strong>です。101件目以降は無視されるため、不要になった資料を削除するか、参照リストの並び順で重要な資料を上位100件以内へ配置してください。
+            </div>
+          </details>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4 mb-3">
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none">Q4. OneNote のページを参照に入れたワークスペースを共有したら、同僚が「閲覧できない」と言います。</summary>
+            <div class="mt-2 pt-2 border-t border-slate-100 text-xs md:text-sm text-slate-600 leading-relaxed">
+              <span class="badge-fact">事実</span> 通常の Word/PDF 等と異なり、ワークスペース内に OneNote のセクションやページを参照として含めている場合、受信者がアクセスできるようにするには<strong>元の OneNote ノートブック全体を別途共有</strong>する必要があります。また、共有相手が Copilot ライセンス非保有者の場合、Teams / SharePoint / 内部 URL 等のプレミアムソースも参照できません。
+            </div>
+          </details>
+
+          <details class="group bg-white border border-slate-200 rounded-md p-4">
+            <summary class="font-bold text-sm text-brand-text cursor-pointer select-none">Q5. 社外ベンダー（外部ゲストアカウント）をワークスペースに招待して共同作業できますか？</summary>
+            <div class="mt-2 pt-2 border-t border-slate-100 text-xs md:text-sm text-slate-600 leading-relaxed">
+              <span class="badge-fact">事実</span> できません。Microsoft 公式ドキュメントにおいて「Copilot ノートブック（ワークスペース）は外部共有をサポートしていません」と明記されています。社外協働が必要な成果物は、ワークスペース内で作成した後に Word / Excel / PowerPoint や通常の SharePoint ライブラリへ書き出して共有してください。
+            </div>
+          </details>
+        </section>
+
+        <!-- Section 9: Sources -->
+        <section id="sec-sources" class="content-block bg-white rounded-xl shadow-soft p-6 md:p-8 border border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-accent">09 / Primary Sources &amp; References</span>
+            <span class="badge-fact">事実</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-bold text-brand-text mb-4">
+            一次情報・参照出典一覧
+          </h2>
+          <p class="text-xs text-slate-600 mb-4">
+            本レポートに記載した仕様・ロールアウト予定・コマンドレットは、以下の Microsoft 公式ドキュメントおよび Message Center 情報（2026年11月22日確認時点）に基づいています。
+          </p>
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-xs text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-700 uppercase">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-2.5 border-b border-slate-200">種別</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-2.5 border-b border-slate-200">ドキュメント / 情報源</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3 py-2.5 border-b border-slate-200">主な参照内容</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <td class="px-3 py-2.5 font-semibold">Microsoft Learn</td>
+                  <td class="px-3 py-2.5"><a href="https://learn.microsoft.com/en-us/microsoft-365-copilot/requirements-copilot-pages" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Requirements for Copilot Pages and Copilot Notebooks</a></td>
+                  <td class="px-3 py-2.5">OneDrive/SharePoint/Copilotライセンス要件、Exchange Online（@メンション）、WebSocket要件（<code class="bg-slate-100 px-1 rounded">*.svc.ms</code>, <code class="bg-slate-100 px-1 rounded">*.office.com</code>）、SharePoint Embedded コンテナー構造（<code class="bg-slate-100 px-1 rounded">.page</code> / <code class="bg-slate-100 px-1 rounded">.pod</code> / アプリ名 <code class="bg-slate-100 px-1 rounded">Loop</code>）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-3 py-2.5 font-semibold">Microsoft Learn</td>
+                  <td class="px-3 py-2.5"><a href="https://learn.microsoft.com/en-us/microsoft-365-copilot/manage-copilot-pages" target="_blank" rel="noopener noreferrer" class="text-brand-accent underline">Manage Copilot Pages and Copilot Notebooks in your organization</a></td>
+                  <td class="px-3 py-2.5">Cloud Policy（作成・表示制御／コードプレビュー制御）、Loopポリシーとの独立性、PowerShell <code class="bg-slate-100 px-1 rounded">Get-SPOContainer -OwningApplicationId 'a187e399-0c36-4b98-8f04-1edc167a0996'</code>、Purview 保持/DLP/秘密度ラベル/監査/IB非対応</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-3 py-2.5 font-semibold">Microsoft Support</td>
+                  <td class="px-3 py-2.5">Copilot Notebooks is now Copilot Workspaces（Copilot ノートブックが Copilot ワークスペースになりました） / Get started with Microsoft 365 Copilot Notebooks</td>
+                  <td class="px-3 py-2.5">Workspaces への改称・自動移行、Projects との使い分け、ライブカーソル、対応形式・先頭100件グラウンディング上限、文書長目安、Audio Overviews 要件（1日20回）、外部共有非対応、OneNote 全体共有ルール</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-3 py-2.5 font-semibold">Message Center</td>
+                  <td class="px-3 py-2.5"><strong>MC1326520</strong>（初期 Notebooks 展開） ＆ <strong>MC1559638</strong>（New capabilities in Copilot Workspaces）</td>
+                  <td class="px-3 py-2.5">2026年6〜8月 Notebooks 展開、2026年11月 Frontier 展開〜12月全世界 GA 展開、アクティビティフィード・チームプレゼンス・グループ所有・推奨ワークスペース・管理者アクション不要の通知</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-3 py-2.5 font-semibold">Microsoft Ignite 2026 / Tech Community</td>
+                  <td class="px-3 py-2.5">Microsoft 365 Copilot &amp; Work IQ 発表資料・ブログ群</td>
+                  <td class="px-3 py-2.5">Work IQ の4本柱（Chat / Context / Tools / Workspaces）、Autopilot（長期自律エージェント）連携、2027年初頭に向けた Office インライン共同編集強化方針</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleMobileToc() {
+      const el = document.getElementById('mobile-toc');
+      if (el) el.classList.toggle('hidden');
+    }
+
+    // ScrollSpy for left sidebar
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('main section[id]');
+      const navLinks = document.querySelectorAll('.sidebar-container .nav-link');
+      const mainContainer = document.querySelector('.main-content');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, {
+        root: window.innerWidth >= 768 ? mainContainer : null,
+        rootMargin: '-15% 0px -70% 0px',
+        threshold: 0.01
+      });
+
+      sections.forEach(sec => observer.observe(sec));
+      updateAdvisor();
+    });
+
+    // Print accordion auto-expand & restore
+    let detailsStates = [];
+    window.addEventListener('beforeprint', () => {
+      const allDetails = document.querySelectorAll('details');
+      detailsStates = Array.from(allDetails).map(d => d.hasAttribute('open'));
+      allDetails.forEach(d => d.setAttribute('open', ''));
+    });
+    window.addEventListener('afterprint', () => {
+      const allDetails = document.querySelectorAll('details');
+      allDetails.forEach((d, i) => {
+        if (!detailsStates[i]) d.removeAttribute('open');
+      });
+    });
+
+    // Interactive Advisor
+    function updateAdvisor() {
+      const scope = document.getElementById('adv-scope').value;
+      const duration = document.getElementById('adv-duration').value;
+      const notes = document.getElementById('adv-notes').value;
+      const box = document.getElementById('adv-result');
+
+      let title = '';
+      let desc = '';
+      let badge = 'bg-blue-100 text-blue-900';
+
+      if (scope === 'external') {
+        title = '推奨：Microsoft Loop（通常の共有制限を確認）または Word / SharePoint ライブラリ共有';
+        desc = 'Copilot Workspaces（旧 Notebooks）は外部ゲスト共有に非対応です。Workspaces 内で Copilot と作成したドラフトを Office 文書や SharePoint へエクスポートしてから社外共有する運用が安全です。';
+        badge = 'bg-red-100 text-red-900';
+      } else if (notes === 'yes') {
+        title = '推奨：OneNote ＋ Copilot Workspaces 連携';
+        desc = '階層構造や手書き・自由筆記は OneNote で行い、そのページを Copilot Workspaces から開く（双方向同期）ことで両方の強みを活かせます。共有時は「OneNote ノートブック全体」の共有も忘れないでください。';
+      } else if (scope === 'solo' && duration === 'ongoing') {
+        title = '推奨：Copilot Projects（個人用）→ 成熟後に Workspaces へ';
+        desc = 'まだチームへ見せる前の段階であれば、ホームタブ上の Copilot Projects でチャット・タスク・資料を整理するのが最適です。チーム展開時になったらその Project を丸ごと Workspaces の参照へ取り込めます。';
+      } else if (scope === 'solo' && duration === 'once') {
+        title = '推奨：Copilot Chat ＋ Copilot Pages';
+        desc = '単発のやり取りを資料化するだけならワークスペースを作成せず、Copilot Chat の回答を「Pages で編集」として1枚ドキュメント化するのが最も軽量です。';
+      } else if (duration === 'wiki') {
+        title = '推奨：Microsoft Loop（ワークスペース／コンポーネント）';
+        desc = 'Teams チャットや Outlook メールへ動的に埋め込んで最新同期させたいタスク表や定常 Wiki には Microsoft Loop が適しています。';
+      } else {
+        title = '推奨：Copilot Workspaces（旧 Copilot Notebooks）★';
+        desc = 'まさに Copilot Workspaces の王道ユースケースです！参照資料を固定（有効グラウンディングは先頭100件）し、カスタム指示で出力形式を統一し、ライブカーソルとアクティビティフィードを使ってチームで並走してください。';
+        badge = 'bg-emerald-100 text-emerald-900';
+      }
+
+      box.innerHTML = `<div class="inline-block px-2 py-0.5 rounded text-xs font-bold mb-1 ${badge}">${title}</div><p class="text-slate-700 leading-relaxed">${desc}</p>`;
+    }
+
+    // Mixed License Simulator
+    function showMixSim(type) {
+      const out = document.getElementById('mix-sim-output');
+      const map = {
+        office: '<strong class="text-emerald-800">【利用可能・共有OK】</strong> Word / Excel / PowerPoint / PDF は標準ソースのため、Copilot Chat のみ（非保有）のメンバーでもワークスペース内で参照・質問に利用できます（共有元の自分が元ファイルへの共有権を持っていることが前提）。',
+        teams: '<strong class="text-red-800">【非保有者は参照不可 ⚠️】</strong> Teams チャットや会議トランスクリプト／AI要約／共有会議ファイルは「プレミアムソース」扱いであり、Microsoft 365 Copilot ライセンス保有者のみアクセス可能です。非保有メンバーにも議論内容を共有したい場合は、会議要約を Copilot Pages や Word に書き出してから参照に追加してください。',
+        sharepoint: '<strong class="text-red-800">【非保有者は参照不可 ⚠️】</strong> 外部 URL や SharePoint サイト・ページ、OneDrive の横断紐付けは有料ライセンス限定です。混在チームでは、該当ファイルを直接アップロード／参照ファイルとして配置する運用に切り替えてください。',
+        onenote: '<strong class="text-amber-800">【追加操作が必要 ⚠️】</strong> OneNote ページ／セクション自体は標準ソースとして参照対象になりますが、ワークスペースだけを共有しても中身が開けない場合があります。公式仕様上、受信者へアクセスさせるには「元の OneNote ノートブック全体」も別途共有する必要があります。',
+        count: '<strong class="text-amber-800">【上限ギャップに注意 ⚠️】</strong> Copilot Chat ユーザーの上限は「1ノートあたり最大50件」です。有料ライセンス側で100〜300件のソースを登録しているワークスペースでは、非保有者の機能制限やソース範囲の齟齬が生じる可能性があります。重要資料を上位50件以内に絞るのが混在チームのコツです。'
+      };
+      out.innerHTML = map[type] || '';
+    }
+  </script>
+</body>
+</html>
