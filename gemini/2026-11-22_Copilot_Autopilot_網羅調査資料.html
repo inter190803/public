@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft Copilot Autopilot 完全網羅リサーチ＆導入戦略ガイド（2026年11月最新）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#F0F4F8',
+              text: '#112A46',
+              accent: '#0078D4',
+              card: '#FFFFFF',
+              success: '#107C10',
+              warning: '#D83B01',
+              danger: '#D13438'
+            }
+          },
+          boxShadow: {
+            'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)'
+          }
+        }
+      }
+    }
+  </script>
+  <style id="page-style">
+    @page { size: portrait; margin: 15mm; }
+  </style>
+  <style>
+    body {
+      background-color: #F0F4F8;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #112A46;
+      font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      line-height: 1.75;
+    }
+
+    @media screen {
+      html { scroll-behavior: smooth; }
+      body {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+      .layout-wrapper {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sidebar-container {
+        width: 280px;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(8px);
+        border-right: 1px solid #e2e8f0;
+      }
+      .main-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2.25rem 2.75rem;
+        position: relative;
+      }
+      @media (max-width: 767px) {
+        body, .layout-wrapper, .sidebar-container, .main-content {
+          height: auto;
+          overflow: visible;
+          display: block;
+          width: 100%;
+        }
+        .sidebar-container { display: none; }
+        .main-content { padding: 1.25rem; }
+      }
+    }
+
+    @media print {
+      html, body, .layout-wrapper, .sidebar-container, .main-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      body {
+        background-color: white !important;
+        background-image: none !important;
+        font-size: 10.5pt;
+      }
+      .no-print, .sidebar-container, header { display: none !important; }
+      .main-content {
+        padding: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+      .content-block {
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 1.5rem !important;
+        padding: 1.25rem !important;
+      }
+      .overflow-y-auto, .max-h-\[600px\] {
+        max-height: none !important;
+        overflow: visible !important;
+      }
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      border-left: 3px solid transparent;
+      color: #475569;
+      font-size: 0.85rem;
+      transition: all 0.15s ease;
+      border-radius: 0 0.375rem 0.375rem 0;
+    }
+    .toc-link:hover {
+      background-color: #f1f5f9;
+      color: #0078D4;
+    }
+    .toc-link.active {
+      border-left-color: #0078D4;
+      background-color: #eff6ff;
+      color: #0078D4;
+      font-weight: 700;
+    }
+    a.ext-link {
+      color: #0078D4;
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 120, 212, 0.35);
+      text-underline-offset: 2px;
+    }
+    a.ext-link:hover {
+      text-decoration-color: #0078D4;
+      color: #005a9e;
+    }
+    details > summary {
+      cursor: pointer;
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chevron { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+  <!-- Top Header -->
+  <header class="bg-brand-text text-white px-6 py-3.5 flex items-center justify-between border-b border-slate-700 shadow-sm no-print">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-brand-accent flex items-center justify-center font-bold text-white text-sm" aria-hidden="true">AP</div>
+      <div>
+        <div class="text-sm font-bold tracking-wide">Microsoft Copilot Autopilot 完全網羅リサーチ＆導入戦略ガイド</div>
+        <div class="text-xs text-slate-300">2026年11月22日時点（Microsoft Ignite 2026 公式ドキュメント・Credits Guide 準拠）</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="hidden sm:inline-block text-xs bg-slate-800 border border-slate-600 px-2.5 py-1 rounded-full text-sky-300">Frontier Public Preview</span>
+      <button onclick="window.print()" class="bg-brand-accent hover:bg-sky-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-md transition flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        PDF印刷 / 保存
+      </button>
+    </div>
+  </header>
+
+  <div class="layout-wrapper">
+    <!-- Left Sidebar TOC -->
+    <aside class="sidebar-container no-print">
+      <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-2">目次（ナビゲーション）</div>
+      <nav aria-label="目次" class="space-y-1">
+        <a href="#sec-exec" class="toc-link active">1. エグゼクティブサマリー＆結論</a>
+        <a href="#sec-overview" class="toc-link">2. Copilot Autopilot 全体像とアーキテクチャ</a>
+        <a href="#sec-comparison" class="toc-link">3. 既存Copilot・Cowork・Code・Studio徹底比較</a>
+        <a href="#sec-pricing" class="toc-link">4. 費用感・従量課金・人件費比較シミュレーター</a>
+        <a href="#sec-org-model" class="toc-link">5. 1 ID組織設計論：個人秘書型 vs チーム社員型</a>
+        <a href="#sec-admin-security" class="toc-link">6. 管理者向けセキュリティ・ガバナンス完全対策</a>
+        <a href="#sec-admin-ops" class="toc-link">7. 管理者セットアップ・退職者対応・データ出力</a>
+        <a href="#sec-user-guide" class="toc-link">8. 利用者目線の使い方・12大実践シナリオ</a>
+        <a href="#sec-nurturing" class="toc-link">9. Autopilotの「育成」と段階的権限委譲</a>
+        <a href="#sec-roadmap" class="toc-link">10. 日本企業向け導入ロードマップ＆チェックリスト</a>
+        <a href="#sec-sources" class="toc-link">11. 参照一次ソース一覧</a>
+      </nav>
+      <div class="mt-6 p-3.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600 space-y-2">
+        <div class="font-bold text-brand-text">調査基準日・ステータス</div>
+        <p><strong>2026年11月22日</strong>現在。Ignite 2026（11/17）で米国Frontier顧客向け展開開始。日本テナントへの展開・GA時期は未発表。</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- Title Banner -->
+        <div class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 break-inside-avoid">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-brand-accent">Microsoft Ignite 2026 最新仕様</span>
+            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-800">Frontier Public Preview</span>
+            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">管理者・利用者・FinOps 網羅版</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-brand-text tracking-tight mb-3">
+            Microsoft Copilot Autopilot 完全網羅リサーチ＆導入戦略ガイド
+          </h1>
+          <p class="text-sm md:text-base text-slate-600">
+            2026年11月17日の Microsoft Ignite 2026 でロールアウトが開始された常駐型自律AIエージェント <strong>Copilot Autopilot</strong> について、公式ドキュメント（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/overview" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Learn</a> / <a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuide.pdf" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Credits Guide 2026年11月版</a>）に基づき、技術仕様・既存製品との違い・管理者セキュリティリスク・利用者向け活用＆育成法・従量課金コストの実態・そして「個人秘書型 vs チーム所属社員型」の組織設計論までを1枚に集約しました。
+          </p>
+        </div>
+
+        <!-- SECTION 1: Executive Summary -->
+        <section id="sec-exec" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">01.</span> エグゼクティブサマリー＆最重要結論
+          </h2>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 break-inside-avoid">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-semibold text-slate-500">ベース固定ライセンス</div>
+              <div class="text-2xl font-extrabold text-brand-accent mt-1">$30<span class="text-xs font-normal text-slate-500">/人/月</span></div>
+              <div class="text-xs text-slate-600 mt-1">M365 Copilot必須（Autopilot稼働分は別枠従量）</div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-semibold text-slate-500">従量課金単価</div>
+              <div class="text-2xl font-extrabold text-brand-warning mt-1">$0.01<span class="text-xs font-normal text-slate-500">/Credit</span></div>
+              <div class="text-xs text-slate-600 mt-1">口座維持費 100 Credit/月＋稼働量（前払最大20%引）</div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-semibold text-slate-500">ID・割り当て上限</div>
+              <div class="text-2xl font-extrabold text-brand-text mt-1">1人 1体</div>
+              <div class="text-xs text-slate-600 mt-1">独自Entra Agent ID・メール・カレンダーを自動発行</div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-semibold text-slate-500">提供状況（2026/11）</div>
+              <div class="text-2xl font-extrabold text-brand-danger mt-1">米国先行</div>
+              <div class="text-xs text-slate-600 mt-1">Frontier Preview・英語最適化・初期状態はOFF</div>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-brand-accent bg-blue-50 p-4 rounded-r-lg space-y-2 break-inside-avoid">
+            <div class="font-bold text-brand-text text-sm">経営・情シス・現場リーダーが最初に押さえるべき4つの核心</div>
+            <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1.5">
+              <li><strong>「人件費並みに跳ね上がるか？」への答え：</strong> 適切な支出ポリシー（Spending Policy）と業務設計があれば、通常運用は <strong>月額$70〜$180（約1万〜2.7万円/体、固定費込）</strong> 程度で収まり、人件費の数十分の1のROIが見込めます。しかし、<strong>高頻度ポーリングのルーチンを上限なしで放置すると月$1,000〜$2,000超（若手社員1名分の人件費級）へ青天井化する構造リスク</strong>が確実に存在します。</li>
+              <li><strong>「個人秘書型か、チーム社員型か？」への答え：</strong> 技術・契約仕様は明確に<strong>「1人の責任者（Named Manager）に紐づく個人専用（1:1）」</strong>であり、共有架空アカウント運用は非推奨です。ただしTeamsチャネルで<strong>同僚が `@mention` して業務を振れる</strong>ため、実務上の最適解は<strong>「リーダー／PMを責任者とする1体を『個人秘書兼チームPMO』としてチャネル常駐させるハイブリッド運用」</strong>です。</li>
+              <li><strong>管理者セキュリティの最大の罠：</strong> プレビュー現時点では<strong>「条件付きアクセス（All users）の対象外」「eDiscovery・訴訟ホールド・保持ポリシー未対応」「秘密度ラベルの自動継承保証なし」「Memoryオフ不可」「ブロック反映に約1時間遅延」</strong>という重大なコンプライアンス制約があります。法務・機密部門への早期展開は厳禁です。</li>
+              <li><strong>育成（オンボーディング）の本質：</strong> プロンプト1発で完結させるツールではなく、<strong>「下書き専用フェーズ → 3層メモリの定期矯正 → `SKILL.md` による業務手順のスキル化と社内共有 → 段階的な自律実行」</strong>と、まさに新入社員をOJTで育てるアプローチが成果を分けます。</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SECTION 2: Overview & Architecture -->
+        <section id="sec-overview" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">02.</span> Copilot Autopilot 全体像と技術アーキテクチャ
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            <strong>Copilot Autopilot</strong> は、2026年6月の Microsoft Build で「Scout」として披露され、2026年9月25日の Copilot 大刷新（Home / Cowork / Code / Autopilot の再編）を経て、<strong>2026年11月17日の Microsoft Ignite 2026</strong> より Frontier プログラム対象顧客向けにロールアウトが開始された、クラウド常駐型のプロアクティブ自律AIエージェントです（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/overview" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Learn Overview</a>、<a href="https://www.aithoria.de/academy/microsoft-scout-autopilot" target="_blank" rel="noopener noreferrer" class="ext-link">Aithoria解説</a>）。
+          </p>
+
+          <div class="border-l-4 border-brand-warning bg-orange-50 p-4 rounded-r-lg text-sm break-inside-avoid">
+            <strong class="text-brand-warning">名称混同の注意（ヘルプデスク対策）：</strong>
+            情シスが長年PCキッティングに使用してきた Intune の <strong>Windows Autopilot</strong> とは名前が同じだけで完全に別製品です（<a href="https://windowsforum.com/news/microsoft-365-copilot-autopilot-rolls-out-to-frontier-always-on-ai-agent-with-entra-id-and-metered-billing.452839/" target="_blank" rel="noopener noreferrer" class="ext-link">WindowsForum報道</a>）。また、旧デスクトッププレビュー（Scout時代）のローカルインストール手順は現行クラウド版には適用されません（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/requirements" target="_blank" rel="noopener noreferrer" class="ext-link">Requirements</a>）。
+          </div>
+
+          <!-- Architecture Flow Diagram -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 break-inside-avoid">
+            <div class="text-sm font-bold text-brand-text mb-4">Copilot Autopilot の実行アーキテクチャと二重権限フロー</div>
+            <div class="flex flex-col md:flex-row items-stretch justify-between gap-3">
+              <div class="flex-1 bg-white border border-slate-200 rounded-lg p-3.5 shadow-sm">
+                <div class="text-xs font-bold text-brand-accent mb-1">1. オーナー（Named Manager）</div>
+                <div class="text-xs text-slate-600 space-y-1">
+                  <p>・Copilot Home / Teams 1:1 / モバイルからゴールと制約を指示</p>
+                  <p>・同僚はTeamsチャネルで <code>@Autopilot名</code> をメンション可能</p>
+                  <p>・<strong>オーナー本人のメッセージのみ</strong>が実行権限の起点</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-center text-slate-400" aria-hidden="true">
+                <svg class="w-6 h-6 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+              </div>
+              <div class="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-3.5 shadow-sm">
+                <div class="text-xs font-bold text-brand-text mb-1">2. Autopilot クラウド本体（24/7稼働）</div>
+                <div class="text-xs text-slate-700 space-y-1">
+                  <p>・<strong>推論モデル：</strong>GPT-6.1 Sol（OpenAI）※オフ時はAzure OpenAI GPT-5.6 Sol</p>
+                  <p>・<strong>独自ID：</strong>Microsoft Entra Agent ID＋独自メール/カレンダー</p>
+                  <p>・<strong>隔離実行：</strong>MXCコンテナ＋クラウドPC / Edge連携</p>
+                  <p>・<strong>記憶保管：</strong>オーナーOneDrive内 <code>lobster.repo</code>（Git形式）</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-center text-slate-400" aria-hidden="true">
+                <svg class="w-6 h-6 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+              </div>
+              <div class="flex-1 bg-white border border-slate-200 rounded-lg p-3.5 shadow-sm">
+                <div class="text-xs font-bold text-brand-success mb-1">3. 第2AI審査＆M365/外部実行</div>
+                <div class="text-xs text-slate-600 space-y-1">
+                  <p>・<strong>Automated Review System</strong>（別AIモデル）が送信/変更/削除を事前審査</p>
+                  <p>・Work IQ経由でOutlook/Teams/OneDrive/SharePoint/Plannerへアクセス</p>
+                  <p>・プラグイン＆スキルでFigma・CRM・Webフォームへ拡張</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Spec Table -->
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-1/4">構成要素</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200">公式仕様・技術詳細（2026年11月 Frontier版）</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">独自アイデンティティ</th>
+                  <td class="px-4 py-3">作成時に <strong>Microsoft Entra Agent ID</strong> が自動プロビジョニングされ、固有の名前・アイコン・メールアドレス・Exchangeメールボックス・カレンダーが付与される。組織図上はオーナーの直属として表示され、M365プロフィールの「Assistant」欄にも登録可能（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/faq" target="_blank" rel="noopener noreferrer" class="ext-link">FAQ</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">二重の権限実行モデル</th>
+                  <td class="px-4 py-3">すべての操作を独自IDで行うわけではない。<strong>①Autopilot自身のIDで行う操作</strong>（同僚へのTeamsメッセージ送信・会議案内など）と、<strong>②オーナーの委任権限（On-Behalf-Of）で行う操作</strong>（オーナーのカレンダー・メール・ファイル閲覧など）が使い分けられる。オーナーがアクセスできないデータへの権限拡大は起きない（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/faq" target="_blank" rel="noopener noreferrer" class="ext-link">FAQ</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">使用AIモデルとフォールバック</th>
+                  <td class="px-4 py-3">標準は OpenAI（Microsoftサブプロセッサー扱い）提供の <strong>GPT-6.1 Sol</strong>。管理者が M365管理センター（<code>Copilot &gt; Settings &gt; AI providers</code>）で OpenAI をオフにすると、自動的に Azure OpenAI ホストの <strong>GPT-5.6 Sol</strong> に切り替わる。ユーザー側からのプロンプトによるモデル切替や個別モデル選択設定は不可（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Admin Configure</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">実行環境・PC電源オフ稼働</th>
+                  <td class="px-4 py-3">Microsoft管理のクラウド環境および隔離コンテナ（<strong>MXC: Microsoft local containers</strong>）上で24時間稼働するため、ノートPCを閉じたり電源を切っても定期ルーチンや長期タスクが継続実行される。ただしローカルPCのフォルダやインストール済みアプリには直接アクセスできない（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/overview" target="_blank" rel="noopener noreferrer" class="ext-link">Overview</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">ブラウザ操作（Edge / Remote Computer）</th>
+                  <td class="px-4 py-3">組織が許可した場合、①クラウド上の Remote Computer で業務Webアプリのフォーム入力・領収書アップロードを行うか、②ユーザー端末でサインイン済みの <strong>Microsoft Edge</strong> を操作できる。ただしEdge操作は<strong>プライベート会話での本人依頼時のみ</strong>動作し、定期ルーチンや共有会話では使用不可。閲覧ページ内容はクラウドモデルで処理される（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/edge" target="_blank" rel="noopener noreferrer" class="ext-link">Edge Docs</a>、<a href="https://techcommunity.microsoft.com/blog/microsoftmechanicsblog/introducing-autopilot-your-personal-and-proactive-agent/4575030" target="_blank" rel="noopener noreferrer" class="ext-link">Mechanics Blog</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">3層メモリと保存先</th>
+                  <td class="px-4 py-3"><strong>①会話メモリ（Conversation）②個人メモリ（Personal）③ワークスペースメモリ（Workspace）</strong>の3層を保持。実データはオーナーの OneDrive 内に <code>lobster.repo</code> というGitリポジトリ形式で保存される。タスク実行中の一時ファイルは完了後に破棄される（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Admin Configure</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">対応クライアント＆地域・言語</th>
+                  <td class="px-4 py-3">Web（<code>copilot.cloud.microsoft</code>）、Copilotデスクトップアプリ、Teams（1:1チャットおよびチャネル`@mention`）、iOS/Android（M365 Copilot / Teams / Outlookアプリ）。提供開始は<strong>米国の対象Frontier顧客限定</strong>、言語は<strong>英語最適化</strong>（他言語UIが表示されても評価済みとは限らない）（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/requirements" target="_blank" rel="noopener noreferrer" class="ext-link">Requirements</a>）。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 3: Comparison -->
+        <section id="sec-comparison" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">03.</span> 既存Copilot・Cowork・Code・Studioとの徹底比較
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            2026年秋の再編により、Microsoft 365 のAI体験は<strong>「Copilot Home」を入口に4つの柱（Chat / Cowork / Code / Autopilot）＋構築基盤（Copilot Studio / Power Automate）</strong>へ整理されました（<a href="https://learn.microsoft.com/en-us/copilot/plan/copilot-overview" target="_blank" rel="noopener noreferrer" class="ext-link">What is Microsoft Copilot?</a>）。従来の「プロンプト待ちの副操縦士」と Autopilot の決定的な違いは、<strong>「独自IDによる継続性（Persistence）」と「自律監視（Proactivity）」</strong>にあります。
+          </p>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200">比較軸</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200">Copilot Chat<br><span class="text-xs font-normal text-slate-500">（従来型チャット）</span></th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200">Copilot Cowork<br><span class="text-xs font-normal text-slate-500">（2026/6 GA）</span></th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200">Copilot Code<br><span class="text-xs font-normal text-slate-500">（Frontier/GA間近）</span></th>
+                  <th scope="col" class="sticky top-0 bg-blue-100 px-3.5 py-3 border-b border-blue-200 text-brand-accent">Copilot Autopilot<br><span class="text-xs font-normal text-blue-700">（2026/11 Frontier）</span></th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200">Copilot Studio / RPA<br><span class="text-xs font-normal text-slate-500">（構築・自動化基盤）</span></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">一言での役割</th>
+                  <td class="px-3.5 py-3">スポットの相談役・下書き支援</td>
+                  <td class="px-3.5 py-3">複数ステップの「単発案件」代行</td>
+                  <td class="px-3.5 py-3">非エンジニア向けアプリ・ツール開発</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40 font-semibold text-brand-text">24/7常駐の「デジタル同僚・専属秘書」</td>
+                  <td class="px-3.5 py-3">全社・顧客向け定型業務フロー＆Bot基盤</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">実行トリガー</th>
+                  <td class="px-3.5 py-3">人が画面で都度プロンプト入力</td>
+                  <td class="px-3.5 py-3">人が1つのゴールを指示して開始</td>
+                  <td class="px-3.5 py-3">開発・改修指示による反復生成</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40"><strong>定期スケジュール・イベント検知・Teams <code>@mention</code></strong></td>
+                  <td class="px-3.5 py-3">Webhook・定時バッチ・チャット/音声着信</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">アイデンティティ</th>
+                  <td class="px-3.5 py-3">ユーザー本人に付随</td>
+                  <td class="px-3.5 py-3">ユーザー本人に付随</td>
+                  <td class="px-3.5 py-3">ユーザー本人に付随</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40"><strong>独自のEntra Agent ID・メール・カレンダー保有</strong></td>
+                  <td class="px-3.5 py-3">サービスプリンシパル / Agent 365登録ID</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">PC電源オフ時の継続性</th>
+                  <td class="px-3.5 py-3">なし（対話終了で停止）</td>
+                  <td class="px-3.5 py-3">依頼タスク完了までクラウド実行</td>
+                  <td class="px-3.5 py-3">デプロイ済みアプリはManaged Runtimeで常時稼働</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40"><strong>完全常駐（数週間にわたり記憶を保ち追跡）</strong></td>
+                  <td class="px-3.5 py-3">常時稼働（サーバーレス／クラウドフロー）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">課金モデル</th>
+                  <td class="px-3.5 py-3">月額$30固定枠内（※Frontierモデル等のみ従量）</td>
+                  <td class="px-3.5 py-3">$30＋<strong>Copilot Credits従量</strong>（Anthropic有効化必須）</td>
+                  <td class="px-3.5 py-3">$30＋<strong>Copilot Credits従量</strong>（稼働は0.1 Cr/API呼出）</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40">$30＋<strong>100 Cr/月維持費＋Copilot Credits従量</strong></td>
+                  <td class="px-3.5 py-3">Copilot Credits従量 / Standard harness一部枠内</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">得意な業務</th>
+                  <td class="px-3.5 py-3">要約、翻訳、アイデア出し、Office内編集</td>
+                  <td class="px-3.5 py-3">調査＋資料一式作成、会議調整＋案内送付の単発完遂</td>
+                  <td class="px-3.5 py-3">経費トラッカー、社内ダッシュボード、ミニ業務アプリ</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40"><strong>受信箱トリアージ、約束追跡、プロジェクト推進、催促、定期報告</strong></td>
+                  <td class="px-3.5 py-3">顧客サポート窓口、基幹システムAPI連携、厳格な承認ワークフロー</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-3 font-semibold bg-slate-50/50">不向きな業務</th>
+                  <td class="px-3.5 py-3">定期監視、自律フォロー</td>
+                  <td class="px-3.5 py-3">数週間にわたる継続監視・状態追跡</td>
+                  <td class="px-3.5 py-3">日々のメール対応・人間同士の調整</td>
+                  <td class="px-3.5 py-3 bg-blue-50/40">顧客ヘルプデスクキュー、厳格な100%定型バッチ処理</td>
+                  <td class="px-3.5 py-3">個人の曖昧な優先順位に基づく臨機応変な秘書業務</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 break-inside-avoid">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="font-bold text-sm text-brand-text mb-1.5">Cowork と Autopilot の使い分けの決め手</div>
+              <p class="text-xs text-slate-700">
+                「この議事録とExcelから提案書を作って関係者にメール下書きを用意して」のように<strong>ゴールが1回で完結する委任作業</strong>は <a href="https://jannikreinhard.com/copilot-chat-vs-cowork-vs-autopilot/" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Cowork</a> が適任です。一方、「来月末の製品ローンチに向けて、毎朝チャネルとメールを見張り、停滞している意思決定を拾い、遅れている担当者に催促し続けて」のように<strong>時間軸をまたいだ継続フォロー（Follow-through）</strong>が Autopilot の真骨頂です。
+              </p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="font-bold text-sm text-brand-text mb-1.5">RPA（Power Automate / UiPath）は不要になるか？</div>
+              <p class="text-xs text-slate-700">
+                置き換わるのではなく<strong>階層分離（補完関係）</strong>になります。毎回同じルールで1万件の請求書を処理する構造化業務は、決定論的で低コストな RPA / Power Automate が圧倒的に有利です。Autopilot はその上位で例外判断や人間への調整を担う<strong>「認知的オーケストレーション層」</strong>として組み合わせるのが最もコスト効率に優れます（<a href="https://rpabotsworld.com/microsoft-copilot-autopilot-persistent-agent-enterprise-guide/" target="_blank" rel="noopener noreferrer" class="ext-link">RPABotsWorld分析</a>）。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Pricing & Cost Simulator -->
+        <section id="sec-pricing" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">04.</span> 費用感・従量課金構造＆「人件費並み？」徹底検証
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            ユーザーの懸念通り、Microsoft は2026年9月の価格モデル改定により、<strong>「日常AI＝月額固定シート（$30）」と「高度エージェントAI（Cowork / Code / Autopilot）＝Copilot Credits 従量課金」の二階建て構造</strong>へ完全に移行しました（<a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/evolution-of-the-copilot-pricing-model/4559416" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Copilot Blog</a>、<a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuide.pdf" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Credits Guide 2026年11月版</a>）。
+          </p>
+
+          <!-- Cost Stack Breakdown -->
+          <div class="overflow-x-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">コスト層</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">項目・プラン名</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">公式価格（USD / 税抜）</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">必須度・課金ルール</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">① 基礎シート</th>
+                  <td class="px-4 py-3">Microsoft 365 Copilot（Enterprise / Business）</td>
+                  <td class="px-4 py-3 font-bold whitespace-nowrap">$30.00 /人/月<br><span class="text-xs font-normal text-slate-500">（Businessは$21〜$25.20、年契約プロモ$18）</span></td>
+                  <td class="px-4 py-3"><strong>必須</strong>。責任者（オーナー）に割当必須。Autopilot稼働分のクレジットは<strong>一切含まれない</strong>（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/requirements" target="_blank" rel="noopener noreferrer" class="ext-link">Requirements</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">② 維持費（固定クレジット）</th>
+                  <td class="px-4 py-3">Autopilot アカウント・Exchange/OneDrive維持費</td>
+                  <td class="px-4 py-3 font-bold whitespace-nowrap">100 Credits /体/月<br><span class="text-xs font-normal text-slate-500">（PayGo換算 $1.00 /月）</span></td>
+                  <td class="px-4 py-3"><strong>必須（毎月発生）</strong>。独自メールボックス・カレンダー・OneDrive永続アクセスの基本料（<a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuide.pdf" target="_blank" rel="noopener noreferrer" class="ext-link">Credits Guide P.12</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">③ 稼働従量（PayGo）</th>
+                  <td class="px-4 py-3">Microsoft Copilot Studio Pay-As-You-Go</td>
+                  <td class="px-4 py-3 font-bold text-brand-warning whitespace-nowrap">$0.01 / Credit</td>
+                  <td class="px-4 py-3">Azureサブスクリプション経由で月末後払い。初期コミット不要・MACC消化対象。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">③ 稼働従量（前払割引）</th>
+                  <td class="px-4 py-3">Capacity Pack / Pre-Purchase Plan (P3) / AI Flex Plan</td>
+                  <td class="px-4 py-3 font-bold text-brand-success whitespace-nowrap">$0.008〜$0.0095 / Credit<br><span class="text-xs font-normal text-slate-500">（Pack: $200/25,000Cr、P3: 5%〜最大20%引）</span></td>
+                  <td class="px-4 py-3">P3は30万Cr（5%引）〜3億Cr（20%引）の年額前払（未使用分は年度末失効）。AI Flex PlanはFoundry/GitHub AI等と横断利用可（<a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuide.pdf" target="_blank" rel="noopener noreferrer" class="ext-link">Credits Guide P.3-4</a>）。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">④ 統制・セキュリティ</th>
+                  <td class="px-4 py-3">Microsoft Agent 365 / Microsoft 365 E7</td>
+                  <td class="px-4 py-3 font-bold whitespace-nowrap">Agent 365: $15 /人/月<br>M365 E7: $99 /人/月</td>
+                  <td class="px-4 py-3"><strong>強く推奨</strong>。本格運用時のID保護・DLP・可観測性・FinOps分析に必要（E7はE5＋Copilot＋Agent 365等を統合、<a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" class="ext-link">Agent 365公式</a>、<a href="https://techcommunity.microsoft.com/blog/microsoft_365blog/microsoft-365-e7-and-agent-365-are-now-generally-available/4516295" target="_blank" rel="noopener noreferrer" class="ext-link">E7公式</a>）。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4 Cost Drivers -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 break-inside-avoid">
+            <div class="text-sm font-bold text-brand-text mb-2">Autopilot のクレジット消費を決める4大ドライバー（公式ガイド準拠）</div>
+            <div class="grid md:grid-cols-4 gap-3 text-xs text-slate-700">
+              <div class="bg-white p-3 rounded border border-slate-200">
+                <div class="font-bold text-brand-accent mb-1">1. タスク複雑度（Models）</div>
+                <p>複数アプリをまたぐ計画・推論ステップが増えるほど高消費。GPT-6.1 Sol等のフロンティア推論が稼働。</p>
+              </div>
+              <div class="bg-white p-3 rounded border border-slate-200">
+                <div class="font-bold text-brand-accent mb-1">2. 実行頻度（Runtime）</div>
+                <p>毎朝・毎時などの定期ルーチンや継続監視が走るたびに課金。<strong>ここがコスト膨張の最大要因</strong>。</p>
+              </div>
+              <div class="bg-white p-3 rounded border border-slate-200">
+                <div class="font-bold text-brand-accent mb-1">3. 参照データ量（Context）</div>
+                <p>読み込むメール・ファイル・会議数に比例。ただしWork IQランタイム統合によりトークン消費を最大80%削減。</p>
+              </div>
+              <div class="bg-white p-3 rounded border border-slate-200">
+                <div class="font-bold text-brand-accent mb-1">4. 実行アクション（Tools）</div>
+                <p>メール送信、会議予約、文書更新、Webサイト・ブラウザ操作など、アクション実行ごとに加算。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Realistic Cost Scenarios vs Human FTE -->
+          <div class="border-l-4 border-brand-danger bg-red-50 p-4 rounded-r-lg text-sm space-y-2 break-inside-avoid">
+            <div class="font-bold text-brand-danger">検証結論：「1人の人件費並み」は本当か？ — 4つのプロファイル試算（1ドル=150円換算目安）</div>
+            <p class="text-xs text-slate-700">
+              ※2026年11月時点で Microsoft は Autopilot のタスク別固定クレジット表を公開しておらず、利用プロファイル次第で変動すると明記しています。以下は公式コストモデル（Cowork長尺タスク5件＝$39〜$43、軽作業$1.25〜重作業$12/件、パワーユーザー従量$39〜$43/月〜、<a href="https://www.copilot-coaching.de/en/blog/copilot-pricing-license-and-credits/" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Coaching分析</a> / <a href="https://customnetworks.com/blog/how-much-does-copilot-cowork-cost.html" target="_blank" rel="noopener noreferrer" class="ext-link">CNI分析</a>）および月20営業日の常駐稼働から算出した現実的なレンジです。
+            </p>
+            <div class="overflow-x-auto bg-white rounded border border-red-200 mt-2">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead class="bg-slate-100 text-brand-text">
+                  <tr>
+                    <th scope="col" class="px-3 py-2 border-b">利用プロファイル</th>
+                    <th scope="col" class="px-3 py-2 border-b">想定ワークロード（月20営業日）</th>
+                    <th scope="col" class="px-3 py-2 border-b">月間消費クレジット目安</th>
+                    <th scope="col" class="px-3 py-2 border-b">月額総コスト（$30込・PayGo）</th>
+                    <th scope="col" class="px-3 py-2 border-b">人件費（月50万円）比</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-emerald-700">Light（軽度秘書）</td>
+                    <td class="px-3 py-2">朝ブリーフ1回/日＋受信トレイ分類2回/日＋下書き数件</td>
+                    <td class="px-3 py-2 whitespace-nowrap">1,600〜3,100 Cr</td>
+                    <td class="px-3 py-2 font-bold whitespace-nowrap">$46〜$61（約6,900〜9,150円）</td>
+                    <td class="px-3 py-2">約 1.4%〜1.8%</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-brand-accent">Standard（実務標準）</td>
+                    <td class="px-3 py-2">上記＋会議準備＋約束追跡＋週次報告＋Teams <code>@mention</code> 1日5件</td>
+                    <td class="px-3 py-2 whitespace-nowrap">5,100〜15,100 Cr</td>
+                    <td class="px-3 py-2 font-bold whitespace-nowrap">$81〜$181（約1.2万〜2.7万円）</td>
+                    <td class="px-3 py-2">約 2.4%〜5.4%</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-brand-warning">Heavy（チームPMO兼任）</td>
+                    <td class="px-3 py-2">複数プロジェクト常時監視＋ブラウザ自動入力＋大量文書横断＋チャネル多用</td>
+                    <td class="px-3 py-2 whitespace-nowrap">20,100〜50,100 Cr</td>
+                    <td class="px-3 py-2 font-bold whitespace-nowrap">$231〜$531（約3.5万〜8.0万円）</td>
+                    <td class="px-3 py-2">約 7.0%〜16.0%</td>
+                  </tr>
+                  <tr class="bg-red-50/70">
+                    <td class="px-3 py-2 font-bold text-brand-danger">危険：無制御暴走</td>
+                    <td class="px-3 py-2">支出上限なし＋15分間隔監視ループ＋巨大SharePoint全量スキャン乱立</td>
+                    <td class="px-3 py-2 whitespace-nowrap">100,000〜250,000+ Cr</td>
+                    <td class="px-3 py-2 font-bold text-brand-danger whitespace-nowrap">$1,030〜$2,530+（約15万〜38万円+）</td>
+                    <td class="px-3 py-2 font-bold text-brand-danger">30%〜76%+（派遣・新卒人件費級）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Interactive Cost Simulator -->
+          <div class="bg-slate-900 text-white rounded-xl p-6 space-y-4 break-inside-avoid">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700 pb-3">
+              <div>
+                <div class="text-sm font-bold text-sky-400">インタラクティブ試算：Copilot Autopilot 月額・年額 TCO シミュレーター</div>
+                <div class="text-xs text-slate-400">配備数・稼働プロファイル・割引プラン・為替レートを調整して自社予算感を即座に試算できます</div>
+              </div>
+              <span class="text-xs bg-slate-800 border border-slate-600 px-2.5 py-1 rounded text-slate-300">維持費100Cr/体/月自動加算</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5">
+              <div class="space-y-3.5 text-xs">
+                <div>
+                  <label for="sim-agents" class="flex justify-between font-semibold text-slate-200 mb-1">
+                    <span>配備する Autopilot 体数（＝責任者ユーザー数）</span>
+                    <span id="val-agents" class="text-sky-400 font-bold">5 体</span>
+                  </label>
+                  <input id="sim-agents" type="range" min="1" max="100" value="5" class="w-full accent-sky-400">
+                </div>
+                <div>
+                  <label for="sim-credits" class="flex justify-between font-semibold text-slate-200 mb-1">
+                    <span>1体あたり月間稼働クレジット（維持費100Cr除く）</span>
+                    <span id="val-credits" class="text-sky-400 font-bold">8,000 Cr（Standard）</span>
+                  </label>
+                  <input id="sim-credits" type="range" min="1000" max="60000" step="1000" value="8000" class="w-full accent-sky-400">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label for="sim-plan" class="block font-semibold text-slate-200 mb-1">クレジット購入方式</label>
+                    <select id="sim-plan" class="w-full bg-slate-800 border border-slate-600 rounded px-2.5 py-1.5 text-white">
+                      <option value="0.01">Pay-As-You-Go ($0.010/Cr)</option>
+                      <option value="0.0095">P3 Tier 1 - 5%引 ($0.0095/Cr)</option>
+                      <option value="0.009">P3 Tier 5 - 10%引 ($0.0090/Cr)</option>
+                      <option value="0.008">Capacity Pack / P3最大20%引 ($0.0080/Cr)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="sim-a365" class="block font-semibold text-slate-200 mb-1">Agent 365 ($15/人/月)</label>
+                    <select id="sim-a365" class="w-full bg-slate-800 border border-slate-600 rounded px-2.5 py-1.5 text-white">
+                      <option value="15">含める（推奨構成）</option>
+                      <option value="0">含めない（既存E7等）</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="sim-fx" class="flex justify-between font-semibold text-slate-200 mb-1">
+                    <span>想定為替レート（1 USD = JPY）</span>
+                    <span id="val-fx" class="text-sky-400 font-bold">150 円</span>
+                  </label>
+                  <input id="sim-fx" type="range" min="120" max="180" step="5" value="150" class="w-full accent-sky-400">
+                </div>
+              </div>
+
+              <div class="bg-slate-800/80 border border-slate-700 rounded-lg p-4 flex flex-col justify-between space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-slate-900/70 p-3 rounded border border-slate-700">
+                    <div class="text-xs text-slate-400">月額合計（USD）</div>
+                    <div id="out-usd-month" class="text-xl font-extrabold text-sky-400 mt-0.5">$630</div>
+                  </div>
+                  <div class="bg-slate-900/70 p-3 rounded border border-slate-700">
+                    <div class="text-xs text-slate-400">月額合計（円換算）</div>
+                    <div id="out-jpy-month" class="text-xl font-extrabold text-emerald-400 mt-0.5">約 9.5 万円</div>
+                  </div>
+                </div>
+                <div class="text-xs text-slate-300 space-y-1 border-t border-slate-700 pt-2.5">
+                  <div class="flex justify-between"><span>固定ライセンス計（Copilot $30 + A365）：</span><span id="out-fixed" class="font-mono">$225 /月</span></div>
+                  <div class="flex justify-between"><span>従量クレジット計（維持費込）：</span><span id="out-var" class="font-mono">$405 /月</span></div>
+                  <div class="flex justify-between"><span>1体あたり実質月額コスト：</span><span id="out-per-agent" class="font-mono text-amber-300 font-bold">$126（約1.9万円）/月</span></div>
+                  <div class="flex justify-between font-bold text-white pt-1 border-t border-slate-700"><span>年間TCO（12ヶ月）：</span><span id="out-jpy-year" class="font-mono text-sky-300">約 113 万円 /年</span></div>
+                </div>
+                <div id="out-fte-note" class="text-xs bg-slate-900 border border-slate-700 rounded p-2 text-slate-300">
+                  正社員1名（年額人件費600万円想定）の約 18.9% の予算で、5体の24時間稼働AIエージェントを運用できます。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-brand-warning bg-orange-50 p-4 rounded-r-lg text-sm break-inside-avoid">
+            <strong class="text-brand-warning">運用上の致命的落とし穴「サイレント停止（Silent Stop）」：</strong>
+            公式ドキュメントによれば、ユーザーが支出ポリシーの対象外であるか、または月間クレジット上限に達した場合、<strong>Autopilot は一切のエラー理由をユーザーに表示しないまま、ルーチン・監視・新規依頼への応答を無言で停止します</strong>（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/faq" target="_blank" rel="noopener noreferrer" class="ext-link">FAQ</a>）。利用者に「反応しなくなったら情シスへ連絡する」運用周知と、管理者側の80%/90%到達メールアラート設定が必須です。
+          </div>
+        </section>
+
+        <!-- SECTION 5: Organizational Model (1 ID Strategy) -->
+        <section id="sec-org-model" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">05.</span> 1 IDモデルの組織設計論：個人秘書型 vs チーム所属社員型
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            「1つのIDを持つなら、人に付随する秘書として使うべきか、それともチームに1人AI社員を追加する考え方にするべきか？」は、Copilot Autopilot 導入における最大の経営・組織設計テーマです。公式仕様と実務コストの両面から最適解を導きます。
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-4 break-inside-avoid">
+            <!-- Model A -->
+            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Model A（公式基本形）</div>
+                <h3 class="text-base font-bold text-brand-text mt-0.5">個人専属「エグゼクティブ秘書」型</h3>
+                <p class="text-xs text-slate-600 mt-1.5">対象者1人に1体のAutopilotを割り当て、個人の受信箱・カレンダー・約束事・会議準備を徹底代行させるモデル。</p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-700 list-disc pl-4">
+                  <li><strong>強み：</strong> 個人の文体・優先順位・Memoryが完全最適化され、意思決定者の時短効果が最大。権限境界も明快で情報漏洩リスクが低い。</li>
+                  <li><strong>弱み：</strong> 全社員へ横展開すると「$30固定＋従量」が人数分乗算され、投資対効果が薄い層が出やすい。</li>
+                </ul>
+              </div>
+              <div class="text-xs font-semibold bg-white border border-slate-200 rounded p-2 text-brand-text">
+                最適対象：役員、部門長、PM、トップ営業、複数プロジェクト兼務者
+              </div>
+            </div>
+
+            <!-- Model B -->
+            <div class="border-2 border-brand-accent rounded-xl p-4 bg-blue-50/40 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-brand-accent">Model B（最推奨・実務最適解）</div>
+                <h3 class="text-base font-bold text-brand-text mt-0.5">リーダー管轄「チームPMO・AI社員」型</h3>
+                <p class="text-xs text-slate-700 mt-1.5">チームリーダー（PM/課長）を正式な Named Manager とした1体を、<strong>チームのTeamsチャネルに常駐させ、メンバー全員から <code>@mention</code> で協働させる</strong>ハイブリッド型。</p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-700 list-disc pl-4">
+                  <li><strong>強み：</strong> 1体分の従量課金枠をチーム全員（5〜15名）で共有でき、1人あたり月額コストが数千円レベルまで激減。進捗追跡・決定事項整理・会議設定を自動化。</li>
+                  <li><strong>注意点：</strong> オーナー（リーダー）の閲覧権限で読んだ機密情報がチャネルに漏れないよう、<strong>参照ソースを当該チャネルと共有フォルダに明示限定</strong>すること。</li>
+                </ul>
+              </div>
+              <div class="text-xs font-semibold bg-brand-accent text-white rounded p-2">
+                最適対象：開発・DX推進・営業チーム・プロジェクト推進室（まずはここから！）
+              </div>
+            </div>
+
+            <!-- Model C -->
+            <div class="border border-red-200 rounded-xl p-4 bg-red-50/40 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-brand-danger">Model C（アンチパターン・非推奨）</div>
+                <h3 class="text-base font-bold text-brand-danger mt-0.5">架空の共有アカウント割当型</h3>
+                <p class="text-xs text-slate-700 mt-1.5">「sales-team@company.com」等の共有・架空ユーザーを作成してそこにAutopilotを紐づけるやり方。</p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-700 list-disc pl-4">
+                  <li><strong>NG理由①：</strong> 公式仕様は<strong>「責任を負う実在の人間（Accountable User）」</strong>への紐づけを前提としており、承認カードや責任の所在が曖昧になる。</li>
+                  <li><strong>NG理由②：</strong> 従来の人間アカウント流用は Entra Agent ID 設計方針で明確に非推奨。監査証跡・ライセンス規約上のリスクが高い。</li>
+                </ul>
+              </div>
+              <div class="text-xs font-semibold bg-white border border-red-200 rounded p-2 text-brand-danger">
+                代替策：純粋な部門共有Botは Copilot Studio で構築し、Agent 365 で管理する
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm space-y-2 break-inside-avoid">
+            <div class="font-bold text-brand-text">今後のロードマップ：Copilot Workspaces とのチーム統合（Coming Soon）</div>
+            <p class="text-xs text-slate-700">
+              Microsoft Ignite 2026 では、現在「個人1対1」を起点としている Autopilot を、次のステップとして<strong>チーム共有の「Copilot Workspaces」へ持ち込んで協働させる機能</strong>を「Coming soon」として予告しています（<a href="https://www.copilot-coaching.de/en/blog/ignite-2026-copilot/" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Coaching Igniteレポート</a>）。また、個人の Autopilot で育てた業務手順（<strong>Skills / `SKILL.md`</strong>）は、現時点でもチームの他メンバーの Autopilot へリンク共有して複製可能です。したがって、<strong>「権限と予算の責任者は人間1人に固定しつつ、働き方とスキルはチーム資産として運用する」</strong>のが2026〜2027年の王道設計です。
+            </p>
+          </div>
+        </section>
+
+        <!-- SECTION 6: Admin Security & Governance -->
+        <section id="sec-admin-security" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">06.</span> 管理者向けセキュリティ・ガバナンス完全対策
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            Autopilot は人が席を離れている間も自律的にメールやファイルにアクセスし、送信や変更を実行できるため、従来のチャット型AIとは次元の異なるガバナンス設計が求められます。以下は <a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Learn 管理者構成ガイド</a> および <a href="https://learn.microsoft.com/en-us/copilot/autopilot/requirements" target="_blank" rel="noopener noreferrer" class="ext-link">Requirements</a> に明記された<strong>全セキュリティ要件とプレビュー時点のコンプライアンス制約</strong>です。
+          </p>
+
+          <!-- Security Requirements Matrix -->
+          <div class="overflow-x-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">セキュリティレベル</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">機能領域</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">Microsoft ソリューション</th>
+                  <th scope="col" class="px-4 py-3 border-b border-slate-200">必要ライセンス</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <td rowspan="3" class="px-4 py-3 font-bold bg-blue-50 text-brand-accent align-top">必須要件<br><span class="text-xs font-normal">(Required)</span></td>
+                  <td class="px-4 py-3 font-semibold">ID基盤</td>
+                  <td class="px-4 py-3">Microsoft Entra Agent ID</td>
+                  <td class="px-4 py-3">自動プロビジョニング</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-semibold">隔離実行環境</td>
+                  <td class="px-4 py-3">Microsoft local containers (MXC)</td>
+                  <td class="px-4 py-3">Microsoft Intune Plan 1 または M365 E3</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-semibold">監査＆コスト管理</td>
+                  <td class="px-4 py-3">Microsoft 365 監査ログ＆Agent 365 コスト管理</td>
+                  <td class="px-4 py-3">任意の商用 Microsoft 365 ライセンス</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td rowspan="3" class="px-4 py-3 font-bold bg-amber-50 text-amber-800 align-top">強く推奨<br><span class="text-xs font-normal">(Highly Recommended)</span></td>
+                  <td class="px-4 py-3 font-semibold">アクセス＆認可統制</td>
+                  <td class="px-4 py-3">Entra ID Governance（最小権限）、Global Secure Access（ツール/MCP/データ検査）、Conditional Access</td>
+                  <td class="px-4 py-3">Microsoft Entra Suite</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-semibold">データ保護＆内部リスク</td>
+                  <td class="px-4 py-3">Microsoft Purview DLP / Insider Risk Management</td>
+                  <td class="px-4 py-3">Microsoft Purview Suite または M365 E5</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-semibold">脅威保護＆統制基盤</td>
+                  <td class="px-4 py-3">Microsoft Defender XDR / Dynamic Agent Risk / Agent 365</td>
+                  <td class="px-4 py-3">Defender Suite / M365 E5 ＋ Agent 365有償（またはE7）</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-bold bg-emerald-50 text-emerald-800">最高構成<br><span class="text-xs font-normal">(Limited Preview)</span></td>
+                  <td class="px-4 py-3 font-semibold">エージェンティック防御</td>
+                  <td class="px-4 py-3">Microsoft Perception、Entra CA動的制御、Entra ID Governance動的権限</td>
+                  <td class="px-4 py-3">Limited Preview対象</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Compliance Gaps Table (CRITICAL) -->
+          <div class="border-l-4 border-brand-danger bg-red-50 p-4 rounded-r-lg space-y-2 break-inside-avoid">
+            <div class="font-bold text-brand-danger text-sm">【最重要】プレビュー時点のコンプライアンス＆セキュリティの穴（公式明記）</div>
+            <p class="text-xs text-slate-700">
+              「通常の M365 Copilot と同じ Purview / Entra 保護が効いているだろう」と誤認するのが最大の事故原因です。管理者は以下の6大ギャップを前提に統制を敷く必要があります（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure#review-compliance-coverage" target="_blank" rel="noopener noreferrer" class="ext-link">Compliance Coverage公式表</a>）。
+            </p>
+          </div>
+
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-1/5">統制領域</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-2/5">現在の制約・落とし穴（2026/11時点）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-4 py-3 border-b border-slate-200 w-2/5">管理者が取るべき実務対策</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">Conditional Access（条件付きアクセス）</th>
+                  <td class="px-4 py-3"><strong>「All users（全ユーザー）」対象のポリシーには Agent ID が含まれない</strong>。また、ポリシー変更やユーザーブロックの反映に<strong>約1時間</strong>かかり、オーナー代理実行中の処理はさらに継続する場合がある。</td>
+                  <td class="px-4 py-3">Agent ID を明示的に対象指定した専用CAポリシーを作成する。緊急停止時は「ブロック」だけでなく<strong>支出ポリシーからの即時除外</strong>を併用する。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">eDiscovery・保持・訴訟ホールド</th>
+                  <td class="px-4 py-3"><strong>Autopilot の会話は eDiscovery・Retention・Legal Hold の対象外</strong>（保持・ホールドが適用される領域に保存されない）。</td>
+                  <td class="px-4 py-3">訴訟ホールド対象者、法務・監査・厳格な保存義務のある金融/規制部門ユーザーには <strong>Autopilot を有効化しない</strong>。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">秘密度ラベル（Sensitivity Labels）</th>
+                  <td class="px-4 py-3">ラベル付きメール・ファイルも除外されず読み取り可能。さらに、Autopilot が生成・エクスポートしたファイルに<strong>元の秘密度ラベルが自動継承される保証はない</strong>。</td>
+                  <td class="px-4 py-3">アクセス権限（最小権限）と<strong>暗号化</strong>を唯一の確実な防衛線とする。出力ファイルのラベル確認・手動付与を利用者ルール化する。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">Purview DLP / DSPM for AI</th>
+                  <td class="px-4 py-3">プロンプトDLPは一部テナント試験中（ブロック時は汎用エラー表示のみで同一チャット後続が通る場合あり）。<strong>DSPM for AI や Activity Explorer には Autopilot が表示されない</strong>。Defender上もエージェント在庫ではなく一般ユーザー扱い。</td>
+                  <td class="px-4 py-3">機密データの投入禁止ガイドラインを策定し、SharePoint / OneDrive 側の過剰共有棚卸し（Oversharing対策）を先行実施する。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">統合監査ログ（Unified Audit Log）</th>
+                  <td class="px-4 py-3">Autopilot自身のID操作（Teams送信等）はAutopilot名義だが、オーナー代理のファイル・メール閲覧は<strong>オーナー名義＋内部サービス名（Agent IDなし）</strong>で記録される。</td>
+                  <td class="px-4 py-3">監査調査時は Autopilot レコード側の <code>conversation ID</code> をキーにしてオーナー名義ログと突合する運用手順を準備する。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-4 py-3 font-semibold bg-slate-50/50">メモリ＆データレジデンシー</th>
+                  <td class="px-4 py-3"><strong>Memoryをオフにする設定が存在しない</strong>（通常Copilotのパーソナライズ設定も非適用）。またデフォルトの GPT-6.1 Sol は OpenAI サブプロセッサー経由で処理される。</td>
+                  <td class="px-4 py-3">データ国外移転やEU Data Boundary要件が厳しい場合は、管理センターで OpenAI サブプロセッサーをオフにし、<strong>Azure OpenAI（GPT-5.6 Sol）</strong>へ強制固定する。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Automated Review System -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 space-y-3 break-inside-avoid">
+            <div class="text-sm font-bold text-brand-text">第2のAIモデルによる自動承認（Automated Review System）とプロンプトインジェクション防御</div>
+            <p class="text-xs text-slate-700">
+              Autopilot は全アクションを実行前に別のAIモデルで検証します（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/approval" target="_blank" rel="noopener noreferrer" class="ext-link">How Autopilot reviews actions</a>）。<strong>重要点：オーナー本人のチャット指示のみが権限の根拠となり、メール・ファイル・Webページ内に埋め込まれた指示（間接プロンプトインジェクション）ではアクションが承認されません。</strong>ただし管理者・ユーザー側で自動承認システム自体のオン/オフや細かな設定変更は現行リリースでは不可です。
+            </p>
+            <div class="grid md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-white border-l-4 border-brand-success p-3 rounded shadow-sm">
+                <div class="font-bold text-brand-success mb-1">自動実行（無停止）</div>
+                <p class="text-slate-600">閲覧、検索、下書き作成（Reading / Searching / Drafting）。一部のみ抜き打ちチェック。</p>
+              </div>
+              <div class="bg-white border-l-4 border-brand-warning p-3 rounded shadow-sm">
+                <div class="font-bold text-brand-warning mb-1">第2AIが自動判定</div>
+                <p class="text-slate-600">送信、共有、削除、変更、ルーチン作成・変更。依頼と一致すれば自動実行、逸脱・曖昧・検証不能時は承認カード送付。</p>
+              </div>
+              <div class="bg-white border-l-4 border-brand-danger p-3 rounded shadow-sm">
+                <div class="font-bold text-brand-danger mb-1">常に本人承認が必須</div>
+                <p class="text-slate-600">決済（Payments）、アカウント変更、永久削除など機密ブラウザ操作。承認カードに「常に許可」は存在しない。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 7: Admin Setup, Leavers & Data Export -->
+        <section id="sec-admin-ops" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">07.</span> 管理者セットアップ手順・退職者対応・監査データ出力
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            Autopilot は<strong>既定で無効（Off by default）</strong>であり、Frontier を有効化しただけでは使えません。以下の3ステップをすべて完了する必要があります（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Admin Configure</a>）。また、支出ポリシーを新規作成できるのは<strong>グローバル管理者（Global Admin）と課金管理者（Billing Admin）のみ</strong>で、AI管理者・ライセンス管理者は既存ポリシーの編集のみ可能です（<a href="https://www.issoh.co.jp/column/details/18025/" target="_blank" rel="noopener noreferrer" class="ext-link">ISSOH解説</a>）。
+          </p>
+
+          <!-- 3-Step Setup Flow -->
+          <div class="flex flex-col md:flex-row items-stretch gap-3 break-inside-avoid">
+            <div class="flex-1 bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-brand-accent mb-1">STEP 1：Frontier 有効化</div>
+              <p class="text-xs text-slate-700">M365管理センター &gt; <code>Copilot &gt; Settings &gt; View all</code> で「Frontier」を検索し、<code>Copilot Frontier</code> を特定グループ（検証メンバー）に割り当て。</p>
+            </div>
+            <div class="flex items-center justify-center text-slate-400" aria-hidden="true">
+              <svg class="w-5 h-5 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </div>
+            <div class="flex-1 bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-brand-accent mb-1">STEP 2：支出ポリシー設定</div>
+              <p class="text-xs text-slate-700"><code>Copilot &gt; Cost management &gt; Configuration &gt; Spending policies</code> で新規作成。対象サービスで <strong>Autopilot</strong> を選択し、月次上限・ユーザー上限・アラート・支払方法（Azure PayGo / 前払）を設定。</p>
+            </div>
+            <div class="flex items-center justify-center text-slate-400" aria-hidden="true">
+              <svg class="w-5 h-5 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </div>
+            <div class="flex-1 bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-brand-accent mb-1">STEP 3：Agent Registry 起動</div>
+              <p class="text-xs text-slate-700"><code>Agents &gt; All agents</code> で <code>Autopilot (Frontier)</code> を選択し <strong>Activate</strong>。5ステップウィザード（対象ユーザー・支出ポリシー・セキュリティ確認・自律実行権限同意・メモリ確認）を完了。</p>
+            </div>
+          </div>
+
+          <!-- Leaver / Mover Procedure -->
+          <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-2 break-inside-avoid">
+            <div class="font-bold text-sm text-brand-warning">異動・退職者（Mover / Leaver）発生時の必須オフボーディング手順</div>
+            <p class="text-xs text-slate-700">
+              <strong>注意：</strong> アクティベーション対象グループからユーザーを外しただけでは、作成済みの Autopilot は停止しません（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Admin Configure</a>、<a href="https://jazz.security/dlp-explained/dlp-basics/how-to-control-microsoft-autopilot-agents/" target="_blank" rel="noopener noreferrer" class="ext-link">Jazz Security解説</a>）。必ず以下の順序で処理してください。
+            </p>
+            <ol class="list-decimal pl-5 text-xs text-slate-700 space-y-1">
+              <li><strong>支出ポリシーから除外：</strong> 対象ユーザーを Autopilot の Spending Policy から外す（新規応答・自動化・監視が停止）。</li>
+              <li><strong>インスタンスのブロック：</strong> <code>Agents &gt; All agents &gt; Autopilot (Frontier) &gt; Instances</code> から該当インスタンスをブロック（反映に最大約1時間）。</li>
+              <li><strong>法的・監査エクスポート（必要時）：</strong> 下記 PowerShell スクリプトで OneDrive 内の <code>lobster.repo</code> を保全。</li>
+              <li><strong>インスタンス削除＆ライフサイクル管理：</strong> 削除後30日でアカウントとデータが完全消去（監査ログのみ保持）。併せて Entra ID の非アクティブポリシー（60日通知→90日無効化→455日削除、ライセンス不要）を有効化。一括削除や完全消去証明が必要な場合は Microsoft サポートへ依頼。</li>
+            </ol>
+          </div>
+
+          <!-- Accordion: PowerShell Export & Troubleshooting -->
+          <details class="group bg-white border border-slate-200 rounded-md p-4">
+            <summary class="flex items-center justify-between font-bold text-sm text-brand-text">
+              <span>管理者向け：コンプライアンス・プライバシー対応用データエクスポート手順（PowerShellコマンド＆トラブルシュート）</span>
+              <svg class="w-5 h-5 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="mt-4 space-y-4 text-xs text-slate-700">
+              <p>管理者はユーザー本人の認証情報を使わず、一時的に対象ユーザーのOneDrive管理者権限を付与した上で、GitHub配布の <code>Autopilot-Workspace-Export.zip</code> 内スクリプトを実行して <code>lobster.repo</code> を取得できます（元のOneDrive内容は変更・削除されません）。取得完了後は必ず <code>Set-SPOUser ... -IsSiteCollectionAdmin $false</code> で権限を剥奪します。</p>
+              <div class="bg-slate-800 text-slate-100 font-mono p-4 rounded-md overflow-x-auto text-xs">
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Export-AutopilotWorkspace.ps1 `
+  -TargetUser user@contoso.com `
+  -Reason "Privacy request 1234" `
+  -Account admin@contoso.com `
+  -TargetOneDriveUrl "https://contoso-my.sharepoint.com/personal/user_contoso_com"
+              </div>
+              <div class="grid md:grid-cols-2 gap-3">
+                <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                  <div class="font-bold text-brand-text mb-1">出力フォルダ内容（Autopilot export &lt;日時&gt;）</div>
+                  <ul class="list-disc pl-4 space-y-1">
+                    <li><code>Latest files</code>：最新版のメモリ・セッション可読コピー</li>
+                    <li><code>repository.git</code>：過去履歴を含む完全Gitリポジトリ</li>
+                    <li><code>export-manifest.json</code>：実行者・対象・日時・理由・全ファイルSHA-256ハッシュ</li>
+                    <li><code>README.txt</code>：コピーの説明</li>
+                  </ul>
+                </div>
+                <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                  <div class="font-bold text-brand-text mb-1">主なエラーと対処（公式ガイド準拠）</div>
+                  <ul class="list-disc pl-4 space-y-1">
+                    <li><strong>Hosts file already has a different entry：</strong>既存の <code>cowork.local.microsoft.com</code> エントリを確認</li>
+                    <li><strong>Browser shows a certificate warning：</strong>絶対に無視せずタブを閉じセキュリティチームへ報告</li>
+                    <li><strong>You do not have access to the OneDrive：</strong>OneDriveリンク作成後、数分待ってから <code>-TargetOneDriveUrl</code> 付きで再実行</li>
+                    <li><strong>OutputFolder注意：</strong>OneDrive同期対象外のローカルフォルダを指定すること</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <!-- SECTION 8: User Guide & 12 Scenarios -->
+        <section id="sec-user-guide" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">08.</span> 利用者目線の使い方・UI構成・12大実践シナリオ
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            利用者にコーディング知識は不要です。新入社員に業務を引き継ぐように「達成したいゴール・参照する情報源・やってはいけない境界線（例：送信前に必ず確認して）」を自然言語で伝えるだけで動き出します（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/get-started" target="_blank" rel="noopener noreferrer" class="ext-link">Get Started</a>、<a href="https://learn.microsoft.com/en-us/copilot/autopilot/scenarios" target="_blank" rel="noopener noreferrer" class="ext-link">Scenarios</a>）。
+          </p>
+
+          <!-- UI Anatomy -->
+          <div class="grid md:grid-cols-2 gap-4 break-inside-avoid">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-sm font-bold text-brand-text mb-2">左ナビゲーション（作業の入口）</div>
+              <ul class="text-xs text-slate-700 space-y-1.5">
+                <li><strong>・自分のAutopilot名（例：Evo / Atlas）：</strong> メインの1:1対話画面。指示・質問・応答確認を実施。</li>
+                <li><strong>・Automations：</strong> 設定済みの定期ルーチン一覧へ直接アクセス。</li>
+                <li><strong>・Plugins：</strong> カタログからの外部サービス連携、自作スキルの作成・アップロード・共有管理。</li>
+              </ul>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-sm font-bold text-brand-text mb-2">右上展開パネル（管理・監督コックピット）</div>
+              <ul class="text-xs text-slate-700 space-y-1.5">
+                <li><strong>・Overview：</strong> 作業中ファイル一覧と過去のチャット履歴。</li>
+                <li><strong>・Activity：</strong> <code>Working now</code>（進行中）、<code>Needs your input</code>（要判断・承認）、実行済み履歴。</li>
+                <li><strong>・Routines：</strong> 定期タスクの一時停止・編集・手動実行・削除。</li>
+                <li><strong>・Settings：</strong> 名前・外見変更、Memory確認（<code>Review what [name] knows</code>）、権限・接続PC確認。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 12 Official Scenarios Table -->
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-sm text-left border-collapse">
+              <thead class="bg-slate-100 text-brand-text">
+                <tr>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200 w-1/5">業務シナリオ</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200 w-2/5">実践プロンプト例（日本語訳・公式準拠）</th>
+                  <th scope="col" class="sticky top-0 bg-slate-100 px-3.5 py-3 border-b border-slate-200 w-2/5">運用上のポイント＆注意点</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-xs">
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">1. 受信トレイ自動トリアージ</th>
+                  <td class="px-3.5 py-2.5">「毎営業日8時と13時に新着メールを確認し『要返信・要判断・FYI・後回し』に分類。定型依頼は下書きを作成し、承認なしに送信しないで。」</td>
+                  <td class="px-3.5 py-2.5">初回実行後に誤分類を訂正（例：「財務部からのメールは常に要判断にして」）してルールを育てる。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">2. 会議前ブリーフィング</th>
+                  <td class="px-3.5 py-2.5">「毎営業日7:30に本日の全会議について、参加者・直近のメール/チャット・未決事項・関連ファイルをまとめてTeamsに送って。」</td>
+                  <td class="px-3.5 py-2.5">準備時間が不足していれば、空き時間を見つけてカレンダーにブロックを入れる提案まで可能。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">3. 毎朝のデイリーブリーフ</th>
+                  <td class="px-3.5 py-2.5">「毎朝8時に今日の予定、ローンチスレッドの未返信メッセージ、今週期限の約束事を要約してここに届けて。他者への送信は禁止。」</td>
+                  <td class="px-3.5 py-2.5">クラウド実行のため厳密な定刻完了は保証されない。未着時はActivityタブを確認。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">4. コミットメント追跡</th>
+                  <td class="px-3.5 py-2.5">「メールとTeamsで自分・他者が交わした約束をすべて担当者・期限付きで記録。期限前に私へリマインドし、相手の期限到来時は催促下書きを作成して。」</td>
+                  <td class="px-3.5 py-2.5">アクセス可能範囲のみ抽出。承認カード上で宛先と文面を確認してから送信許可。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">5. 文体一致の返信下書き</th>
+                  <td class="px-3.5 py-2.5">「返信が必要なメールの下書きを作成して。私の文体に合わせ、承認するまで絶対に送信しないで。」</td>
+                  <td class="px-3.5 py-2.5">事実関係と宛先（特にExternalマークの社外宛先）を確認してから承認。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">6. 不在時・重要案件監視</th>
+                  <td class="px-3.5 py-2.5">「〇〇社更新案件を監視して。期限変更、3日以上の意思決定停滞、エスカレーションがあれば知らせて。」</td>
+                  <td class="px-3.5 py-2.5">リアルタイム監視ではなくルーチン実行時の定期チェック。「確認済みの変更」と「アクセス不能」を区別させる。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">7. カレンダー防衛</th>
+                  <td class="px-3.5 py-2.5">「今月の優先事項は新製品ローンチと採用。毎朝2時間の集中時間を確保し、優先度に反する会議の辞退・移動案を提案して。無断変更は禁止。」</td>
+                  <td class="px-3.5 py-2.5">他者が関わる会議の辞退・移動は必ず事前確認が発生。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">8. 週次レポート自動生成</th>
+                  <td class="px-3.5 py-2.5">「毎週木曜15時にプロジェクトチャネル・メール・進捗表から週次報告書を作成し、OneDriveのStatusフォルダに保存してリンクを送って。」</td>
+                  <td class="px-3.5 py-2.5">Autopilot内の一時ファイルではなく、必ず指定OneDrive/SharePointパスと共有設定を確認。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">9. フォローアップループ</th>
+                  <td class="px-3.5 py-2.5">「毎夕、会議とスレッドのアクション項目と担当者を一覧化し、期限超過の担当者へTeamsで催促文を作成。送信前に見せて。」</td>
+                  <td class="px-3.5 py-2.5">送信は<strong>Autopilot自身のID名義</strong>で行われるため、相手にも「〇〇さんのAI秘書からの催促」と明確に伝わる。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">10. 議事録→1ページ資料化</th>
+                  <td class="px-3.5 py-2.5">「このローンチ準備メモと今週の指標から1ページの進捗報告書を作成し、指定OneDriveフォルダに非公開で保存して。」</td>
+                  <td class="px-3.5 py-2.5">保存後にファイルを開き、内容精度と秘密度ラベルを確認してから共有。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">11. 数週間プロジェクト推進</th>
+                  <td class="px-3.5 py-2.5">「9月30日のQ3ローンチに向けてマイルストーンと担当者入りの逆算計画を作成。以降の会議準備・進捗追跡・停滞検知を継続して。」</td>
+                  <td class="px-3.5 py-2.5">Autopilot最大の強み。長期記憶（Workspace Memory）を活かし複数週を跨いで伴走。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-slate-50/50">12. Teamsスレッド整理＆会議設定</th>
+                  <td class="px-3.5 py-2.5">Teamsチャネル上で <code>@Evo この配送遅延の件を意思決定ドキュメントにまとめて、今日午後にメンバーの空き時間で会議をセットして</code></td>
+                  <td class="px-3.5 py-2.5">複数メンバーが参加するスレッドでそのまま議論を収束・文書化・日程調整まで一気通貫。</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <th scope="row" class="px-3.5 py-2.5 font-semibold bg-blue-50/50">＋α. ブラウザ経費精算自動化</th>
+                  <td class="px-3.5 py-2.5">「受信箱の出張領収書を集めて、社内経費精算Webアプリに明細入力と添付を行って。最終提出前に確認を求めて。」</td>
+                  <td class="px-3.5 py-2.5">Remote Computer / Edge連携でGUIフォーム入力を代行。疑問点（ミニバー代など）だけ人間へ質問（<a href="https://techcommunity.microsoft.com/blog/microsoftmechanicsblog/introducing-autopilot-your-personal-and-proactive-agent/4575030" target="_blank" rel="noopener noreferrer" class="ext-link">Mechanicsデモ</a>）。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 9: Nurturing & Training -->
+        <section id="sec-nurturing" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">09.</span> Autopilotの「育成（OJT）」メソッドと段階的権限委譲
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            Autopilot は初日から完璧に動く魔法の箱ではありません。人間の新入社員と同じように、<strong>「①段階的な権限委譲」「②3層メモリの定期メンテナンス」「③独自スキル（`SKILL.md`）の資産化と横展開」「④承認履歴からのフィードバック」</strong>の4サイクルを回すことで、組織固有の優秀な同僚へと育ちます。
+          </p>
+
+          <!-- 3-Phase Trust Ladder -->
+          <div class="grid md:grid-cols-3 gap-4 break-inside-avoid">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-emerald-700 mb-1">育成フェーズ1（1〜2週目）</div>
+              <div class="font-bold text-sm text-brand-text mb-2">閲覧・要約・下書き専用（見習い期）</div>
+              <p class="text-xs text-slate-600">すべての指示に「送信・変更は禁止（Draft only / View only）」を明記。分類精度・事実確認・文体のクセを観察し、誤りをチャットで直接指導して Memory をチューニングする。</p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-brand-accent mb-1">育成フェーズ2（3〜4週目）</div>
+              <div class="font-bold text-sm text-brand-text mb-2">定例ルーチン＆スキル化（独り立ち期）</div>
+              <p class="text-xs text-slate-600">安定した業務を <strong>Routines</strong> へ登録し、繰り返し使う作業手順を <strong>Skills（<code>SKILL.md</code>）</strong> として保存。社内メンバーへのリマインド等、低リスクな送信から承認カード経由で実行開始。</p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div class="text-xs font-bold text-brand-warning mb-1">育成フェーズ3（2ヶ月目〜）</div>
+              <div class="font-bold text-sm text-brand-text mb-2">チーム協働＆外部ツール連携（戦力化期）</div>
+              <p class="text-xs text-slate-600">IT承認済みプラグイン（Figma、CRM、業務Webアプリ等）を接続。Teamsチャネルでの <code>@mention</code> 受付や、育てた優良スキルを同僚の Autopilot へ共有してチーム全体の底上げを図る。</p>
+            </div>
+          </div>
+
+          <!-- Memory Management & Skill Authoring -->
+          <div class="grid md:grid-cols-2 gap-4 break-inside-avoid">
+            <div class="bg-white border border-slate-200 rounded-lg p-4 space-y-2">
+              <div class="font-bold text-sm text-brand-text">3層メモリの点検・矯正テクニック</div>
+              <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1.5">
+                <li><strong>定期棚卸し：</strong> 設定パネルの <code>Review what [name] knows</code> を月1回開くか、「私について何を覚えている？」「週次報告の好みはどう記憶している？」と直接尋ねる（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/memory" target="_blank" rel="noopener noreferrer" class="ext-link">Memory Docs</a>）。</li>
+                <li><strong>古い記憶の明示削除：</strong> 終了した案件や誤認識は「Project Xの記憶を忘れて」と指示し、<strong>必ず再質問して消去完了を確認</strong>する（会話削除だけでは記憶は消えない）。</li>
+                <li><strong>ルーチン独立性の原則：</strong> 定期ルーチンは作成時の会話文脈を自動継承しないことがあるため、参照ソース・宛先・禁止事項をルーチン指示文の中に完結させて書く（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/faq" target="_blank" rel="noopener noreferrer" class="ext-link">FAQ</a>）。</li>
+              </ul>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-lg p-4 space-y-2">
+              <div class="font-bold text-sm text-brand-text">スキル（<code>SKILL.md</code>）による標準化と安全な共有</div>
+              <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1.5">
+                <li><strong>2つの作成方法：</strong> ①会話内で「会議メモを担当者・期限付きトラッカーにするスキルを作って」と指示して承認保存、②<code>SKILL.md</code>＋補助スクリプト/CSV/JSONをZIPまたはフォルダでアップロード（<a href="https://learn.microsoft.com/en-us/copilot/autopilot/plugins" target="_blank" rel="noopener noreferrer" class="ext-link">Plugins & Skills Docs</a>）。</li>
+                <li><strong>呼び出し：</strong> チャット欄で <code>/</code> を入力して明示指定するか、文脈に応じて自動選択させる。</li>
+                <li><strong>安全な社内横展開：</strong> 特定メンバーへスキルを共有可能。<strong>共有者の認証情報・接続・権限は一切引き継がれない</strong>ため、セキュリティを保ったまま業務ノウハウだけを展開できる（スキル内にパスワードや機密情報を書かないこと）。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Sample SKILL.md Accordion -->
+          <details class="group bg-white border border-slate-200 rounded-md p-4">
+            <summary class="flex items-center justify-between font-bold text-sm text-brand-text">
+              <span>実践テンプレート：チームPMO向けカスタムスキル（SKILL.md）設計例</span>
+              <svg class="w-5 h-5 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="mt-3">
+              <div class="bg-slate-800 text-slate-100 font-mono p-4 rounded-md overflow-x-auto text-xs">
+---
+name: weekly-project-health-brief
+description: 指定Teamsチャネルと進捗Excelから週次プロジェクト健全性レポートを作成し、遅延タスクの催促下書きを生成する
+---
+# 目的
+毎週木曜日の定例前に、プロジェクトの遅延・未決事項・リスクを構造化してオーナーへ報告する。
+
+# 参照ソース（厳格限定）
+- 対象Teamsチャネル：「Project-Alpha-Launch」のみ（DMや人事関連メールは参照禁止）
+- 対象ファイル：SharePoint「Project-Alpha/進捗管理表.xlsx」
+
+# 出力フォーマット
+1. 総合ステータス（順調 / 要注意 / 遅延）と3行サマリー
+2. 今週の未決事項一覧（項目・意思決定者・停滞日数）
+3. 期限超過アクション（担当者・タスク・遅延日数）
+
+# 行動境界（ガードレール）
+- レポートはOneDrive「Status Reports」フォルダに保存し、オーナーへ1:1 Teamsでリンク通知する。
+- 遅延担当者への催促メッセージは「下書き」のみ作成し、オーナーの承認カード許可なしに絶対送信しない。
+- 社外ドメイン宛のメール・共有リンク作成は一切禁止。
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <!-- SECTION 10: Japan Enterprise Rollout Roadmap -->
+        <section id="sec-roadmap" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-6">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">10.</span> 日本企業向け導入ロードマップ＆事前準備チェックリスト
+          </h2>
+
+          <p class="text-sm text-slate-700">
+            2026年11月現在、Copilot Autopilot は米国の対象Frontier顧客向けロールアウト段階であり、日本企業の本番全面導入にはまだ時間的猶予があります。しかし、<strong>「エージェントを安全に任せられる範囲は、AIの賢さではなく、企業のID・データ権限・FinOps統制力で決まる」</strong>ため（<a href="https://www.headwaters.co.jp/article/microsoft_ignite_2026.html" target="_blank" rel="noopener noreferrer" class="ext-link">ヘッドウォータース Ignite 2026分析</a>）、GA到来前に今すぐ着手すべき4段階の準備ロードマップを提示します。
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-4 break-inside-avoid">
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+              <div class="font-bold text-sm text-brand-accent">今すぐ実施（日本展開・GA前：〜3ヶ月）</div>
+              <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1.5">
+                <li><strong>SharePoint/OneDriveの過剰共有棚卸し：</strong> Autopilotは秘密度ラベル付きファイルも閲覧可能なため、権限整理と暗号化が最優先。</li>
+                <li><strong>Copilot Credits 従量課金体制の構築：</strong> Azureサブスクリプション紐づけ、課金管理者（設定）と経理（閲覧）のロール分離、Spending Policy設計。</li>
+                <li><strong>データレジデンシー方針の決定：</strong> OpenAIサブプロセッサー（GPT-6.1 Sol）を許容するか、Azure OpenAI（GPT-5.6 Sol）に限定するかを法務・情シスで合意。</li>
+                <li><strong>既存Cowork / Studioでの業務棚卸し：</strong> 単発業務はCowork、定型大量処理はPower Automate/Studio、継続調整はAutopilotという役割分担表を策定。</li>
+              </ul>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+              <div class="font-bold text-sm text-brand-success">パイロット〜本番展開（利用可能化後）</div>
+              <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1.5">
+                <li><strong>少数精鋭PoC（5〜10名）：</strong> 訴訟ホールド対象外の部門長・PMを選定し、1人あたり月額上限（例：$50〜$100＝5,000〜10,000 Credits）＋80%通知アラートを設定。</li>
+                <li><strong>Entra CA専用ポリシー適用：</strong> Agent IDを明示対象に含めた条件付きアクセスと、非アクティブ自動無効化（60/90/455日）をオンにする。</li>
+                <li><strong>チームPMOモデルの検証：</strong> リーダー管轄の1体をプロジェクトチャネルに配置し、ソース限定ルール下でメンバー全員の`@mention`効果とクレジット単価を測定。</li>
+                <li><strong>ROI評価＆スケール：</strong> Agent 365 Business Analyticsで消費クレジットと削減工数を突合し、優良<code>SKILL.md</code>を横展開。</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 11: Sources -->
+        <section id="sec-sources" class="content-block bg-white rounded-xl shadow-soft border border-slate-200 p-7 space-y-4">
+          <h2 class="text-xl font-bold text-brand-text border-b-2 border-brand-accent pb-2 flex items-center gap-2 break-after-avoid">
+            <span class="text-brand-accent">11.</span> 参照一次ソース・公式ドキュメント一覧
+          </h2>
+          <ol class="list-decimal pl-5 text-xs text-slate-700 space-y-1.5">
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/overview" target="_blank" rel="noopener noreferrer" class="ext-link">Autopilot (Frontier) overview</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/admin-configure" target="_blank" rel="noopener noreferrer" class="ext-link">Configure Autopilot (Frontier) for your organization</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/requirements" target="_blank" rel="noopener noreferrer" class="ext-link">Autopilot (Frontier) requirements</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/faq" target="_blank" rel="noopener noreferrer" class="ext-link">Autopilot (Frontier) FAQ</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/scenarios" target="_blank" rel="noopener noreferrer" class="ext-link">Autopilot (Frontier) scenarios</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/approval" target="_blank" rel="noopener noreferrer" class="ext-link">How Autopilot reviews actions &amp; Set permissions</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/memory" target="_blank" rel="noopener noreferrer" class="ext-link">Check what Autopilot remembers</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/plugins" target="_blank" rel="noopener noreferrer" class="ext-link">Customize and extend what Autopilot can do</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/edge" target="_blank" rel="noopener noreferrer" class="ext-link">Work in your Microsoft Edge browser with Autopilot</a>（2026年11月17日更新）</li>
+            <li>Microsoft Learn — <a href="https://learn.microsoft.com/en-us/copilot/autopilot/microsoft-autopilot-application-card" target="_blank" rel="noopener noreferrer" class="ext-link">Application card Autopilot (Frontier)</a>（2026年11月17日更新）</li>
+            <li>Microsoft 公式PDF — <a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuide.pdf" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Copilot Credits Guide (November 2026)</a></li>
+            <li>Microsoft Mechanics Blog — <a href="https://techcommunity.microsoft.com/blog/microsoftmechanicsblog/introducing-autopilot-your-personal-and-proactive-agent/4575030" target="_blank" rel="noopener noreferrer" class="ext-link">Introducing Autopilot, your personal and proactive agent</a>（2026年11月20日）</li>
+            <li>Microsoft Copilot Blog — <a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/evolution-of-the-copilot-pricing-model/4559416" target="_blank" rel="noopener noreferrer" class="ext-link">Evolution of the Copilot pricing model</a>（2026年9月25日）</li>
+            <li>Microsoft 365 Blog — <a href="https://techcommunity.microsoft.com/blog/microsoft_365blog/microsoft-365-e7-and-agent-365-are-now-generally-available/4516295" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft 365 E7 and Agent 365 are now generally available</a>（2026年5月1日）</li>
+            <li>Microsoft 公式 — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Agent 365: The Control Plane for Agents</a></li>
+            <li>Jazz Security — <a href="https://jazz.security/dlp-explained/dlp-basics/how-to-control-microsoft-autopilot-agents/" target="_blank" rel="noopener noreferrer" class="ext-link">How to control Microsoft Autopilot agents before rollout</a>（2026年11月20日）</li>
+            <li>ISSOH — <a href="https://www.issoh.co.jp/column/details/18025/" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Copilot Autopilotとは？旧Scoutからの変更点・料金と11月展開</a>（2026年11月14日）</li>
+            <li>Headwaters — <a href="https://www.headwaters.co.jp/article/microsoft_ignite_2026.html" target="_blank" rel="noopener noreferrer" class="ext-link">Microsoft Ignite 2026まとめ｜Copilot・Microsoft IQ・Agent 365</a>（2026年11月18日）</li>
+            <li>Copilot Coaching — <a href="https://www.copilot-coaching.de/en/blog/ignite-2026-copilot/" target="_blank" rel="noopener noreferrer" class="ext-link">Ignite 2026: Copilot Home, Autopilot, Workspaces and Code</a>（2026年11月17日）</li>
+            <li>Copilot Coaching — <a href="https://www.copilot-coaching.de/en/blog/copilot-pricing-license-and-credits/" target="_blank" rel="noopener noreferrer" class="ext-link">Copilot Pricing 2026: What the License and Credits Really Cost</a>（2026年9月25日）</li>
+          </ol>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 1. ScrollSpy (Intersection Observer)
+    (function () {
+      const mainContent = document.querySelector('.main-content');
+      const sections = document.querySelectorAll('main section[id]');
+      const navLinks = document.querySelectorAll('.toc-link');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach((link) => {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, {
+        root: window.innerWidth >= 768 ? mainContent : null,
+        rootMargin: '-15% 0px -70% 0px',
+        threshold: 0
+      });
+
+      sections.forEach((sec) => observer.observe(sec));
+    })();
+
+    // 2. Accordion Print Handling (expand before print, restore after print)
+    (function () {
+      let savedStates = [];
+      window.addEventListener('beforeprint', () => {
+        const detailsList = document.querySelectorAll('details');
+        savedStates = Array.from(detailsList).map((d) => d.hasAttribute('open'));
+        detailsList.forEach((d) => d.setAttribute('open', ''));
+      });
+      window.addEventListener('afterprint', () => {
+        const detailsList = document.querySelectorAll('details');
+        detailsList.forEach((d, idx) => {
+          if (!savedStates[idx]) d.removeAttribute('open');
+        });
+      });
+    })();
+
+    // 3. Interactive TCO & Credit Simulator
+    (function () {
+      const elAgents = document.getElementById('sim-agents');
+      const elCredits = document.getElementById('sim-credits');
+      const elPlan = document.getElementById('sim-plan');
+      const elA365 = document.getElementById('sim-a365');
+      const elFx = document.getElementById('sim-fx');
+
+      function profileLabel(cr) {
+        if (cr <= 3000) return 'Light';
+        if (cr <= 15000) return 'Standard';
+        if (cr <= 50000) return 'Heavy';
+        return 'Ultra Heavy';
+      }
+
+      function updateSim() {
+        const agents = Number(elAgents.value);
+        const activeCredits = Number(elCredits.value);
+        const unitPrice = Number(elPlan.value);
+        const a365 = Number(elA365.value);
+        const fx = Number(elFx.value);
+
+        document.getElementById('val-agents').textContent = `${agents} 体`;
+        document.getElementById('val-credits').textContent = `${activeCredits.toLocaleString()} Cr（${profileLabel(activeCredits)}）`;
+        document.getElementById('val-fx').textContent = `${fx} 円`;
+
+        const fixedPerAgent = 30 + a365;
+        const fixedTotal = agents * fixedPerAgent;
+        const totalCreditsPerAgent = activeCredits + 100; // +100 monthly maintenance credits
+        const varTotal = agents * totalCreditsPerAgent * unitPrice;
+        const monthUsd = fixedTotal + varTotal;
+        const perAgentUsd = monthUsd / agents;
+        const monthJpyMan = (monthUsd * fx) / 10000;
+        const perAgentJpyMan = (perAgentUsd * fx) / 10000;
+        const yearJpyMan = monthJpyMan * 12;
+        const ftePct = (yearJpyMan / 600) * 100;
+
+        document.getElementById('out-usd-month').textContent = `$${Math.round(monthUsd).toLocaleString()}`;
+        document.getElementById('out-jpy-month').textContent = `約 ${monthJpyMan.toFixed(1)} 万円`;
+        document.getElementById('out-fixed').textContent = `$${Math.round(fixedTotal).toLocaleString()} /月`;
+        document.getElementById('out-var').textContent = `$${Math.round(varTotal).toLocaleString()} /月`;
+        document.getElementById('out-per-agent').textContent = `$${Math.round(perAgentUsd).toLocaleString()}（約${perAgentJpyMan.toFixed(1)}万円）/月`;
+        document.getElementById('out-jpy-year').textContent = `約 ${Math.round(yearJpyMan).toLocaleString()} 万円 /年`;
+        document.getElementById('out-fte-note').textContent =
+          `正社員1名（年額人件費600万円想定）の約 ${ftePct.toFixed(1)}% の予算で、${agents}体の24時間稼働AIエージェントを運用できます。`;
+      }
+
+      [elAgents, elCredits, elPlan, elA365, elFx].forEach((el) => el.addEventListener('input', updateSim));
+      updateSim();
+    })();
+  </script>
+</body>
+</html>
