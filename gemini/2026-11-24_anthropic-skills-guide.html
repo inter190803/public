@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthropic公式 Agent Skills 全19種 完全解説ガイド</title>
+  <style>
+    :root {
+      --bg-page: #f6f7f9;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f3f5;
+      --bg-code: #eef1f5;
+      --text-main: #181a1f;
+      --text-muted: #525866;
+      --text-light: #6e7687;
+      --border: #dfe3ea;
+      --accent: #c95b3c;
+      --accent-soft: #fdf2ee;
+      --accent-dark: #a64429;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --green: #15803d;
+      --green-soft: #f0fdf4;
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+      --amber: #b45309;
+      --amber-soft: #fffbeb;
+      --teal: #0f766e;
+      --teal-soft: #f0fdfa;
+      --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06);
+      --shadow-md: 0 4px 14px rgba(16, 24, 40, 0.07);
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.72;
+      font-size: 15px;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: var(--bg-code);
+      padding: 0.14em 0.42em;
+      border-radius: 5px;
+      color: #1f2937;
+    }
+
+    pre {
+      font-family: var(--font-mono);
+      background: #181a1f;
+      color: #f3f4f6;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 14px 0;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Top Header / Hero */
+    .hero {
+      background: linear-gradient(135deg, #16181d 0%, #242936 60%, #2f2422 100%);
+      color: #ffffff;
+      padding: 48px 32px 42px;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .hero-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f7b29c;
+      background: rgba(201, 91, 60, 0.22);
+      border: 1px solid rgba(247, 178, 156, 0.35);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-lead {
+      margin: 0 0 22px;
+      font-size: 16px;
+      color: #d1d5db;
+      max-width: 900px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .meta-pill strong {
+      color: #ffffff;
+    }
+
+    /* PC Layout: Sticky Sidebar + Main Content */
+    .layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 28px 28px 64px;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-sm);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-light);
+      margin: 0 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0 0 18px;
+      padding: 0;
+    }
+
+    .nav-list li {
+      margin-bottom: 4px;
+    }
+
+    .nav-list a {
+      display: block;
+      padding: 5px 8px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+
+    .nav-list a:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .skill-toc {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .skill-toc a {
+      display: block;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .skill-toc a:hover {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      text-decoration: none;
+    }
+
+    .main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Section Panels */
+    .section-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px 34px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--bg-subtle);
+    }
+
+    .section-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .lead-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .info-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .info-box h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .info-box p {
+      margin: 0;
+      font-size: 13.8px;
+      color: var(--text-muted);
+    }
+
+    .callout {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 18px 0 0;
+      font-size: 14.2px;
+    }
+
+    /* Filter Bar & Search */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .search-input {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 13.5px;
+      width: 240px;
+      font-family: var(--font-sans);
+    }
+
+    .search-input:focus {
+      outline: 2px solid rgba(201, 91, 60, 0.25);
+      border-color: var(--accent);
+    }
+
+    /* Quick Reference Table */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    thead th {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #fafbfc;
+    }
+
+    .col-num {
+      width: 44px;
+      color: var(--text-light);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .col-name {
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .col-cat {
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge-docs { background: var(--blue-soft); color: var(--blue); }
+    .badge-design { background: var(--purple-soft); color: var(--purple); }
+    .badge-dev { background: var(--green-soft); color: var(--green); }
+    .badge-enterprise { background: var(--amber-soft); color: var(--amber); }
+    .badge-guidance { background: var(--teal-soft); color: var(--teal); }
+
+    /* Skill Cards */
+    .cat-group {
+      margin-top: 26px;
+    }
+
+    .cat-group:first-of-type {
+      margin-top: 8px;
+    }
+
+    .cat-group-header {
+      margin-bottom: 14px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .cat-group-header h3 {
+      margin: 0 0 4px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .cat-group-header p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .skill-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .skill-card.hidden,
+    tr.hidden {
+      display: none;
+    }
+
+    .card-header {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--bg-subtle);
+      margin-bottom: 14px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card-title code {
+      font-size: 18px;
+      background: var(--bg-subtle);
+      padding: 3px 10px;
+    }
+
+    .card-plugin {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .card-block h5 {
+      margin: 0 0 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-block p,
+    .card-block ul {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .card-block ul {
+      padding-left: 18px;
+    }
+
+    .card-block li {
+      margin-bottom: 4px;
+    }
+
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin: 14px 0;
+    }
+
+    .mt-sm {
+      margin-top: 12px !important;
+    }
+
+    .skill-md-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 13px 16px;
+    }
+
+    /* Perspective & Cross-Platform Grids */
+    .perspective-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .perspective-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      background: #fafbfc;
+    }
+
+    .perspective-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .perspective-card p,
+    .perspective-card ul {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .perspective-card ul {
+      padding-left: 18px;
+    }
+
+    .sources-list {
+      padding-left: 20px;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .sources-list li {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-light);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+      .lead-grid,
+      .card-grid-2,
+      .perspective-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="hero-eyebrow">Official Repository Guide · anthropics/skills</span>
+      <h1>Anthropic公式 Agent Skills 全19種 完全解説ガイド</h1>
+      <p class="hero-lead">
+        GitHub リポジトリ <code>anthropics/skills</code> に公開されている全19個の公式スキルを、一次情報（各 <code>SKILL.md</code> およびリポジトリ構成）に基づいて体系的に整理したリファレンスです。
+      </p>
+      <div class="hero-meta">
+        <div class="meta-pill"><strong>収録スキル数:</strong> 全19種（5プラグイン構成）</div>
+        <div class="meta-pill"><strong>仕様標準:</strong> Agent Skills（AAIF管理）</div>
+        <div class="meta-pill"><strong>調査基準日:</strong> 2026年11月24日</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="目次">
+      <div class="sidebar-title">セクション目次</div>
+      <ul class="nav-list">
+        <li><a href="#intro">1. 導入：Agent Skillsとは</a></li>
+        <li><a href="#quick-table">2. 全19スキル早見表</a></li>
+        <li><a href="#skill-details">3. スキル別詳細解説</a></li>
+        <li><a href="#perspectives">4. 活用の観点と他AI展開</a></li>
+        <li><a href="#sources">5. 出典・一次情報一覧</a></li>
+      </ul>
+
+      <div class="sidebar-title">全19スキル一覧</div>
+      <ul class="skill-toc">
+        <li><a href="#skill-docx"><code>docx</code></a></li>
+<li><a href="#skill-pdf"><code>pdf</code></a></li>
+<li><a href="#skill-pptx"><code>pptx</code></a></li>
+<li><a href="#skill-xlsx"><code>xlsx</code></a></li>
+<li><a href="#skill-algorithmic-art"><code>algorithmic-art</code></a></li>
+<li><a href="#skill-canvas-design"><code>canvas-design</code></a></li>
+<li><a href="#skill-slack-gif-creator"><code>slack-gif-creator</code></a></li>
+<li><a href="#skill-theme-factory"><code>theme-factory</code></a></li>
+<li><a href="#skill-brand-guidelines"><code>brand-guidelines</code></a></li>
+<li><a href="#skill-frontend-design"><code>frontend-design</code></a></li>
+<li><a href="#skill-claude-api"><code>claude-api</code></a></li>
+<li><a href="#skill-mcp-builder"><code>mcp-builder</code></a></li>
+<li><a href="#skill-skill-creator"><code>skill-creator</code></a></li>
+<li><a href="#skill-web-artifacts-builder"><code>web-artifacts-builder</code></a></li>
+<li><a href="#skill-webapp-testing"><code>webapp-testing</code></a></li>
+<li><a href="#skill-doc-coauthoring"><code>doc-coauthoring</code></a></li>
+<li><a href="#skill-internal-comms"><code>internal-comms</code></a></li>
+<li><a href="#skill-academy-guide"><code>academy-guide</code></a></li>
+<li><a href="#skill-discernment-nudge"><code>discernment-nudge</code></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <!-- 1. 導入 -->
+      <section class="section-panel" id="intro">
+        <div class="section-header">
+          <span class="section-num">Section 01</span>
+          <h2>導入：Agent Skillsとは何か</h2>
+        </div>
+
+        <p>
+          <strong>Agent Skills</strong> は、AIエージェントに特定タスクの専門手順・知識・実行スクリプトをパッケージ化して渡すための軽量なオープンフォーマットです。中核となるのは <code>SKILL.md</code> という1つのMarkdownファイル（先頭にYAMLフロントマターで <code>name</code> と <code>description</code> を記述）を含むフォルダ構成であり、必要に応じて <code>scripts/</code>（実行コード）、<code>references/</code>（判断基準資料）、<code>assets/</code>（テンプレート）を同梱します。
+        </p>
+
+        <pre><code>my-skill/
+├── SKILL.md       # 必須：YAMLフロントマター（name, description）＋ Markdown手順
+├── scripts/       # 任意：Python / Node.js 等の実行スクリプト
+├── references/    # 任意：詳細ガイドラインやルールブック
+└── assets/        # 任意：テンプレートやフォント等の静的リソース</code></pre>
+
+        <div class="lead-grid">
+          <div class="info-box">
+            <h3>1. 段階的開示（オンデマンド読込）</h3>
+            <p>起動時は各スキルの <code>name</code> と <code>description</code>（約100トークン程度）だけを常駐させ、依頼に合致した時だけ <code>SKILL.md</code> 本文やスクリプトを読み込みます。そのため、多数のスキルを導入してもコンテキストを圧迫しにくい設計です。</p>
+          </div>
+          <div class="info-box">
+            <h3>2. オープン標準化とAAIF寄贈</h3>
+            <p>2025年10月にClaude Codeの機能として始まり、<strong>2025年12月にオープン標準</strong>として公開されました。さらに2026年10月22日にはLinux Foundation傘下の <strong>Agentic AI Foundation（AAIF）</strong> へ寄贈され、業界標準として管理されています。</p>
+          </div>
+          <div class="info-box">
+            <h3>3. Claude以外のAIでも利用可能</h3>
+            <p>オープン標準化により、Claude（Claude.ai / Claude Code / Claude API）だけでなく、<strong>OpenAI（ChatGPT / Codex CLI）、Google（Gemini CLI）、Cursor、GitHub Copilot、VS Code</strong> など70以上のエージェント環境で同じ <code>SKILL.md</code> 資産を活用できます。</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>プラグイン構成の補足：</strong> 公式リポジトリ <code>anthropics/skills</code> の <code>.claude-plugin/marketplace.json</code> では、19スキルが5つのプラグイン（<code>document-skills</code> 4種、<code>example-skills</code> 12種、単独プラグインの <code>claude-api</code> / <code>academy-guide</code> / <code>discernment-nudge</code>）として配布されています。
+        </div>
+      </section>
+
+      <!-- 2. 全スキル早見表 -->
+      <section class="section-panel" id="quick-table">
+        <div class="section-header">
+          <span class="section-num">Section 02</span>
+          <h2>全19スキル早見表</h2>
+        </div>
+
+        <div class="controls-bar">
+          <div class="filter-group" role="group" aria-label="カテゴリ絞り込み">
+            <button type="button" class="filter-btn active" data-filter="all">すべて (19)</button>
+<button type="button" class="filter-btn" data-filter="docs">ドキュメント作成系 (4)</button>
+<button type="button" class="filter-btn" data-filter="design">デザイン・クリエイティブ系 (6)</button>
+<button type="button" class="filter-btn" data-filter="dev">開発・技術支援系 (5)</button>
+<button type="button" class="filter-btn" data-filter="enterprise">企業・業務ワークフロー系 (2)</button>
+<button type="button" class="filter-btn" data-filter="guidance">回答ガイダンス系 (2)</button>
+          </div>
+          <input type="search" id="skillSearch" class="search-input" placeholder="スキル名・キーワードで絞り込み..." aria-label="スキル検索">
+        </div>
+
+        <div class="table-wrap">
+          <table id="skillsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>スキル名</th>
+                <th>カテゴリ</th>
+                <th>一言説明</th>
+                <th>主な用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+        <tr data-cat="docs">
+          <td class="col-num">1</td>
+          <td class="col-name"><a href="#skill-docx" class="skill-link"><code>docx</code></a></td>
+          <td class="col-cat"><span class="badge badge-docs">ドキュメント作成系</span></td>
+          <td class="col-summary">Word文書（.docx）の新規作成・XML編集・変更履歴・コメント付与を行うスキル</td>
+          <td class="col-use">報告書・契約書・提案書などのWord文書作成と赤入れ編集</td>
+        </tr>
+        <tr data-cat="docs">
+          <td class="col-num">2</td>
+          <td class="col-name"><a href="#skill-pdf" class="skill-link"><code>pdf</code></a></td>
+          <td class="col-cat"><span class="badge badge-docs">ドキュメント作成系</span></td>
+          <td class="col-summary">PDFの読取・表抽出・新規生成・結合/分割・OCR・フォーム入力を網羅するスキル</td>
+          <td class="col-use">PDF解析・データ抽出・帳票生成・スキャンPDFのOCR処理</td>
+        </tr>
+        <tr data-cat="docs">
+          <td class="col-num">3</td>
+          <td class="col-name"><a href="#skill-pptx" class="skill-link"><code>pptx</code></a></td>
+          <td class="col-cat"><span class="badge badge-docs">ドキュメント作成系</span></td>
+          <td class="col-summary">PowerPoint（.pptx）の新規構築・テンプレート編集・デザイン検証を行うスキル</td>
+          <td class="col-use">プレゼン資料・ピッチデックの作成と既存テンプレートの流し込み</td>
+        </tr>
+        <tr data-cat="docs">
+          <td class="col-num">4</td>
+          <td class="col-name"><a href="#skill-xlsx" class="skill-link"><code>xlsx</code></a></td>
+          <td class="col-cat"><span class="badge badge-docs">ドキュメント作成系</span></td>
+          <td class="col-summary">数式・書式・財務モデル規範を備えたExcel（.xlsx）作成・分析スキル</td>
+          <td class="col-use">数式付きExcel集計表・財務モデル・データクレンジングの作成</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">5</td>
+          <td class="col-name"><a href="#skill-algorithmic-art" class="skill-link"><code>algorithmic-art</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">アルゴリズム哲学を定義し、p5.jsでシード再現可能なジェネラティブアートを作るスキル</td>
+          <td class="col-use">コードによるジェネラティブアート・インタラクティブHTML作品の制作</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">6</td>
+          <td class="col-name"><a href="#skill-canvas-design" class="skill-link"><code>canvas-design</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">デザイン哲学を起点に美術館・雑誌品質の静止画ポスター（PNG/PDF）を制作するスキル</td>
+          <td class="col-use">ポスター・一枚絵・パンフレット用の洗練された静止画ビジュアル制作</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">7</td>
+          <td class="col-name"><a href="#skill-slack-gif-creator" class="skill-link"><code>slack-gif-creator</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">Slackの絵文字・メッセージ規定に最適化したアニメーションGIFを生成・検証するスキル</td>
+          <td class="col-use">Slackカスタム絵文字（128×128）やリアクションGIFの作成</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">8</td>
+          <td class="col-name"><a href="#skill-theme-factory" class="skill-link"><code>theme-factory</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">10種のプロ仕様カラー＆フォントテーマをスライド・文書・HTMLに適用するスキル</td>
+          <td class="col-use">資料やWeb画面への統一デザインテーマ適用とカスタムテーマ生成</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">9</td>
+          <td class="col-name"><a href="#skill-brand-guidelines" class="skill-link"><code>brand-guidelines</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">Anthropic公式のブランドカラーとタイポグラフィを成果物に統一適用するスキル</td>
+          <td class="col-use">Anthropic公式トーン＆マナー（色・書体）の資料・HTMLへの適用</td>
+        </tr>
+        <tr data-cat="design">
+          <td class="col-num">10</td>
+          <td class="col-name"><a href="#skill-frontend-design" class="skill-link"><code>frontend-design</code></a></td>
+          <td class="col-cat"><span class="badge badge-design">デザイン・クリエイティブ系</span></td>
+          <td class="col-summary">「AIスロップ（量産感）」を排し、題材に根ざした高品質UIを設計・実装するスキル</td>
+          <td class="col-use">汎用テンプレート感のないプロダクション品質のWeb UI構築</td>
+        </tr>
+        <tr data-cat="dev">
+          <td class="col-num">11</td>
+          <td class="col-name"><a href="#skill-claude-api" class="skill-link"><code>claude-api</code></a></td>
+          <td class="col-cat"><span class="badge badge-dev">開発・技術支援系</span></td>
+          <td class="col-summary">Claude APIおよびAnthropic SDKを用いたLLMアプリ開発の最新リファレンススキル</td>
+          <td class="col-use">Claude API連携・モデル選定・Thinking・Tool Use・コスト最適化の実装</td>
+        </tr>
+        <tr data-cat="dev">
+          <td class="col-num">12</td>
+          <td class="col-name"><a href="#skill-mcp-builder" class="skill-link"><code>mcp-builder</code></a></td>
+          <td class="col-cat"><span class="badge badge-dev">開発・技術支援系</span></td>
+          <td class="col-summary">高品質なMCP（Model Context Protocol）サーバーを設計・実装・評価するスキル</td>
+          <td class="col-use">外部API・社内ツールをAIとつなぐMCPサーバーの構築とテスト</td>
+        </tr>
+        <tr data-cat="dev">
+          <td class="col-num">13</td>
+          <td class="col-name"><a href="#skill-skill-creator" class="skill-link"><code>skill-creator</code></a></td>
+          <td class="col-cat"><span class="badge badge-dev">開発・技術支援系</span></td>
+          <td class="col-summary">新しいAgent Skillの作成・Evalによる定量的精度測定・発火率最適化を行うスキル</td>
+          <td class="col-use">独自SKILL.mdの作成、A/B評価テスト、descriptionの発火チューニング</td>
+        </tr>
+        <tr data-cat="dev">
+          <td class="col-num">14</td>
+          <td class="col-name"><a href="#skill-web-artifacts-builder" class="skill-link"><code>web-artifacts-builder</code></a></td>
+          <td class="col-cat"><span class="badge badge-dev">開発・技術支援系</span></td>
+          <td class="col-summary">React + Tailwind + shadcn/ui の本格Webアプリを単一HTMLにバンドルするスキル</td>
+          <td class="col-use">複数コンポーネント構成の高度な対話型Webアーティファクト構築</td>
+        </tr>
+        <tr data-cat="dev">
+          <td class="col-num">15</td>
+          <td class="col-name"><a href="#skill-webapp-testing" class="skill-link"><code>webapp-testing</code></a></td>
+          <td class="col-cat"><span class="badge badge-dev">開発・技術支援系</span></td>
+          <td class="col-summary">PlaywrightでローカルWebアプリを起動・偵察・自動テストするスキル</td>
+          <td class="col-use">開発中Webアプリのブラウザ動作確認・スクショ取得・コンソールログ検証</td>
+        </tr>
+        <tr data-cat="enterprise">
+          <td class="col-num">16</td>
+          <td class="col-name"><a href="#skill-doc-coauthoring" class="skill-link"><code>doc-coauthoring</code></a></td>
+          <td class="col-cat"><span class="badge badge-enterprise">企業・業務ワークフロー系</span></td>
+          <td class="col-summary">文脈収集→節ごとの磨き込み→読者テストの3段階で仕様書や提案書を共著するスキル</td>
+          <td class="col-use">PRD・技術仕様書・RFC・意思決定ドキュメントの共同執筆</td>
+        </tr>
+        <tr data-cat="enterprise">
+          <td class="col-num">17</td>
+          <td class="col-name"><a href="#skill-internal-comms" class="skill-link"><code>internal-comms</code></a></td>
+          <td class="col-cat"><span class="badge badge-enterprise">企業・業務ワークフロー系</span></td>
+          <td class="col-summary">3Pアップデートや社内報・障害報告など社内向け定型文書を作成するスキル</td>
+          <td class="col-use">週次3P報告・社内ニュースレター・FAQ・インシデント報告書の執筆</td>
+        </tr>
+        <tr data-cat="guidance">
+          <td class="col-num">18</td>
+          <td class="col-name"><a href="#skill-academy-guide" class="skill-link"><code>academy-guide</code></a></td>
+          <td class="col-cat"><span class="badge badge-guidance">回答ガイダンス系</span></td>
+          <td class="col-summary">Claudeの使い方を学ぶ質問に対し、最新のClaude Academy講座を1〜2件だけ添えるスキル</td>
+          <td class="col-use">学習意図のある質問への公式コース・チュートリアル・活用例の案内</td>
+        </tr>
+        <tr data-cat="guidance">
+          <td class="col-num">19</td>
+          <td class="col-name"><a href="#skill-discernment-nudge" class="skill-link"><code>discernment-nudge</code></a></td>
+          <td class="col-cat"><span class="badge badge-guidance">回答ガイダンス系</span></td>
+          <td class="col-summary">AIの回答を鵜呑みにさせないため、末尾に検証用の短い質問を2〜3個添えるスキル</td>
+          <td class="col-use">見積もり・助言・データ解釈などの回答末尾へのセルフレビュー質問付与</td>
+        </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. スキル別解説 -->
+      <section class="section-panel" id="skill-details">
+        <div class="section-header">
+          <span class="section-num">Section 03</span>
+          <h2>スキル別詳細解説（全19種）</h2>
+        </div>
+        <p>各スキルの <code>SKILL.md</code> および公式定義から読み取れる機能、適用場面、設計上の要点をまとめています。</p>
+
+        
+      <div class="cat-group" id="group-docs">
+        <div class="cat-group-header">
+          <h3>ドキュメント作成系（Document Skills）</h3>
+          <p>Word・PDF・PowerPoint・Excelの実務ファイルを生成・編集・検証する4つの基盤スキルです。</p>
+        </div>
+        <div class="cards-stack">
+          
+        <article class="skill-card" id="skill-docx" data-cat="docs">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>docx</code></h4>
+              <span class="badge badge-docs">ドキュメント作成系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>document-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/docx/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>Word文書（.docx）をゼロから生成し、既存文書の編集・テキスト抽出・変更履歴（Tracked Changes）やコメントの挿入まで一貫して扱うドキュメントスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>docx（npm / docx-js）を用いたA4/US Letter対応の新規.docx生成（表・画像・目次・ヘッダー/フッター・脚注対応）</li>
+<li>既存.docxのZIP展開（unpack）→ word/document.xml直接編集 → 再圧縮（zip）によるレイアウト維持編集</li>
+<li>pandocによるMarkdown形式でのテキスト読取、およびLibreOfficeによるレガシー.docの変換</li>
+<li>w:ins / w:del タグによる変更履歴（赤入れ）と comment.py を用いたコメントスレッドの付与</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>社内報告書・契約書・仕様書をWord形式で納品したいとき、または既存のWordファイルに書式を崩さず修正やレビューコメントを入れたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>法務・管理部門、コンサルタント、ビジネス文書や契約書の作成・レビューをAIに任せたい実務者</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>新規作成は docx-js、既存編集は XMLアンパック方式とタスク別に明確にアプローチを分離</li>
+<li>表のセル幅はDXA単位で指定（Google Docs互換のためPERCENTAGE禁止）、背景網掛けはShadingType.CLEARを指定などの落とし穴を明記</li>
+<li>merge_runs.py で分割された &lt;w:r&gt; タグを統合し、validate.py でXSDスキーマ検証を実施</li>
+<li>生成後は LibreOffice（soffice.py）→ PDF化 → pdftoppm で画像化し、視覚的崩れを目視確認する工程を必須化</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-pdf" data-cat="docs">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>pdf</code></h4>
+              <span class="badge badge-docs">ドキュメント作成系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>document-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/pdf/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>PythonライブラリとCLIツールを使い分け、PDFのテキスト・テーブル抽出からReportLabによる新規PDF作成、結合・分割・回転・透かし・パスワード保護・OCR・フォーム入力までを統合的に扱います。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>pdfplumber によるレイアウト保持テキスト抽出およびテーブル抽出（pandas連携でExcel化も可能）</li>
+<li>pypdf / qpdf / pdftk によるPDFの結合、ページ分割、回転、メタデータ取得、暗号化・透かし付与</li>
+<li>reportlab（Canvas / Platypus）を用いた複数ページPDFや図表入りレポートのプログラム生成</li>
+<li>pytesseract + pdf2image によるスキャンPDFのOCR処理、および FORMS.md に基づくAcroForm/XFAフォーム入力</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>請求書や論文PDFから表データを抜きたいとき、複数PDFを1つにまとめたいとき、または帳票・レポートを印刷用PDFとして生成したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>バックオフィス担当者、データアナリスト、大量のPDF資料・申請書を扱うすべてのユーザー</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>用途別の最適ツール早見表（抽出=pdfplumber、作成=reportlab、結合=pypdf/qpdf、OCR=pytesseract）を提示</li>
+<li>ReportLabでUnicodeの下付き/上付き文字を使うと黒四角に文字化けするため、&lt;sub&gt; / &lt;super&gt; XMLタグを使うよう厳密に注意喚起</li>
+<li>フォーム入力手順は FORMS.md、高度なpypdfium2/pdf-lib解説は REFERENCE.md へ分離し、オンデマンド読込に対応</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-pptx" data-cat="docs">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>pptx</code></h4>
+              <span class="badge badge-docs">ドキュメント作成系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>document-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/pptx/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>pptxgenjs によるプレゼンテーションの新規作成と、既存 .pptx / .potx テンプレートのXML編集によるスライド生成・更新を行い、視覚的QAまで徹底するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>pptxgenjs を用いた16:9 / ワイド画面のスライド生成、ネイティブチャート（addChart）・アイコン（react-icons→PNG化）・スピーカーノート挿入</li>
+<li>thumbnail.py でテンプレートの全スライド一覧グリッド画像を作成し、適切なレイアウトを選定</li>
+<li>add_slide.py / clean.py / validate.py を用いたスライド複製・削除・孤立リソース整理・OOXML検証</li>
+<li>markitdown によるテキスト・ノート抽出、および LibreOffice + pdftoppm による全スライド画像化QA</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>企画書やピッチデックをゼロから作りたいとき、または会社の公式PowerPointテンプレートに沿って複数スライドを自動生成したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>営業・企画職、経営層向け資料作成者、定例報告や提案スライドを効率化したいチーム</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>色設計は「1つの主色が60〜70%の視覚的重み」を原則とし、タイトル下の装飾線やカードの端のカラーバーなど「AIっぽい装飾」を明確に禁止</li>
+<li>pptxgenjsの落とし穴（色コードに#を付けない、オプションオブジェクトを使い回さない、stacked barのdataLabelPosition制約等）を網羅</li>
+<li>LibreOfficeでのフォント置換による文字はみ出し誤判定を防ぐため、安全フォント（Arial, Calibri, Cambria等）と非推奨フォント（Aptos等）を明記</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-xlsx" data-cat="docs">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>xlsx</code></h4>
+              <span class="badge badge-docs">ドキュメント作成系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>document-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/xlsx/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>openpyxl と pandas を使い分け、動的数式や財務モデリング規約に準拠したExcelブックの作成・編集・クレンジング・再計算検証を行うスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>openpyxl を用いた数式・条件付き書式・セル配色・表示形式付きの本格的なExcelブック作成</li>
+<li>pandas による大容量表データの高速読込・クレンジング・変換、および markitdown によるシート構造の素早い把握</li>
+<li>scripts/recalc.py（LibreOffice連携）を用いた全数式の再計算キャッシュ生成とエラー（#REF!, #DIV/0!, #NAME?等）のゼロ検証</li>
+<li>財務モデル標準のカラーコーディング（青=手入力、黒=数式、緑=他シート参照、赤=外部リンク、黄塗=主要前提）の自動適用</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>予算表・売上予測・財務モデルなど「入力値を変えれば再計算されるExcel」を作りたいとき、または乱雑なCSV/Excelを整形したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>経理・財務・経営企画担当者、データ分析者、スプレッドシート業務を自動化したいビジネスパーソン</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「計算結果のベタ打ち禁止・必ずExcel数式（=SUM()等）を書く」ことを絶対ルール化</li>
+<li>LibreOfficeで #NAME? になる XLOOKUP / FILTER / UNIQUE 等を禁止し、INDEX/MATCH や Excel 2007互換関数（または _xlfn. プレフィックス）を推奨</li>
+<li>openpyxl の data_only=True 読込後に保存すると数式が消える罠や、外部リンク消失への警告を詳細に記載</li></ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+      <div class="cat-group" id="group-design">
+        <div class="cat-group-header">
+          <h3>デザイン・クリエイティブ系（Creative &amp; Design）</h3>
+          <p>ジェネラティブアート、ポスター、Slack用GIF、テーマ適用、ブランド統一、フロントエンドUI設計を担う6スキルです。</p>
+        </div>
+        <div class="cards-stack">
+          
+        <article class="skill-card" id="skill-algorithmic-art" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>algorithmic-art</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/algorithmic-art/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>まず「アルゴリズム哲学（.md）」を宣言してから、その思想を p5.js のコード（単一HTMLビューア）として具現化する2段階のクリエイティブコーディングスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>Organic Turbulence や Quantum Harmonics のような計算美学のマニフェスト（4〜6段落の.md）の作成</li>
+<li>templates/viewer.html を土台とした、シード値ナビゲーション（Prev/Next/Random/Jump）付きの単一HTMLアーティファクト生成</li>
+<li>パーリンノイズ・フローフィールド・パーティクル・再帰分割などをパラメータスライダーでリアルタイム調整できるUI構築</li>
+<li>同一シードによる完全な再現性（randomSeed / noiseSeed）とPNGダウンロード機能の実装</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>壁紙・イベントビジュアル・アート作品として、パラメータを変えて何通りも試せるコードベースのアートを作りたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>クリエイティブコーダー、ジェネラティブアートに関心のあるデザイナー、Web上で動くアート実験をしたい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>静止画テンプレートではなく「生きたアルゴリズム（90%が計算生成、10%が調整可能パラメータ）」であることを強調</li>
+<li>STEP 0 として templates/viewer.html を必ず先に読み込み、AnthropicブランドのサイドバーUI（Seed→Parameters→Actions）を維持するよう厳格に指示</li>
+<li>p5.jsはCDN経由で読み込みつつ、それ以外のJS/CSSをすべて1つのHTMLファイルにインライン化する構成</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-canvas-design" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>canvas-design</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/canvas-design/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>コードベースのアートではなく、空間・余白・色彩・タイポグラフィを重視した「90%ビジュアル・10%最小限テキスト」の静止画アート（.png / .pdf）を2段階で制作するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>Brutalist Joy や Geometric Silence などの視覚哲学マニフェスト（.md）の策定</li>
+<li>./canvas-fonts ディレクトリ内の多様なフォントを活用した、タイポグラフィ自体がアートの一部となるレイアウト生成</li>
+<li>文字のはみ出しや重なりを徹底排除した高精細な1ページPNG/PDFアートワークの出力</li>
+<li>要望に応じた複数ページ（コーヒーテーブルブック風）のPDFシリーズ展開と2パス目の磨き込み（Refinement）</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>イベントポスター、表紙グラフィック、抽象的なコンセプトビジュアルなど、文字説明に頼らない洗練された一枚絵を作りたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>グラフィックデザイナー、イベント企画者、プレゼン表紙やSNS用の洗練されたビジュアルが欲しい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>特定アーティストの作風模倣を避けつつ、反復パターン・余白・極小の臨床的ラベルで「人間が何時間もかけて仕上げたような工芸品品質」を要求</li>
+<li>Final Step で「新しい要素を足すな、既存の構成を研ぎ澄ませ（2パス目）」と自己批評・洗練プロセスを組み込んでいる点が特徴</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-slack-gif-creator" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>slack-gif-creator</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/slack-gif-creator/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>Slackのファイルサイズ・解像度・フレームレート制約に合わせて、Python（Pillow / imageio / numpy）と内蔵ユーティリティで滑らかなGIFアニメを作成するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>絵文字用（128×128、3秒以内）およびメッセージ用（480×480）のSlack規定サイズでのGIF生成</li>
+<li>core.gif_builder（GIFBuilder）によるフレーム組み立て、色数削減（48〜128色）、重複フレーム除去による軽量化</li>
+<li>core.easing の7種イージング関数（bounce_out, elastic_out, back_out等）を使った滑らかな動き</li>
+<li>core.validators（validate_gif / is_slack_ready）によるSlack適合性の自動チェック</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>チームのSlackで使うオリジナル絵文字や、お祝い・リアクション用の軽量アニメーションGIFを素早く作りたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>開発チーム・コミュニティ運営者、Slackのリアクション文化を盛り上げたいメンバー</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>Shake、Pulse、Bounce、Spin、Fade、Slide、Zoom、Particle Burst の8つの基本アニメーション設計パターンを解説</li>
+<li>環境依存で崩れる絵文字フォントの使用を禁止し、太めの線（width&gt;=2）やグラデーション・ハイライトを重ねたPILプリミティブ描画を推奨</li>
+<li>ユーザーが画像をアップロードした場合は、それを直接アニメ化するか着想元として扱うかを柔軟に判断</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-theme-factory" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>theme-factory</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/theme-factory/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>スライド、ドキュメント、HTMLレポートなどあらゆる成果物に対し、厳選された10種類のプリセットテーマ（カラーパレット＋フォントペアリング）または即席のカスタムテーマを適用するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>theme-showcase.pdf で視覚的に確認できる10種類の公式プリセットテーマの提案・適用</li>
+<li>各テーマの正確なHEXカラーコードとフォント組み合わせ（見出し＋本文）の適用</li>
+<li>既存テーマが合わない場合の、用途に応じた新規カスタムテーマのオンザフライ生成</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>プレゼン資料やWebページの配色が毎回ばらつくとき、または題材に合った統一感のあるデザインシステムを素早く当てたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>資料作成者、フロントエンド開発者、デザイン知識がなくても見栄えの良い統一感を出したい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>10種のプリセット名を明記（Ocean Depths, Sunset Boulevard, Forest Canopy, Modern Minimalist, Golden Hour, Arctic Frost, Desert Rose, Tech Innovation, Botanical Garden, Midnight Galaxy）</li>
+<li>themes/ フォルダ内の個別テーマ定義ファイルを参照し、まずユーザーにテーマを選ばせてから適用する対話フローを規定</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-brand-guidelines" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>brand-guidelines</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/brand-guidelines/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>Anthropicの公式ブランドアイデンティティ（HEXカラーコードとフォント階層）を、PowerPoint・ドキュメント・HTMLなどの成果物に正確に適用するためのスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>メインカラー（Dark #141413, Light #faf9f5, Mid Gray #b0aea5, Light Gray #e8e6dc）の正確な適用</li>
+<li>アクセントカラー（Orange #d97757, Blue #6a9bcc, Green #788c5d）の図形・強調要素への循環適用</li>
+<li>見出し（24pt以上）に Poppins、本文に Lora を設定し、未インストール環境では Arial / Georgia へ自動フォールバック</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>Anthropic公式風の資料・HTMLを作りたいとき、または自社ブランドガイドラインをスキル化する際の実装見本（リファレンス）として参照したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>Anthropic関連資料の作成者、自社のブランドガイドラインスキルを自作したいデザインシステム担当者</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>python-pptx の RGBColor クラスを用いた厳密な色指定と、背景色に応じた文字色の自動コントラスト調整を解説</li>
+<li>フォントとカラー値のみを提供し、ロゴ画像アセット自体は別プロセスである点を明確化（自社ブランド用に書き換えるベースとしても有用）</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-frontend-design" data-cat="design">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>frontend-design</code></h4>
+              <span class="badge badge-design">デザイン・クリエイティブ系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>AIが生成しがちな画一的デザイン（いわゆるAIスロップ）を徹底的に避け、題材の文脈に根ざした独自性・タイポグラフィ・レイアウト設計でWebフロントエンドを構築する指針スキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>配色やコンポーネントを決める前に、対象ドメイン・題材の本質からデザイン方向性を導出する設計プロセス</li>
+<li>意図的な書体選びと明確なタイプスケール、見出し組版そのものをデザイン要素とするレイアウト構成</li>
+<li>「計画 → 要件との照合 → 実装 → 自己批評」のワークフローによる視覚的・機能的ブラッシュアップ</li>
+<li>過剰な装飾やテンプレート的定型句を避けた、自然で会話的なエラー・空状態（Empty State）の設計</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>Webアプリ、ランディングページ、ダッシュボードをHTML/CSS/JSやReactで作る際、「よくあるAIっぽい画面」から脱却したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>フロントエンドエンジニア、UI/UXデザイナー、個人開発者、高品質なWeb画面を素早く組みたい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「クリーム色背景＋高コントラストセリフ＋テラコッタ」「ほぼ黒背景＋1色アシッドカラー」「同一角丸のSaaSカード並び」「全角大文字アイブロウ＋中黒メタ情報」などを具体的な『今のAIっぽさ』として列挙・警戒</li>
+<li>CSSの特異性（Specificity）の落とし穴や、番号付きマーカーは本当に順序がある時だけ使うなど構造的誠実さを指示</li></ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+      <div class="cat-group" id="group-dev">
+        <div class="cat-group-header">
+          <h3>開発・技術支援系（Development &amp; Technical）</h3>
+          <p>Claude API開発、MCPサーバー構築、スキル自体の作成・評価、Reactアプリ化、Playwright自動テストを扱う5スキルです。</p>
+        </div>
+        <div class="cards-stack">
+          
+        <article class="skill-card" id="skill-claude-api" data-cat="dev">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>claude-api</code></h4>
+              <span class="badge badge-dev">開発・技術支援系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>claude-api（単独プラグイン）</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/claude-api/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>Anthropic公式SDK（Python, TypeScript, Go, Java等8言語＋cURL）を用いたアプリケーション開発において、最新モデル選定、Adaptive Thinking、Tool Use、構造化出力、コスト最適化を導く技術スキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>用途別の推奨モデル選定（Fable 5.1 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5）と旧モデルからのマイグレーション支援</li>
+<li>Adaptive Thinking（thinking: {type: &#x27;adaptive&#x27;}）や Effort段階（low〜max）、構造化出力（output_config.format）の実装</li>
+<li>自動Tool Runner・手動エージェントループ・Files API・ストリーミングのベストプラクティス提供</li>
+<li>Prompt Caching やバッチ処理、Eval Hillclimbing（評価駆動の精度改善）による本番運用最適化</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>Claude APIを組み込んだアプリやAIエージェントを新規開発・移行するとき、またはトークンコスト削減やレスポンス安定化を図りたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>AIアプリケーション開発者、バックエンドエンジニア、Claude APIを本番導入・運用するチーム</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>本文約75KB・常駐約470トークンと公式19スキル中で最大級の情報量を持ち、shared/ 配下にモデル移行・コスト最適化・Eval手法などの詳細ドキュメントを格納</li>
+<li>「単一API呼出 → Tool Useワークフロー → 自律エージェント」という判断ツリーを提示し、過剰なエージェント化を抑制</li>
+<li>デフォルトモデルとして claude-opus-5-5 を指定するなど、最新のAPI仕様に追従して継続更新されている</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-mcp-builder" data-cat="dev">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>mcp-builder</code></h4>
+              <span class="badge badge-dev">開発・技術支援系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/mcp-builder/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>外部APIやサービスをLLMから安全・確実に呼び出せるMCPサーバーを、調査設計→実装→MCP Inspectorテスト→10問の評価セット作成の4フェーズで構築するガイドスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>TypeScript（SDK v2: @modelcontextprotocol/server 推奨）または Python（FastMCP）でのMCPサーバー構築</li>
+<li>Streamable HTTP（リモート・ステートレスJSON）および stdio（ローカル）トランスポートの実装</li>
+<li>Zod / Pydantic による厳格な入出力スキーマ、ページネーション、JSON/Markdownレスポンス切替、Annotations（readOnlyHint等）の付与</li>
+<li>MCP Inspector での動作確認と、10問の複雑・読み取り専用・検証可能なXML評価セット（&lt;evaluation&gt;）の作成</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>社内システム、SaaS、独自データベースをClaudeや他のMCP対応エージェントから操作できるようにしたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>AI基盤エンジニア、社内ツール連携を担当する開発者、MCPサーバーを公開したいOSS作者</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>TypeScript SDK v2（@modelcontextprotocol/server）と旧v1（@modelcontextprotocol/sdk）の混在を厳禁とし、v1既存プロジェクトの扱いも明記</li>
+<li>「高度なワークフローツールより、まず包括的なAPIカバレッジを優先」「エージェントが次の手を打てるアクショナブルなエラーメッセージ」を設計原則化</li>
+<li>modelcontextprotocol.io のサイトマップから最新仕様（.md形式）をWebFetchして参照する手順を内蔵</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-skill-creator" data-cat="dev">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>skill-creator</code></h4>
+              <span class="badge badge-dev">開発・技術支援系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>独自のAgent Skillをゼロから設計するだけでなく、テストケース（evals.json）を使ったスキル有無の並列比較評価や、発火トリガー（description）の自動最適化ループまで回せるメタスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>段階的開示（Metadata / SKILL.md 500行以内 / Bundled Resources）に沿った新スキルの設計と作成</li>
+<li>evals/evals.json に基づく「スキルあり vs なし」の並列実行・定量的グレーディング・ベンチマーク集計</li>
+<li>eval-viewer/generate_review.py によるブラウザ上の人間レビューUIの生成</li>
+<li>run_loop.py を用いた description の発火精度最適化（20クエリを60%訓練 / 40%テストに分割し最大5イテレーション）</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>業務手順を自分専用・チーム専用のスキルとしてパッケージ化したいとき、または作ったスキルが意図通り自動発火しない原因を改善したいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>スキル開発者、チームのAI活用を推進するテックリード、エージェントの再現性を高めたい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「なぜ（Why）」を説明し、硬直したMUST/NEVERの羅列よりモデルが判断できる余地を残す執筆原則を解説</li>
+<li>常駐コストを抑えるため description は短く、ただし発火漏れを防ぐために少し「pushy（積極的）」に書くべきという実践知を提示</li>
+<li>SKILL.mdは485行・約33KBと19スキル中で最大級の分量だが、descriptionが353字のため常駐コストは約110トークンと軽量</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-web-artifacts-builder" data-cat="dev">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>web-artifacts-builder</code></h4>
+              <span class="badge badge-dev">開発・技術支援系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/web-artifacts-builder/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>状態管理や複雑なUI部品が必要なリッチなWebアプリを、React 18 + TypeScript + Vite + Tailwind CSS + 40以上のshadcn/uiコンポーネントで開発し、Parcelで1つのHTMLファイルに固めるスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>scripts/init-artifact.sh による React 18 / TypeScript / Vite / Tailwind CSS 3.4.1 / shadcn/ui 環境の即時初期化</li>
+<li>Radix UIベースの40種類以上のshadcn/uiコンポーネントを用いた高度なUI実装</li>
+<li>scripts/bundle-artifact.sh（Parcel + html-inline）による全JS/CSSの単一 bundle.html へのインライン化</li>
+<li>ClaudeのArtifacts表示やローカルブラウザでサーバー不要のまま即座に動作する成果物出力</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>素のHTML/CSSだけでは書きづらい、タブ・モーダル・テーブル・複雑な状態管理を持つ対話型プロトタイプやツールを作りたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>プロトタイピングを行うPM・デザイナー、クライアント完結型のWebツールを素早く配りたいエンジニア</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>シンプルな単一ファイルで済む場合はデフォルト機能に任せ、複雑なマルチコンポーネント時のみ本スキルを使う住み分けを明示</li>
+<li>frontend-design と同様に「中央寄せ過多・紫グラデーション・画一的な角丸・Interフォント」などのAIスロップ回避を強く指示</li>
+<li>テストは最初から走らせず、まず成果物をユーザーに提示してから必要に応じて行うことでレイテンシを抑える設計</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-webapp-testing" data-cat="dev">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>webapp-testing</code></h4>
+              <span class="badge badge-dev">開発・技術支援系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/webapp-testing/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>ローカルで開発中の静的HTMLや動的Webアプリ（フロント＋バックエンド複数サーバー含む）に対し、Python版Playwrightを使って自動操作・スクリーンショット検証・デバッグを行うスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>scripts/with_server.py による開発サーバーの自動起動・ポート待機・テスト後の確実な終了管理（複数サーバー同時起動対応）</li>
+<li>動的Webアプリに対する「偵察後行動（Reconnaissance-then-action）」パターンによる確実なセレクタ特定</li>
+<li>headless Chromium でのスクリーンショット取得、DOM構造確認、コンソールエラーログの自動収集</li>
+<li>examples/ 配下の要素発見・ローカルHTML・ログ取得サンプルの活用</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>自分が書いたWebアプリの画面表示崩れやボタン動作、JSエラーをAIに実ブラウザ上で自動チェックさせたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>Webアプリ開発者、AIコーディング時の自動動作確認（QAループ）を組み込みたいエンジニア</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「with_server.py などの同梱スクリプトはソースを読んでコンテキストを汚さず、まず --help を叩いてブラックボックスとして実行せよ」と明記</li>
+<li>動的SPAでは必ず page.wait_for_load_state(&#x27;networkidle&#x27;) を待ってからDOM検査・スクリーンショットを撮ることを鉄則化</li></ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+      <div class="cat-group" id="group-enterprise">
+        <div class="cat-group-header">
+          <h3>企業・業務ワークフロー系（Enterprise &amp; Communication）</h3>
+          <p>複数人で読む仕様書・提案書の共著や、社内定型コミュニケーションの効率化を担う2スキルです。</p>
+        </div>
+        <div class="cards-stack">
+          
+        <article class="skill-card" id="skill-doc-coauthoring" data-cat="enterprise">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>doc-coauthoring</code></h4>
+              <span class="badge badge-enterprise">企業・業務ワークフロー系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/doc-coauthoring/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>「仕様書を書いて」と丸投げするのではなく、書き手の頭の中にある背景・制約を引き出し、セクションごとに案を絞って執筆し、最後に『何も知らないAI』に読ませて穴を潰す3段階の共著ワークフローです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>Stage 1（Context Gathering）: 目的・読者・制約の5質問と情報の吐き出し（Slack/Drive連携も活用）、5〜10個の明確化質問による背景補完</li>
+<li>Stage 2（Refinement &amp; Structure）: 未確定要素の多い節から順に「質問→5〜20案のブレスト→取捨選択（Keep/Remove/Combine）→部分置換による推敲」</li>
+<li>Stage 3（Reader Testing）: 会話履歴を持たない新鮮なClaude（またはサブエージェント）に文書と想定質問だけを渡し、曖昧さや暗黙の前提を検出</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>複数の関係者が読むPRD、設計書、RFC、稟議・意思決定ドキュメントなど、論理の抜けや前提のズレを許したくない重要文書を書くときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>プロダクトマネージャー、テックリード、企画立案者、質の高い設計書・提案書を書きたいビジネス職</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「3回連続で大きな修正がなければ、削っても情報が失われない箇所がないか問う」品質ゲートを内蔵</li>
+<li>最初はユーザーに直接文書を編集させず言葉で修正指示を出させることで、Claudeが書き手の文体・好みを学習する設計</li>
+<li>共有文書にalt-textのない画像があれば、AIが読めないため説明文生成を提案する細やかな配慮を含む</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-internal-comms" data-cat="enterprise">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>internal-comms</code></h4>
+              <span class="badge badge-enterprise">企業・業務ワークフロー系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>example-skills</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/internal-comms/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>企業内の情報共有でよく使われる定型フォーマット（3Pアップデート、全社ニュースレター、FAQ、ステータス報告、障害報告書など）に沿って、簡潔で読みやすい社内文書を作成するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>3P Updates（Progress / Plans / Problems）形式でのチーム進捗・課題共有レポートの作成</li>
+<li>Company Newsletter（全社向けニュースレター）やリーダーシップ向けアップデートの構成・執筆</li>
+<li>FAQ回答集、プロジェクト更新、インシデント（障害）レポートのテンプレート準拠生成</li>
+<li>該当しない形式の場合はユーザーにフォーマットやトーンを確認して適応</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>毎週のチーム報告、全社アナウンス、社内向けFAQ、障害発生後のポストモーテム報告書を組織の型に合わせて素早く書きたいときに使います。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>マネージャー、広報・総務・情報システム担当、週次報告や社内展開を効率化したいリーダー層</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>SKILL.md自体はスリムなルーターとして機能し、依頼内容に応じて examples/ 配下の4つのガイドライン（3p-updates.md, company-newsletter.md, faq-answers.md, general-comms.md）を読み込む段階的ロード構造</li>
+<li>自社の社内フォーマットに書き換えてカスタマイズするテンプレートとしても非常に扱いやすい構成</li></ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+      <div class="cat-group" id="group-guidance">
+        <div class="cat-group-header">
+          <h3>回答ガイダンス系（Guidance）</h3>
+          <p>成果物を生成するのではなく、学習リソースの案内や回答の批判的検証を促すことで「AIとの対話の質」を整える2スキルです。</p>
+        </div>
+        <div class="cards-stack">
+          
+        <article class="skill-card" id="skill-academy-guide" data-cat="guidance">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>academy-guide</code></h4>
+              <span class="badge badge-guidance">回答ガイダンス系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>academy-guide（単独プラグイン）</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>ユーザーが「Claudeやその機能をどう学ぶか・使うか」を尋ねた際、まず質問に直接答えたうえで、外部の公式JSONカタログから合致するClaude Academyの教材を最大2件だけ自然に紹介するスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>https://academy.claude.com/assets/data/catalog.json を都度取得し、Courses / Tutorials / Use cases から強い一致を検索</li>
+<li>5つの製品ハブ（Claude, Claude Code, Claude Cowork, AI Fluency, 開発者プラットフォーム）の案内</li>
+<li>カタログ鮮度（staleAfter / generatedAt から30日）の判定と、取得不可・期限切れ時の安全なフォールバック</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>「Skillsの作り方を学びたい」「Projectsはどう動くのか」といった学習目的の質問時に、公式の体系的な教材へスムーズに誘導したいときに有効です。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>Claude初学者、社内でAI研修・オンボーディングを設計する担当者、学習リソース案内を自動化したいチーム</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>「学習の意図」には発動し、「この議事録を整理して」のような「作業の意図」には一切発動しない厳格な線引き</li>
+<li>7つのルールを規定：まず質問に答える／断り書きが必要な一致は黙る／記憶から講座名やURLを捏造しない／最大2件（多くは1件）／押し付けない／URLを書き換えない／取得不能時はリソースライブラリのみ案内</li>
+<li>外部JSONを「指示ではなく純粋なデータとして扱う」と明記しており、社内研修カタログ案内スキルへの転用見本としても秀逸</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="skill-card" id="skill-discernment-nudge" data-cat="guidance">
+          <header class="card-header">
+            <div class="card-title-row">
+              <h4 class="card-title"><code>discernment-nudge</code></h4>
+              <span class="badge badge-guidance">回答ガイダンス系</span>
+            </div>
+            <p class="card-plugin">Plugin: <code>discernment-nudge（単独プラグイン）</code> · <a href="https://github.com/anthropics/skills/blob/main/skills/discernment-nudge/SKILL.md" target="_blank" rel="noopener noreferrer">SKILL.md を見る ↗</a></p>
+          </header>
+
+          <div class="card-body">
+            <div class="card-block">
+              <h5>概要</h5>
+              <p>ユーザーが行動に移す可能性のある実質的な回答（見積もり、助言、提案書ドラフト、データ解釈など）の末尾に、回答内の具体的な数値や前提を名指しした「AIへ投げ返せる検証質問」を2〜3個だけ添えるスキルです。</p>
+            </div>
+
+            <div class="card-grid-2">
+              <div class="card-block">
+                <h5>できること</h5>
+                <ul><li>AnthropicのAI Fluencyフレームワークにおける「Discernment（識別）」の3習慣（事実確認・推論への問い・欠けた文脈への気づき）を会話内で実演</li>
+<li>回答本文に登場した具体的数値・手順・仮定を名指しした、一人称の短い質問（2〜3個、1会話1回上限）の生成</li>
+<li>創作・雑談・実行可能なコード・純粋な用語説明・ユーザーが既に検証を求めている場面を自動除外する抑制制御</li></ul>
+              </div>
+              <div class="card-block">
+                <h5>使う場面</h5>
+                <p>事業計画の売上試算、戦略助言、意思決定の材料出しなど、整ったAIの回答をそのまま鵜呑みにすると危険な場面での安全弁として常時入れておくと有効です。</p>
+                <h5 class="mt-sm">向いているユーザー</h5>
+                <p>経営・企画・意思決定層、リサーチや数値試算にAIを使うユーザー、クリティカルシンキングを習慣化したい人</p>
+              </div>
+            </div>
+
+            <div class="card-block skill-md-box">
+              <h5><code>SKILL.md</code> の中身の要点</h5>
+              <ul><li>全209行のうち発動条件は29行、黙る（抑制）条件が94行（約3.2倍）を占め、「いつ余計なことを言わないか」の設計に注力</li>
+<li>「掘り下げましょうか？」型の誘導や、見出し・枠線・絵文字・引用ブロックによる大げさな警告表示を禁止し、プレーンな箇条書きとして軽く添える仕様</li>
+<li>単独プラグインとして提供され、常駐コストは約317トークン</li></ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+      </section>
+
+      <!-- 4. 活用の観点 -->
+      <section class="section-panel" id="perspectives">
+        <div class="section-header">
+          <span class="section-num">Section 04</span>
+          <h2>活用の観点とClaude以外での利用設計</h2>
+        </div>
+
+        <div class="perspective-grid">
+          <div class="perspective-card">
+            <h3>カテゴリ別の使い分けと相乗効果</h3>
+            <ul>
+              <li><strong>ドキュメント作成系（4種）:</strong> 「数式・XML検証・画像化目視QA」を組み込んだ実務エンジン。<code>doc-coauthoring</code> で構成を練り、<code>docx</code> や <code>pptx</code> で仕上げる連携が強力です。</li>
+              <li><strong>デザイン・クリエイティブ系（6種）:</strong> 実装前に「哲学（.md）」や「テーマ」を宣言させることで、AI特有の画一的な出力（AIスロップ）を防ぎます。</li>
+              <li><strong>開発・技術支援系（5種）:</strong> <code>skill-creator</code> でスキルを育て、<code>webapp-testing</code> で実ブラウザ検証を回す「自己検証ループ」の構築に適しています。</li>
+              <li><strong>回答ガイダンス系（2種）:</strong> 成果物ではなく「回答の振る舞い」を補正するメタ的なスキル。常駐トークンと自動発火のバランスを見ながら導入します。</li>
+            </ul>
+          </div>
+
+          <div class="perspective-card">
+            <h3>公式スキルに共通する設計パターン</h3>
+            <ul>
+              <li><strong>スクリプトのブラックボックス実行:</strong> 複雑な処理（<code>recalc.py</code> や <code>with_server.py</code>）はAIにコードを読ませずコマンド実行させ、コンテキストを節約しています。</li>
+              <li><strong>「やらないこと（抑制条件）」の明記:</strong> <code>discernment-nudge</code> や <code>academy-guide</code> に見られる通り、発動条件以上に「いつ黙るか」を細かく定義することで実務の邪魔を防いでいます。</li>
+              <li><strong>視覚・構造バリデーションの必須化:</strong> 出力して終わりではなく、<code>validate.py</code> や LibreOffice→画像化チェックをワークフローに強制しています。</li>
+            </ul>
+          </div>
+
+          <div class="perspective-card">
+            <h3>Claude以外（ChatGPT / Codex / Gemini等）での活用</h3>
+            <p>
+              <code>SKILL.md</code> はオープン仕様（<code>agentskills.io</code>）であるため、他社エージェントでもそのまま再利用できます。ただし移植性を高めるには以下の点に注意が必要です。
+            </p>
+            <ul>
+              <li><strong>配置ディレクトリの違い:</strong> Codex CLI・Gemini CLI・Cursor・GitHub Copilot は共通の <code>.agents/skills/</code> を参照します（Claude Code は <code>.claude/skills/</code> を参照）。両方で使う場合はシンボリックリンク等で共有すると管理が容易です。</li>
+              <li><strong>フロントマターを標準6項目に限定:</strong> 必須の <code>name</code>（64字以内）・<code>description</code>（1,024字以内）と、任意の <code>license</code> / <code>compatibility</code> / <code>metadata</code> / <code>allowed-tools</code> に留めると、他ツールや <code>skills-ref</code> 検証でエラーになりません。</li>
+            </ul>
+          </div>
+
+          <div class="perspective-card">
+            <h3>導入時の運用・セキュリティ上の注意</h3>
+            <ul>
+              <li><strong>常駐トークンの意識:</strong> セッション開始時に読み込まれるのは <code>description</code> です。自動発動型スキルを大量に入れると常駐トークン（19種合計で約3,360トークン目安）が増えるため、使わないプラグインは無効化しておくと軽快です。</li>
+              <li><strong>外部スキルの事前確認:</strong> スキルはエージェントの実行権限（コマンド実行やファイル読取）をそのまま継承します。第三者製スキルを導入する際は、必ず事前に <code>SKILL.md</code> と <code>scripts/</code> の中身を確認してください。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 出典 -->
+      <section class="section-panel" id="sources">
+        <div class="section-header">
+          <span class="section-num">Section 05</span>
+          <h2>出典・参照した一次情報</h2>
+        </div>
+        <ul class="sources-list">
+          <li><strong>Anthropic公式リポジトリ:</strong> <a href="https://github.com/anthropics/skills" target="_blank" rel="noopener noreferrer">https://github.com/anthropics/skills</a>（README.md、および <code>skills/&lt;スキル名&gt;/SKILL.md</code> 各ファイル）</li>
+          <li><strong>プラグイン定義ファイル:</strong> <a href="https://github.com/anthropics/skills/blob/main/.claude-plugin/marketplace.json" target="_blank" rel="noopener noreferrer">https://github.com/anthropics/skills/blob/main/.claude-plugin/marketplace.json</a>（全19スキルの5プラグイン分類）</li>
+          <li><strong>Agent Skills 公式仕様:</strong> <a href="https://agentskills.io/home" target="_blank" rel="noopener noreferrer">https://agentskills.io/home</a>（段階的開示・標準フォーマット・対応クライアント一覧）</li>
+          <li><strong>スキル別 SKILL.md ミラー参照（AgenticSkills）:</strong> <code>algorithmic-art</code> / <code>brand-guidelines</code> / <code>canvas-design</code> / <code>doc-coauthoring</code> / <code>docx</code> / <code>internal-comms</code> / <code>mcp-builder</code> / <code>pdf</code> / <code>pptx</code> / <code>slack-gif-creator</code> / <code>web-artifacts-builder</code> / <code>webapp-testing</code> / <code>xlsx</code>（<a href="https://agenticskills.io/" target="_blank" rel="noopener noreferrer">https://agenticskills.io/</a> 各スキルページ）</li>
+          <li><strong>日本語による一次ソース検証解説（追加スキル・トークン実測等）:</strong> <a href="https://claude-world.com/ja/articles/anthropic-official-skills-complete-guide/" target="_blank" rel="noopener noreferrer">Claude World（19スキル全体解説）</a>、<a href="https://ai-heartland.com/explain/discernment-nudge-skill-anthropic/" target="_blank" rel="noopener noreferrer">AI Heartland（discernment-nudge / 常駐トークン実測）</a>、<a href="https://claude-media.com/articles/claude-academy-guide-skill" target="_blank" rel="noopener noreferrer">Claude Media（academy-guide 構造解説）</a>、<a href="https://www.claude-code-lab.com/blog/claude-code-agent-skills-open-standard" target="_blank" rel="noopener noreferrer">Claude Code研究所（AAIF寄贈と他エージェント互換実測）</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    Anthropic公式 Agent Skills（anthropics/skills）全19種 解説ガイド · 自己完結HTML（外部CDN非依存）
+  </footer>
+
+  <script>
+    (function () {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const searchInput = document.getElementById('skillSearch');
+      const tableRows = document.querySelectorAll('#skillsTable tbody tr');
+      const skillCards = document.querySelectorAll('.skill-card');
+      const catGroups = document.querySelectorAll('.cat-group');
+
+      let activeCat = 'all';
+      let searchTerm = '';
+
+      function applyFilters() {
+        const term = searchTerm.trim().toLowerCase();
+
+        tableRows.forEach(row => {
+          const catMatch = activeCat === 'all' || row.dataset.cat === activeCat;
+          const textMatch = !term || row.textContent.toLowerCase().includes(term);
+          row.classList.toggle('hidden', !(catMatch && textMatch));
+        });
+
+        skillCards.forEach(card => {
+          const catMatch = activeCat === 'all' || card.dataset.cat === activeCat;
+          const textMatch = !term || card.textContent.toLowerCase().includes(term);
+          card.classList.toggle('hidden', !(catMatch && textMatch));
+        });
+
+        catGroups.forEach(group => {
+          const visibleCards = group.querySelectorAll('.skill-card:not(.hidden)');
+          group.style.display = visibleCards.length > 0 ? '' : 'none';
+        });
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCat = btn.dataset.filter;
+          applyFilters();
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        applyFilters();
+      });
+    })();
+  </script>
+</body>
+</html>

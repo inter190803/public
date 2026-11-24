@@ -12,5 +12,6 @@
 - [Microsoft Copilot Autopilot 完全網羅リサーチ＆導入戦略ガイド（2026年11月最新）](https://inter190803.github.io/public/gemini/2026-11-22_Copilot_Autopilot_網羅調査資料.html) (`gemini/2026-11-22_Copilot_Autopilot_網羅調査資料.html`)
 - [MDE × KQL ネットワーク・AD障害切り分け＆パッチ帯域可視化 完全ガイド](https://inter190803.github.io/public/gemini/2026-11-23_MDE_KQL_ネットワーク・AD障害切り分け完全ガイド_完全自己完結版.html) (`gemini/2026-11-23_MDE_KQL_ネットワーク・AD障害切り分け完全ガイド_完全自己完結版.html`)
 - [M365 Copilot × Gemini Enterprise ハイブリッド・ハーネス設計書（2026年版）](https://inter190803.github.io/public/gemini/2026-11-23_copilot-hybrid-harness-architecture.html) (`gemini/2026-11-23_copilot-hybrid-harness-architecture.html`)
+- [Anthropic公式 Agent Skills 全19種 完全解説ガイド](https://inter190803.github.io/public/gemini/2026-11-24_anthropic-skills-guide.html) (`gemini/2026-11-24_anthropic-skills-guide.html`)
 - [2026年11月 Copilot 関連アップデート総まとめ｜Microsoft Ignite 2026 以降](https://inter190803.github.io/public/gemini/2026-11-24_copilot-november-2026-roundup.html) (`gemini/2026-11-24_copilot-november-2026-roundup.html`)
 - [Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート](https://inter190803.github.io/public/reports/copilot-workspaces-research.html) (`reports/copilot-workspaces-research.html`)
