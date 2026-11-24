@@ -17,4 +17,5 @@
 - [Google 公式 Agent Skills 完全ガイド — google/skills (219件) & google-gemini/gemini-skills (4件) 徹底解説](https://inter190803.github.io/public/gemini/2026-11-25_google-skills-guide.html) (`gemini/2026-11-25_google-skills-guide.html`)
 - [Microsoft 公式 Agent Skills 完全ガイド — microsoft/skills (Skills / MCP / Custom Agents / Prompts) 徹底解説](https://inter190803.github.io/public/gemini/2026-11-25_microsoft-skills-guide.html) (`gemini/2026-11-25_microsoft-skills-guide.html`)
 - [OpenAI 公式 Agent Skills 完全ガイド — openai/skills 全スキル体系解説](https://inter190803.github.io/public/gemini/2026-11-25_openai-skills-guide.html) (`gemini/2026-11-25_openai-skills-guide.html`)
+- [購入した本 5冊（2026年11月24日）](https://inter190803.github.io/public/guff/2026-11-25_purchased-books.html) (`guff/2026-11-25_purchased-books.html`)
 - [Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート](https://inter190803.github.io/public/reports/copilot-workspaces-research.html) (`reports/copilot-workspaces-research.html`)
