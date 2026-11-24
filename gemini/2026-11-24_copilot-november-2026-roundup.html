@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年11月 Copilot 関連アップデート総まとめ｜Microsoft Ignite 2026 以降</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Utilitarian Deep Research · Answer-First Compact Hero · 12-Col Fluid Grid · Plus Jakarta Sans + Noto Sans JP + JetBrains Mono · Crisp Gallery White (#FFFFFF) + Cobalt (#0F62FE / #0043CE) · 0px Radius · Single Hero Emphasis · Full-Bleed Action Band · Horizontal Comparison & Status SVG Charts */
+:root {
+  --paper: #FFFFFF;
+  --band: #F4F6F8;
+  --ink: #111418;
+  --ink2: #2D343E;
+  --mute: #4A535E;
+  --hair: #DCE2E8;
+  --accent: #0F62FE;
+  --accent-text: #0043CE;
+  --accent-2: #0E8A72;
+  --accent-2-text: #075E4D;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Plus Jakarta Sans", "Noto Sans JP", sans-serif;
+  line-height: 1.72;
+}
+.page {
+  padding: 56px clamp(24px, 8vw, 112px) 88px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+.col-all { grid-column: 1 / -1; }
+.col-left { grid-column: 1 / 5; }
+.col-right { grid-column: 5 / -1; }
+.measure { max-width: 68ch; }
+.sec { margin-top: 68px; padding-top: 32px; border-top: 1px solid var(--hair); }
+.sec-tight { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--hair); }
+h1 {
+  font-size: clamp(32px, 4.2vw, 48px);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+h2 {
+  font-size: clamp(22px, 2.5vw, 29px);
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+h3 {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+  margin: 26px 0 10px;
+  color: var(--ink);
+}
+p { margin: 0 0 16px; color: var(--ink2); }
+ul, ol { margin: 0 0 18px; padding-left: 1.35em; color: var(--ink2); }
+li { margin-bottom: 8px; }
+a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--ink); }
+.deck {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink2);
+  max-width: 66ch;
+  margin-bottom: 28px;
+}
+.hero-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding: 22px 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--hair);
+}
+.hero-num {
+  font-family: "JetBrains Mono", "Noto Sans JP", monospace;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--accent-text);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.hero-label {
+  font-size: 13.5px;
+  color: var(--mute);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+.tag-fact, .tag-est {
+  font-family: "JetBrains Mono", "Noto Sans JP", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1px 6px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.tag-fact {
+  color: var(--accent-text);
+  border: 1px solid var(--accent-text);
+}
+.tag-est {
+  color: var(--accent-2-text);
+  border: 1px solid var(--accent-2-text);
+}
+.pull-quote {
+  font-size: clamp(20px, 2.3vw, 27px);
+  line-height: 1.45;
+  font-weight: 700;
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin: 28px 0;
+  max-width: 52ch;
+}
+figure {
+  margin: 32px 0;
+}
+figcaption {
+  font-size: 13px;
+  color: var(--mute);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.fig-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 22px 0 28px;
+  font-size: 14.5px;
+}
+th, td {
+  text-align: left;
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--hair);
+  vertical-align: top;
+}
+th {
+  font-family: "JetBrains Mono", "Noto Sans JP", monospace;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+.num {
+  font-family: "JetBrains Mono", "Noto Sans JP", monospace;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+.full-band {
+  margin: 64px calc(-1 * clamp(24px, 8vw, 112px)) 0;
+  padding: 48px clamp(24px, 8vw, 112px);
+  background: var(--band);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+.col-head {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 14px;
+}
+@media (max-width: 900px) {
+  .col-left, .col-right { grid-column: 1 / -1; }
+  .hero-strip, .two-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="grid">
+    <div class="col-all">
+      <h1>2026年11月のCopilotは「チャット」から「常駐・統制・従量課金」へ移行した</h1>
+      <p class="deck">
+        対象期間: 2026年11月1日〜24日（公開情報のみで構成）。2026年11月17〜20日の Microsoft Ignite 2026 を軸に、M365 Copilot の「仕事のOS」化、Copilot Autopilot の Frontier 展開、Agent 365 による統制と FinOps、さらに2026年12月〜2027年初頭のライセンス・課金制度転換が出揃いました。
+      </p>
+      <div class="hero-strip">
+        <div>
+          <div class="hero-num">2026-11-17</div>
+          <div class="hero-label">Home / Office in Copilot / Managed Runtime が一般提供（GA）、Autopilot は Frontier 展開開始</div>
+        </div>
+        <div>
+          <div class="hero-num">2026-12-01</div>
+          <div class="hero-label">M365 ベースライセンス不要の新オファー開始（旧アドオンはパートナー経由で新規販売終了）</div>
+        </div>
+        <div>
+          <div class="hero-num">$0.01 / credit</div>
+          <div class="hero-label">Cowork・Autopilot・Code 等の高度 AI 課金単価（新規 Business の自動有効化は 2027 Q1 へ延期）</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec grid">
+    <div class="col-left">
+      <h2>1. 今月のハイライト：押さえるべき5つの転換点</h2>
+      <p class="measure">
+        今月の発表は単発の機能追加にとどまらず、Microsoft が Copilot を「質問に答える補助ツール」から「自律稼働する業務エージェント基盤」と「課金・統制の仕組み」へ再定義した点に本質があります。
+      </p>
+    </div>
+    <div class="col-right">
+      <ol class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>11月17日：M365 Copilot の新基盤が一斉展開</strong> — Chat と Cowork を統合する <strong>Home</strong>、アプリ内で Word/Excel/PowerPoint を完結編集できる <strong>Office in Copilot</strong>、および <strong>Copilot Managed Runtime</strong> が一般提供（GA）となりました（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>11月17日：常駐エージェント Copilot Autopilot が Frontier 展開開始</strong> — 固有の Microsoft Entra Agent ID とメモリを持ち、Teams や Outlook 上で継続稼働する個人向け自律エージェントが Frontier 顧客向けに提供開始されました（<a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">explainx.ai解説</a> / <a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft公式</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>11月17日：Agent 365 がマルチプラットフォーム統制と AI FinOps へ拡張</strong> — Salesforce・Google Vertex AI・Anthropic・OpenAI 等の外部エージェントにも Entra Agent ID を付与可能になり、ROI を業務時間換算で可視化する <strong>Agent 365 Business Analytics</strong>（Frontier Preview）が発表されました（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>11月2日・3日・19日：無償 Copilot Chat の利用上限導入と課金移行の調整</strong> — 未ライセンスユーザー向け Copilot Chat に日次変動型のフェアユース上限が導入されたほか、新規 Copilot Business の従量課金デフォルト有効化は 2027年1〜3月期へ延期されました（<a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-november" target="_blank" rel="noopener noreferrer">Partner Center 11月発表</a> / <a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs整理</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>11月16〜18日：GitHub Copilot の新モデル群投入と VS Code Local ハーネス廃止予告</strong> — <strong>MAI Code 2 / Flash</strong>、<strong>GPT-6.2 Astra / Sol</strong>、<strong>Gemini 4 Neon</strong> などが相次いで追加され、GitHub Copilot 活動の Agent 365 連携や、VS Code Local ハーネスの 2027年2月廃止が公表されました（<a href="https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/" target="_blank" rel="noopener noreferrer">GitHub Changelog</a>）。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec grid">
+    <div class="col-all">
+      <h2>2. テーマ別まとめ（2026年11月発表分）</h2>
+
+      <figure>
+        <div class="fig-title">11月17日 Ignite 2026 発表の主要機能は「基盤が GA」「自律・統制拡張が Frontier / Preview」に分かれる</div>
+        <svg viewBox="0 0 700 390" width="100%" role="img" aria-label="Ignite 2026 主要機能の提供ステータス分布図">
+          <line x1="230" y1="36" x2="660" y2="36" stroke="#DCE2E8" stroke-width="1"/>
+          <text x="230" y="24" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">GA（一般提供）</text>
+          <text x="410" y="24" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">Frontier / 展開中</text>
+          <text x="570" y="24" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">Preview</text>
+          <line x1="230" y1="36" x2="230" y2="360" stroke="#111418" stroke-width="1.5"/>
+          <line x1="405" y1="36" x2="405" y2="360" stroke="#DCE2E8" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="565" y1="36" x2="565" y2="360" stroke="#DCE2E8" stroke-width="1" stroke-dasharray="3 3"/>
+
+          <text x="10" y="68" font-size="14" fill="#111418" font-weight="500">Copilot Home / Office in Copilot</text>
+          <rect x="230" y="52" width="145" height="22" fill="#0F62FE"/>
+          <text x="382" y="68" font-family="JetBrains Mono, monospace" font-size="13" fill="#0043CE">GA (11/17)</text>
+
+          <text x="10" y="110" font-size="14" fill="#111418" font-weight="500">Managed Runtime / Edge Cowork</text>
+          <rect x="230" y="94" width="145" height="22" fill="#0F62FE"/>
+          <text x="382" y="110" font-family="JetBrains Mono, monospace" font-size="13" fill="#0043CE">GA (11/17)</text>
+
+          <text x="10" y="152" font-size="14" fill="#111418" font-weight="500">Defender ローカルAgent保護 (Win)</text>
+          <rect x="230" y="136" width="145" height="22" fill="#0F62FE"/>
+          <text x="382" y="152" font-family="JetBrains Mono, monospace" font-size="13" fill="#0043CE">GA (11/17)</text>
+
+          <text x="10" y="194" font-size="14" fill="#111418" font-weight="500">Copilot Code（数週間以内予定）</text>
+          <rect x="230" y="178" width="190" height="22" fill="#0E8A72"/>
+          <text x="428" y="194" font-family="JetBrains Mono, monospace" font-size="13" fill="#075E4D">GA 近日予定</text>
+
+          <text x="10" y="236" font-size="14" fill="#111418" font-weight="500">Copilot Autopilot / Workspaces</text>
+          <rect x="405" y="220" width="135" height="22" fill="#0E8A72"/>
+          <text x="548" y="236" font-family="JetBrains Mono, monospace" font-size="13" fill="#075E4D">Frontier</text>
+
+          <text x="10" y="278" font-size="14" fill="#111418" font-weight="500">Agent 365 Business Analytics</text>
+          <rect x="405" y="262" width="135" height="22" fill="#0E8A72"/>
+          <text x="548" y="278" font-family="JetBrains Mono, monospace" font-size="13" fill="#075E4D">Frontier</text>
+
+          <text x="10" y="320" font-size="14" fill="#111418" font-weight="500">Today / Salesforce Plugin / 動的リスク</text>
+          <rect x="565" y="304" width="95" height="22" fill="#4A535E"/>
+          <text x="565" y="343" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">Private / Public Preview</text>
+        </svg>
+        <figcaption>出典: Microsoft Copilot Blog / Agent 365 Blog / Copilot Cowork Blog（2026年11月17日公開情報より整理）。</figcaption>
+      </figure>
+
+      <h3>2-1. Microsoft 365 Copilot（新機能・Frontier・モデル動向）</h3>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Home と Office in Copilot が GA</strong>：Chat と Cowork の統合起点となる「Home」および、Copilot アプリ内で Word・Excel・PowerPoint を共同編集できる「Office in Copilot」が一般提供されました。なお Home・Code・Autopilot の構想自体は2026年9月25日の発表が起点です（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a> / <a href="https://blogs.microsoft.com/blog/2026/09/25/introducing-the-new-copilot-with-home-code-and-autopilot/" target="_blank" rel="noopener noreferrer">9月発表背景</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Today（Private Preview）と Workspaces（Frontier）</strong>：メール・予定表・Teams から要対応事項と下書きを自動提示する「Today」がプライベートプレビュー開始。人とエージェントが共同編集する「Workspaces」（Copilot Notebooks の進化版）は Frontier 向けに提供開始されました（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Copilot Code と Managed Runtime</strong>：自然言語でアプリ・ダッシュボードを構築する「Copilot Code」は数週間以内の GA 予定、企業テナント内で安全にホスト・管理する「Copilot Managed Runtime」は同日 GA となりました（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜フロンティアモデル統合と Auto ルーティング強化</strong>：Cowork / Copilot のマルチモデル基盤へ <strong>GPT-6.2 Astra / Sol</strong>、<strong>Claude Fable 5.2</strong>、Claude Opus・GPT-6.1 Sol 向け Fast mode が追加。<strong>Microsoft-Decision-1.1</strong>（同日 GA）を用いた Auto が推論深度の自動調整とサブエージェント並列実行（Frontier）を担います（<a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/whats-new-in-copilot-cowork-at-ignite-2026/4572242" target="_blank" rel="noopener noreferrer">Copilot Cowork Blog</a> / <a href="https://news.microsoft.com/source/2026/11/17/microsoft-ignite-2026-empowering-human-ambition-intelligence-and-trust/" target="_blank" rel="noopener noreferrer">Microsoft Source</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月5日・17日｜EU Data Boundary と業務プラグイン拡充</strong>：11月5日に Claude モデルの EU Data Boundary 対応を発表。11月17日には Dynamics 365（100超スキル）、Salesforce in Copilot（38超セールススキル、Preview）、財務（30スキル）、法務（20超スキル）、Edge for Business 上の Cowork（GA）が公開されました（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a> / <a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/whats-new-in-copilot-cowork-at-ignite-2026/4572242" target="_blank" rel="noopener noreferrer">Cowork Blog</a>）。</li>
+      </ul>
+
+      <h3>2-2. Microsoft Copilot Autopilot（提供状況・機能・ガバナンス・課金）</h3>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Frontier 顧客向けにロールアウト開始</strong>：PC 初期設定の「Windows Autopilot」とは別物であり、Microsoft クラウド上で常時稼働する個人向け自律エージェントです。Teams・Outlook・ドキュメント内で @メンションして協働でき、サプライヤーレビューの進行管理などを自律実行します（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a> / <a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">explainx.ai</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>初期オンボーディング（Orientation window）と権限境界</strong>：有効化直後は過去約30日分のアクセス可能なメール・会議・チャット・ファイルを読み取り専用で学習し、誤送信を防止します。各 Autopilot に専用の Microsoft Entra Agent ID と管理責任者（Manager）が割り当てられ、監査ログ分離・即時停止が可能です（<a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">explainx.ai</a> / <a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>利用条件と課金</strong>：利用には Frontier プログラム参加、M365 Copilot ライセンス、および Copilot Credits による従量課金ポリシーの有効化が必要です。なお1ユーザーあたりの同時作成上限や越境データレジデンシ細則は11月17日時点で未公開です（<a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">explainx.ai</a> / <a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+      </ul>
+
+      <h3>2-3. Copilot Studio / Agent 365 / Entra Agent ID</h3>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Entra Agent ID の非Microsoft基盤拡大と Autopilot 対応</strong>：Agent 365（2026年5月提供開始、登録5,000万エージェント突破）が強化され、Amazon Bedrock に続き Salesforce Agentforce、Google Vertex AI、Databricks、Snowflake、Anthropic Claude Managed Agents、OpenAI、ServiceNow 等へ Entra Agent ID 付与を拡大（12月完了予定）。Copilot Autopilot およびローカルエージェント（GitHub Copilot CLI、Claude Code）への ID 付与もプレビュー開始しました（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜ローカル／シャドーAI検知と Windows 隔離</strong>：Microsoft Defender（GA）と Entra Global Secure Access（Preview）が端末上の60種超のローカルAIエージェント（Claude Code、GitHub Copilot CLI 等）と MCP サーバー接続を検知。Windows 上の <strong>Microsoft Execution Containers（MXC）</strong> と Intune ポリシーによりファイル・ネットワーク境界を OS レベルで強制します（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Tools Registry・動的リスク・Business Analytics</strong>：MCP サーバーやプラグイン依存関係を可視化する Tools Registry が GA（Azure AI Gateway / LiteLLM 連携は Preview）。さらに動的エージェントリスク評価（Preview）、マルチテナント管理（Public Preview）、M365 サブスク保有者向け Agent 365 基本利用分析の開放（GA）、および投資対効果を時間・金額換算する <strong>Agent 365 Business Analytics</strong>（Frontier）が発表されました（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Copilot Studio の Entra Agent ID 移行ドキュメント更新</strong>：レガシーなサービスプリンシパル利用エージェントから Entra Agent ID への移行・削除連動（Studio 側削除で Entra ID も自動削除）が整理されました（<a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-use-entra-agent-identities" target="_blank" rel="noopener noreferrer">Microsoft Learn</a>）。</li>
+      </ul>
+
+      <h3>2-4. Microsoft 365 Copilot の価格・ライセンス・課金変更</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>項目 / 適用日</th>
+            <th>対象</th>
+            <th>変更内容・金額</th>
+            <th>管理者への実務影響</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Copilot Chat 上限導入</strong><br><span class="num">2026-11-02 / 11-09</span></td>
+            <td>M365 Copilot 未保有ユーザー</td>
+            <td>2,000席以下は11/2、超は11/9から日次変動型フェアユース上限を適用</td>
+            <td>上限到達時にユーザーへライセンス申請・購入導線が表示される（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>新規 Business 従量課金</strong><br><span class="num">2026-11-03 発表</span></td>
+            <td>CSP 経由の新規 Copilot Business</td>
+            <td>デフォルト有効化を12/1から <strong>2027年1〜3月期</strong>へ延期（既定上限 <span class="num">4,000 cr/月</span>＝最大<span class="num">$40/人</span>）</td>
+            <td>準備猶予が延長。適用時は既存 Business 席にも波及するため事前上限設定が必須（<a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-november" target="_blank" rel="noopener noreferrer">Partner Center</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>ベースライセンス不要化</strong><br><span class="num">2026-12-01 発効</span></td>
+            <td>Copilot / Copilot Business 新規</td>
+            <td>M365 ベース契約なしで単体購入可能に（10/14発表の移行）。旧アドオンは12/1新規販売終了</td>
+            <td>既存契約は更新継続可。価格は据置だが M365 アプリ自体は別契約のまま（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>Business 初年度割引期限</strong><br><span class="num">〜2026-12-31</span></td>
+            <td>300席以下の SMB 組織</td>
+            <td>年契約 <span class="num">$18/人/月</span>（通常 <span class="num">$21/人/月</span>、Enterprise は <span class="num">$30/人/月</span>）</td>
+            <td>年末までの新規購入で初年度単価を抑制可能（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <figure>
+        <div class="fig-title">新規 Copilot Business のデフォルト従量上限（4,000クレジット＝$40/月）は席単価（$21）を上回る</div>
+        <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="Copilot 席単価とデフォルト従量上限の比較棒グラフ">
+          <line x1="250" y1="30" x2="250" y2="215" stroke="#111418" stroke-width="1.5"/>
+          <line x1="350" y1="30" x2="350" y2="215" stroke="#DCE2E8" stroke-width="1"/>
+          <line x1="450" y1="30" x2="450" y2="215" stroke="#DCE2E8" stroke-width="1"/>
+          <line x1="550" y1="30" x2="550" y2="215" stroke="#DCE2E8" stroke-width="1"/>
+          <line x1="650" y1="30" x2="650" y2="215" stroke="#DCE2E8" stroke-width="1"/>
+          <text x="245" y="235" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">$0</text>
+          <text x="342" y="235" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">$20</text>
+          <text x="442" y="235" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">$40</text>
+          <text x="542" y="235" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">$60</text>
+          <text x="642" y="235" font-family="JetBrains Mono, monospace" font-size="13" fill="#4A535E">$80</text>
+
+          <text x="10" y="68" font-size="14" fill="#111418">Copilot Business（初年度12/31迄）</text>
+          <rect x="250" y="50" width="90" height="24" fill="#0F62FE"/>
+          <text x="348" y="67" font-family="JetBrains Mono, monospace" font-size="13.5" fill="#0043CE">$18 / 月</text>
+
+          <text x="10" y="114" font-size="14" fill="#111418">Copilot Business（通常年額）</text>
+          <rect x="250" y="96" width="105" height="24" fill="#0F62FE"/>
+          <text x="363" y="113" font-family="JetBrains Mono, monospace" font-size="13.5" fill="#0043CE">$21 / 月</text>
+
+          <text x="10" y="160" font-size="14" fill="#111418">M365 Copilot Enterprise（年額）</text>
+          <rect x="250" y="142" width="150" height="24" fill="#0F62FE"/>
+          <text x="408" y="159" font-family="JetBrains Mono, monospace" font-size="13.5" fill="#0043CE">$30 / 月</text>
+
+          <text x="10" y="206" font-size="14" fill="#111418">Business 既定クレジット上限</text>
+          <rect x="250" y="188" width="200" height="24" fill="#0E8A72"/>
+          <text x="458" y="205" font-family="JetBrains Mono, monospace" font-size="13.5" fill="#075E4D">最大 $40 / 月 (4,000 cr)</text>
+        </svg>
+        <figcaption>単位: 米ドル/ユーザー/月（年契約・年払い基準、2026年11月公開価格）。出典: Microsoft Partner Center / Copilot Credits Guide（Deployment Labs 2026年11月20日集計より）。</figcaption>
+      </figure>
+
+      <h3>2-5. GitHub Copilot の主要な発表</h3>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17〜18日｜主要フロンティアモデルの連続投入</strong>：Microsoft 自社コーディングモデル <strong>MAI Code 2 / MAI Code 2 Flash</strong>（11/17）、OpenAI <strong>GPT-6.2 Astra / GPT-6.2 Sol</strong>（11/17）、Google <strong>Gemini 4 Neon</strong>（11/18、先行して Carbon 11/10・Hydrogen 11/13）がモデルピッカーへ追加されました（<a href="https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot/" target="_blank" rel="noopener noreferrer">MAI Code 2</a> / <a href="https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available/" target="_blank" rel="noopener noreferrer">GPT-6.2</a> / <a href="https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot/" target="_blank" rel="noopener noreferrer">Gemini 4 Neon</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月13日・16日｜旧モデルの段階的廃止</strong>：11月16日に Claude Opus 4.8（個人年額除く）、Claude Opus 5、GPT-5.6 Terra を廃止。さらに12月14日予定の次回廃止リストも11月13日に予告されています（<a href="https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026/" target="_blank" rel="noopener noreferrer">11/16廃止</a> / <a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/" target="_blank" rel="noopener noreferrer">12月廃止予告</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17〜18日｜開発ワークフローと企業統制の拡張</strong>：GitHub Copilot アプリが Azure DevOps リポジトリ（Public Preview）、GitHub Enterprise Server 1.2.0+（GA）、ブラウザ操作（Browser use、Public Preview）に対応。また <strong>Agent 365 への活動ログストリーミング</strong>（EMU 顧客向け）、<strong>GitHub Copilot Evals</strong>（Public Preview）、チーム単位のプラグイン標準化（GA）が公開されました（<a href="https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases/" target="_blank" rel="noopener noreferrer">GitHub Copilot App</a> / <a href="https://github.blog/changelog/2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365/" target="_blank" rel="noopener noreferrer">Agent 365連携</a> / <a href="https://github.blog/changelog/2026-11-18-customize-github-copilot-for-your-team/" target="_blank" rel="noopener noreferrer">Team設定</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月16日｜VS Code Local ハーネス廃止予告</strong>：VS Code 1.146 で旧 Local ハーネスが非推奨となり、<strong>2027年2月に完全削除</strong>されます。今後は Copilot CLI 等と共通の Microsoft Copilot ハーネスへ移行し、管理者によるサンドボックス・権限統制が可能になります（<a href="https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/" target="_blank" rel="noopener noreferrer">VS Code Localハーネス廃止</a>）。</li>
+      </ul>
+
+      <h3>2-6. その他（Windows / セキュリティ・クラウド周辺）</h3>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17日｜Windows Hybrid Intelligence と OS レベルの保護</strong>：Windows 上のローカル PC 文脈活用とローカルモデルへの処理オフロード（Hybrid Intelligence）、および先述の MXC コンテナ隔離が発表されました（<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Blog</a> / <a href="https://news.microsoft.com/source/2026/11/17/microsoft-ignite-2026-empowering-human-ambition-intelligence-and-trust/" target="_blank" rel="noopener noreferrer">Microsoft Source</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>2026年11月17〜18日｜Azure Catalyst と Windows 365 for Agents</strong>：Azure と GitHub のエージェント機能を統合しアプリ・DB モダナイズを支援する Azure Catalyst、および Copilot Credits 課金対象となった Windows 365 for Agents が発表されました（<a href="https://news.microsoft.com/source/2026/11/17/microsoft-ignite-2026-empowering-human-ambition-intelligence-and-trust/" target="_blank" rel="noopener noreferrer">Microsoft Source</a> / <a href="https://changepilot.cloud/blog//blog/ignite-2026-copilot-credits-usage-based-billing" target="_blank" rel="noopener noreferrer">ChangePilot整理</a>）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec grid">
+    <div class="col-left">
+      <h2>3. 管理面の注意点：セキュリティ・ガバナンス・予算暴走防止</h2>
+      <p class="measure">
+        今月のアップデートでは利便性と引き換えに「自律エージェントの権限境界」と「従量課金の青天井化」という2つの管理リスクが顕在化しています。
+      </p>
+    </div>
+    <div class="col-right">
+      <div class="pull-quote">
+        「複数ポリシーが重複した場合は最も制限が緩いルールが優先される」「一度構成した従量課金は完全オフに戻せず上限0で止める」——課金設計の罠に要注意。
+      </div>
+      <ul class="measure">
+        <li><span class="tag-fact">[事実]</span><strong>従量課金ポリシーの挙動</strong>：Partner Center 仕様上、同一ユーザーに複数ポリシーが当たると<strong>最も緩い制限（least-restrictive）</strong>が勝ちます。また「Auto-apply new services」が既定オンのため、新規課金サービスが自動編入される点に注意が必要です（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>Copilot Chat 上限からの勝手購入リスク</strong>：無償 Chat のフェアユース上限に到達したユーザーへライセンス申請・購入ボタンが表示されるため、セルフサービス購入を無効化していないテナントでは予期せぬ課金が発生し得ます（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+        <li><span class="tag-fact">[事実]</span><strong>シャドーAI・ローカルエージェントの可視化と DLP</strong>：端末上の Claude Code や GitHub Copilot CLI などが業務データを持ち出すリスクに対し、Defender のローカルエージェント保護（GA）と Purview DLP（Preview）の組み合わせが現実的な統制手段となりました（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        <li><span class="tag-est">[推測]</span><strong>Purview Data Governance 終了発表との切り分け</strong>：11月12日に Purview Data Governance の2027年11月サポート終了と Microsoft Fabric OneLake カタログへの移行が発表されましたが、エージェント保護を担う Purview Data Security / Compliance（DLP 等）は継続提供されるため混同しない整理が必要です（<a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-november" target="_blank" rel="noopener noreferrer">Partner Center 11月発表</a>）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-band">
+    <h2>4. 実務への影響：M365 管理者が今月動くべきこと／様子見でよいこと</h2>
+    <div class="two-col">
+      <div>
+        <div class="col-head">今月（〜12月）中に動くべきこと</div>
+        <ul>
+          <li><span class="tag-fact">[事実]</span><strong>Copilot Chat 上限に伴う申請フロー・自己購入設定の確認</strong>：11月導入のフェアユース上限により問い合わせが増えるため、承認窓口の明文化と不要なセルフサービス購入の無効化を実施する（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+          <li><span class="tag-fact">[事実]</span><strong>Copilot Credits の上限ポリシー事前設計</strong>：2027年1〜3月期の自動有効化に先立ち、M365 管理センターの Cost Management でユーザー上限（例: 4,000cr 未満への抑制）と「Auto-apply new services」の要否を決める（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+          <li><span class="tag-fact">[事実]</span><strong>300人以下組織の Copilot Business 発注判断</strong>：初年度 $18/月オファーの締切（2026-12-31）とベース不要化（2026-12-01）を踏まえ、パイロット席の年末発注を検討する（<a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Deployment Labs</a>）。</li>
+          <li><span class="tag-fact">[事実]</span><strong>GitHub Copilot 廃止モデルと VS Code ハーネス棚卸し</strong>：11/16・12/14廃止モデルのカスタムワークフロー切替と、2027年2月廃止の VS Code Local ハーネス移行計画に着手する（<a href="https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/" target="_blank" rel="noopener noreferrer">GitHub Changelog</a>）。</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head">当面は様子見・限定検証でよいこと</div>
+        <ul>
+          <li><span class="tag-est">[推測]</span><strong>Copilot Autopilot の全社展開</strong>：Frontier 展開が始まった段階であり、同時稼働上限や越境データレジデンシ細則が未公表のため、まずは1〜2業務での限定パイロットと承認ルール検証に留めるのが妥当（<a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">explainx.ai</a>）。</li>
+          <li><span class="tag-est">[推測]</span><strong>Agent 365 Business Analytics の投資判断全面採用</strong>：業務時間・金額換算の ROI 指標は Frontier Preview 段階であるため、自社パイロットの実測値と突き合わせる補助指標として試用するのが安全（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+          <li><span class="tag-est">[推測]</span><strong>Preview 段階の外部エージェント連携・動的リスク制御</strong>：Entra Agent ID の外部基盤対応（12月完了予定）や MXC / Intune 制御はプレビューが多いため、非本番環境での接続検証から進める（<a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">Agent 365 Blog</a>）。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec grid">
+    <div class="col-all">
+      <h2>出典・一次情報リンク</h2>
+      <ol class="measure">
+        <li><a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/" target="_blank" rel="noopener noreferrer">Copilot at Microsoft Ignite: Expanding what's possible with intelligence built for work</a>（Microsoft Copilot Blog, 2026-11-17）</li>
+        <li><a href="https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753" target="_blank" rel="noopener noreferrer">What's new in Microsoft Agent 365: Ignite 2026</a>（Microsoft Tech Community, 2026-11-17）</li>
+        <li><a href="https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/whats-new-in-copilot-cowork-at-ignite-2026/4572242" target="_blank" rel="noopener noreferrer">What's new in Copilot Cowork at Ignite 2026</a>（Microsoft Tech Community, 2026-11-17）</li>
+        <li><a href="https://news.microsoft.com/source/2026/11/17/microsoft-ignite-2026-empowering-human-ambition-intelligence-and-trust/" target="_blank" rel="noopener noreferrer">Microsoft Ignite 2026: Empowering human ambition, intelligence and trust</a>（Microsoft Source, 2026-11-17）</li>
+        <li><a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-november" target="_blank" rel="noopener noreferrer">November 2026 announcements - Partner Center</a>（Microsoft Learn, 2026-11）</li>
+        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-use-entra-agent-identities" target="_blank" rel="noopener noreferrer">Manage Entra Agent IDs - Microsoft Copilot Studio</a>（Microsoft Learn, 2026-11-17）</li>
+        <li><a href="https://explainx.ai/blog/microsoft-copilot-autopilot-m365-frontier-rollout-november-2026" target="_blank" rel="noopener noreferrer">Microsoft Copilot Autopilot: Always-On Personal Agent Rolls Out at Ignite 2026</a>（explainx.ai, 2026-11-18）</li>
+        <li><a href="https://deploymentlabs.ai/articles/microsoft-365-copilot-pricing" target="_blank" rel="noopener noreferrer">Microsoft 365 Copilot Pricing in 2026: Business vs Enterprise, Seats and Credits</a>（Deployment Labs, 2026-11-20）</li>
+        <li><a href="https://changepilot.cloud/blog//blog/ignite-2026-copilot-credits-usage-based-billing" target="_blank" rel="noopener noreferrer">Microsoft Ignite 2026: Copilot Credits and Usage-Based Billing</a>（ChangePilot, 2026-11-24）</li>
+        <li><a href="https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases/" target="_blank" rel="noopener noreferrer">GitHub Copilot app, Microsoft Ignite releases</a>（GitHub Changelog, 2026-11-17）</li>
+        <li><a href="https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot/" target="_blank" rel="noopener noreferrer">MAI Code 2 and MAI Code 2 Flash in GitHub Copilot</a>（GitHub Changelog, 2026-11-17）</li>
+        <li><a href="https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available/" target="_blank" rel="noopener noreferrer">OpenAI's GPT-6.2 Astra and GPT-6.2 Sol now available</a>（GitHub Changelog, 2026-11-17）</li>
+        <li><a href="https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot/" target="_blank" rel="noopener noreferrer">Gemini 4 Neon in GitHub Copilot</a>（GitHub Changelog, 2026-11-18）</li>
+        <li><a href="https://github.blog/changelog/2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365/" target="_blank" rel="noopener noreferrer">Monitor GitHub Copilot activity through Microsoft Agent 365</a>（GitHub Changelog, 2026-11-17）</li>
+        <li><a href="https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026/" target="_blank" rel="noopener noreferrer">GitHub Copilot models deprecated on November 16, 2026</a>（GitHub Changelog, 2026-11-16）</li>
+        <li><a href="https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/" target="_blank" rel="noopener noreferrer">VS Code retires the Local harness in February 2027</a>（GitHub Changelog, 2026-11-16）</li>
+      </ol>
+    </div>
+  </section>
+</main>
+</body>
+</html>
