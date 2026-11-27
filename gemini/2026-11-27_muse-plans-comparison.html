@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Muse 料金プラン詳細比較（Free / Power / Maximum）— 2026年11月版</title>
+<style>
+/*
+  Tier 3 · Utilitarian / Deep Research
+  Hero: Answer-first compact typographic hero with full-bleed verdict band
+  Section order: Answer-first verdict → Plan matrix → Pricing & billing → Usage limits & token structure → Model hierarchy & benchmarks → Feature differences → Muse Code distinction → Decision framework → Sources
+  Fonts: System sans-serif (Hiragino Kaku Gothic ProN / Yu Gothic / Inter fallback) + system monospace (zero external CDN dependency)
+  Palette: Crisp Gallery White (#FFFFFF), Slate Tint Band (#F1F5F9), Deep Ink (#0F172A), Cobalt Accent (#1D4ED8 / #1E3A8A), Emerald Accent (#047857 / #065F46)
+  Image radius: 0px (inline SVG charts only)
+  Emphasis moment: Compact key metric strip inside verdict band
+  Signature element: Full-width benchmark comparison SVG & weekly capacity scale SVG
+  Chart types: Grouped horizontal bar comparison SVG + proportional capacity/cost scale SVG
+*/
+:root {
+  --paper: #FFFFFF;
+  --band: #F1F5F9;
+  --ink: #0F172A;
+  --ink2: #1E293B;
+  --mute: #475569;
+  --hair: #CBD5E1;
+  --hair-strong: #94A3B8;
+  --accent: #1D4ED8;
+  --accent-text: #1E3A8A;
+  --accent-2: #047857;
+  --accent-2-text: #065F46;
+  --warn-text: #92400E;
+  --font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  font-feature-settings: "palt" 1;
+}
+
+.page {
+  padding: 56px clamp(24px, 8vw, 104px) 92px;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* Header & Answer-First Hero */
+.hero {
+  padding-bottom: 40px;
+  border-bottom: 2px solid var(--ink);
+}
+
+h1 {
+  margin: 0 0 18px;
+  font-size: clamp(32px, 3.6vw, 48px);
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: var(--ink);
+  text-wrap: balance;
+  max-width: 28ch;
+}
+
+.deck {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--ink2);
+  max-width: 66ch;
+}
+
+.meta-note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--mute);
+}
+
+/* Full-Bleed Verdict Band (single band in report) */
+.verdict-band {
+  margin: 40px calc(-1 * clamp(24px, 8vw, 104px)) 0;
+  padding: 40px clamp(24px, 8vw, 104px);
+  background: var(--band);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+.verdict-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.verdict-main {
+  grid-column: 1 / 8;
+}
+
+.verdict-metrics {
+  grid-column: 8 / 13;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  padding-left: 24px;
+  border-left: 1px solid var(--hair-strong);
+}
+
+.verdict-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.verdict-main p {
+  margin: 0 0 12px;
+  color: var(--ink2);
+  max-width: 62ch;
+}
+
+.verdict-main p:last-child {
+  margin-bottom: 0;
+}
+
+.metric-item {
+  padding-top: 10px;
+  border-top: 1px solid var(--hair);
+}
+
+.metric-item:nth-child(-n+2) {
+  padding-top: 0;
+  border-top: none;
+}
+
+.metric-val {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+
+.metric-val.em {
+  color: var(--accent-2-text);
+}
+
+.metric-desc {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--mute);
+}
+
+/* Sections */
+.sec {
+  margin-top: 68px;
+}
+
+.sec-rule {
+  padding-top: 28px;
+  border-top: 1px solid var(--hair);
+}
+
+h2 {
+  margin: 0 0 20px;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 16px;
+  color: var(--ink2);
+}
+
+.measure {
+  max-width: 68ch;
+}
+
+/* Asymmetric split (heading/context left, content right — text/lists only) */
+.split {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.split-left {
+  grid-column: 1 / 5;
+}
+
+.split-right {
+  grid-column: 5 / 13;
+}
+
+/* Multi-column open strips (0 cards, hairline top only) */
+.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.cols-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.col-item {
+  padding-top: 16px;
+  border-top: 2px solid var(--ink);
+}
+
+.col-item.sub {
+  border-top: 1px solid var(--hair-strong);
+}
+
+.col-item h3 {
+  margin: 0 0 10px;
+}
+
+.col-item p:last-child,
+.col-item ul:last-child {
+  margin-bottom: 0;
+}
+
+/* Lists */
+ul, ol {
+  margin: 0 0 18px;
+  padding-left: 1.35em;
+  color: var(--ink2);
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+/* Links */
+a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* Inline data & badges */
+.num {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.tag-secondary {
+  font-size: 12px;
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+/* Open Tables (max 3, no zebra stripes, no box borders) */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 22px 0 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+thead th {
+  padding: 12px 14px 12px 0;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  vertical-align: bottom;
+}
+
+tbody td {
+  padding: 13px 14px 13px 0;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink2);
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: 1px solid var(--ink);
+}
+
+td.row-head {
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  padding-right: 18px;
+}
+
+td.mono, th.mono {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+td.highlight {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.table-note {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+/* Figures & Inline SVG Charts */
+figure {
+  margin: 28px 0 12px;
+  padding: 0;
+}
+
+.fig-title {
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+/* Pull Quote / Callout Line */
+.callout-line {
+  margin: 32px 0;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--accent);
+  font-size: 17px;
+  line-height: 1.68;
+  color: var(--ink);
+  max-width: 64ch;
+}
+
+/* Sources */
+.sources-list {
+  columns: 2;
+  column-gap: 40px;
+  padding-left: 1.5em;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.sources-list li {
+  break-inside: avoid;
+  margin-bottom: 10px;
+}
+
+.src-type {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .verdict-main,
+  .verdict-metrics,
+  .split-left,
+  .split-right {
+    grid-column: 1 / -1;
+  }
+  .verdict-metrics {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: none;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .cols-3, .cols-2 {
+    grid-template-columns: 1fr;
+  }
+  .sources-list {
+    columns: 1;
+  }
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- Answer-First Hero -->
+  <header class="hero">
+    <h1>Meta Muse の有料化は「枠の拡大」より「Muse Wonder への切替」が最大の分岐点</h1>
+    <p class="deck">Meta のパーソナル AI エージェント「Muse」における Free / Power（月 $20）/ Maximum（月 $100）の 3 プランを、一次情報と第三者ベンチマークから整理した比較資料です。定期実行や自律タスクを多用する利用者が課金価値を見極めるための判断材料をまとめています。</p>
+    <p class="meta-note">調査基準日: 2026年11月27日 ／ 一次情報（Meta 公式ヘルプ・公式ブログ・製品ページ）を優先し、未公開項目および二次情報は明示的に区別して記載しています。</p>
+  </header>
+
+  <!-- Single Full-Bleed Verdict Band -->
+  <section class="verdict-band" aria-label="要点と結論の要約">
+    <div class="verdict-grid">
+      <div class="verdict-main">
+        <h2 class="verdict-title">要点：まずは Power（$20/月）のモデル向上価値を見極め、Maximum は枠不足を実測してから検討するのが合理的</h2>
+        <p>Muse 本体の有料プランは <strong>Power（$20/月・週 5 億トークン）</strong> と <strong>Maximum（$100/月・週 30 億トークン）</strong> の 2 層です。無料プラン（Free）でも基本機能や Muse Mail は利用できますが、週次上限の具体的トークン数と無料比倍率は公式に未公開です。</p>
+        <p>有料化の最大の価値は、メイン会話・成果物生成・定期実行・バックグラウンド作業を担うモデルが <strong>Muse Spark 1.3 から上位の Muse Wonder へ切り替わる点</strong> にあります。第三者ベンチマークではエージェント端末作業（Terminal-Bench 4.0）が 33% → 52% へ大きく伸び、ハルシネーション率も 33% → 27% へ低下しています。一方、Power と Maximum の公式な差は主に「週次トークン枠（6 倍）」と「1 日通話上限（2 倍）」であり、モデル差は公式に確認されていません。</p>
+      </div>
+      <div class="verdict-metrics">
+        <div class="metric-item">
+          <span class="metric-val">$20 / $100</span>
+          <span class="metric-desc">Power / Maximum 月額（公式ヘルプは米ドル表記のみ）</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">5億 / 30億</span>
+          <span class="metric-desc">週次 Muse トークン枠（Maximum は Power の 6 倍）</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val em">33% → 52%</span>
+          <span class="metric-desc">Terminal-Bench 4.0（Spark 1.3 → Wonder）</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val em">33% → 27%</span>
+          <span class="metric-desc">ハルシネーション率（Spark 1.3 → Wonder）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Plan Comparison Matrix -->
+  <section class="sec">
+    <h2>Muse 本体 3 プラン（Free / Power / Maximum）の全体比較</h2>
+    <p class="measure">Meta の公式ヘルプセンター（<a href="https://www.meta.com/ja-jp/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">日本語版</a>・<a href="https://www.meta.com/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">英語版</a>）および関連公式ページで確認できた仕様を一覧化しました。公式に記載がない項目はその旨を明記しています。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>Free（無料）</th>
+            <th>Power</th>
+            <th>Maximum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-head">月額料金（公式表記）</td>
+            <td class="mono">$0</td>
+            <td class="mono highlight">$20 / 月</td>
+            <td class="mono highlight">$100 / 月</td>
+          </tr>
+          <tr>
+            <td class="row-head">日本円での公式表記</td>
+            <td>無料</td>
+            <td>公式ヘルプに円表記なし<br><span class="tag-secondary">二次情報: アプリ内課金で 2,799〜3,499 円前後の報告あり</span></td>
+            <td>公式ヘルプに円表記なし<br><span class="tag-secondary">二次情報: アプリ内課金で 16,990 円前後の報告あり</span></td>
+          </tr>
+          <tr>
+            <td class="row-head">年払い・割引</td>
+            <td>対象外</td>
+            <td>公式情報で確認できず（毎月自動更新のみ明記）</td>
+            <td>公式情報で確認できず（毎月自動更新のみ明記）</td>
+          </tr>
+          <tr>
+            <td class="row-head">無料トライアル</td>
+            <td>常設の無料枠あり</td>
+            <td>公式常設条件は確認できず</td>
+            <td>公式常設条件は確認できず</td>
+          </tr>
+          <tr>
+            <td class="row-head">週次トークン上限</td>
+            <td>上限あり（公式に数値・倍率の表記なし）</td>
+            <td class="mono">5億（500M）Muse トークン / 週</td>
+            <td class="mono">30億（3B）Muse トークン / 週（Power の 6 倍）</td>
+          </tr>
+          <tr>
+            <td class="row-head">1日あたり通話発信</td>
+            <td>公式ヘルプに回数表記なし</td>
+            <td class="mono">10 回 / 日</td>
+            <td class="mono">20 回 / 日</td>
+          </tr>
+          <tr>
+            <td class="row-head">追加トークン購入</td>
+            <td>可（1回限り買い切り・無期限）</td>
+            <td>可（週次枠に上乗せ・無期限）</td>
+            <td>可（週次枠に上乗せ・無期限）</td>
+          </tr>
+          <tr>
+            <td class="row-head">主な利用モデル</td>
+            <td>Muse Spark（現行 1.3）</td>
+            <td>Muse Wonder（会話・成果物・定期実行・裏側作業）</td>
+            <td>Muse Wonder（Power とのモデル差は公式未確認）</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Wonder Full</td>
+            <td>非対応</td>
+            <td>非対応（Muse Code 上位プラン限定）</td>
+            <td>非対応（Muse Code 上位プラン限定）</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Mail（@muse.ai）</td>
+            <td>利用可（送信上限あり）</td>
+            <td>利用可（送信上限あり）</td>
+            <td>利用可（送信上限あり）</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Home Link</td>
+            <td>対象外</td>
+            <td>米国在住の有効サブスク加入者限定（日本対象外）</td>
+            <td>米国在住の有効サブスク加入者限定（日本対象外）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">出典: <a href="https://www.meta.com/ja-jp/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">Meta ヘルプセンター「Museサブスクリプションについて」</a>、<a href="https://www.meta.com/help/subscriptions/28153473374286914/" target="_blank" rel="noopener noreferrer">How to buy additional Muse tokens</a>、<a href="https://www.meta.com/help/superintelligence/1149305437517250/" target="_blank" rel="noopener noreferrer">About Muse email addresses</a>、<a href="https://gadgets.muse.ai/home-link" target="_blank" rel="noopener noreferrer">Muse Home Link</a>。アプリ内円表示は二次情報（<a href="https://finance.biggo.com/news/32e121d5-12f3-4038-8bab-c942d74908ea" target="_blank" rel="noopener noreferrer">BigGo Finance</a>、<a href="https://tech-go.jp/it-engineer/skill/ai/meta-muse" target="_blank" rel="noopener noreferrer">Tech-Go</a>）。</p>
+  </section>
+
+  <!-- Section 2: Pricing, Billing & Top-up -->
+  <section class="sec sec-rule">
+    <div class="split">
+      <div class="split-left">
+        <h2>料金体系は月額固定の米ドル基準、年払い・無料トライアルは公式未確認</h2>
+      </div>
+      <div class="split-right">
+        <p>Meta の日本語版公式ヘルプ「<a href="https://www.meta.com/ja-jp/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">Museサブスクリプションについて</a>」でも、料金は <strong>Power プラン（$20/月）</strong> および <strong>Maximum プラン（$100/月）</strong> と米ドルのみで表記されており、公式の日本円定価は記載されていません。請求は最初の購入日と同じ日に毎月自動更新される仕組みで、年払いプランや年払い割引の存在は公式情報では確認できませんでした（二次情報の調査記事 <a href="https://superapp.dev/blog/meta-muse-pricing" target="_blank" rel="noopener noreferrer">Superapp</a> でも年払いなしとされています）。</p>
+        <p>また、有料プランに対する常設の無料トライアル期間・条件についても、公式ヘルプ上に記載は確認できませんでした。なお、公式ヘルプ冒頭には「特典と提供状況は地域やアカウントによって異なり、登録前のオンボーディング画面に表示される」と注記されており、日本から iOS / Android アプリ内課金で登録する場合はストア側の為替・手数料が反映された円額が提示される点に留意が必要です（二次情報では Power が 2,799〜3,499 円、Maximum が 16,990 円前後と報じられています）。</p>
+        <p>見落としやすい選択肢として、Meta はサブスクリプションとは別に<strong>「追加の Muse トークン」の 1 回限り買い切り購入</strong>を公式に用意しています（<a href="https://www.meta.com/help/subscriptions/28153473374286914/" target="_blank" rel="noopener noreferrer">How to buy additional Muse tokens</a>）。無料プランのままでも購入でき、週次枠と違って<strong>有効期限がなく（never expire）</strong>、サブスクリプションを解約しても使い切るまで残ります。ただし返金・換金・他アカウント譲渡は不可です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Usage Limits & Capacity SVG -->
+  <section class="sec sec-rule">
+    <h2>使用量は「週次トークン枠＋日次通話上限」で管理、無料枠の実数は非公開</h2>
+    <p class="measure">Muse 本体の使用量は、Muse Code のような「5 時間ごとのプロンプト枠」ではなく、<strong>週単位の Muse トークン上限（Weekly usage allowance）</strong> と <strong>1 日あたりの通話発信回数</strong> で管理されます。週次枠の未消化分は翌週へ繰り越されません（does not rollover）。</p>
+
+    <figure>
+      <p class="fig-title">Maximum は Power の 5 倍の価格で 6 倍の週次トークン枠を提供し、1 ドルあたりの容量効率が 20% 高い</p>
+      <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Muse 各プランの週次トークン枠と月額料金の比較チャート">
+        <!-- Axis & Baseline -->
+        <line x1="165" y1="30" x2="165" y2="255" stroke="#94A3B8" stroke-width="1"/>
+        <!-- Vertical gridlines -->
+        <line x1="250" y1="30" x2="250" y2="255" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="335" y1="30" x2="335" y2="255" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="420" y1="30" x2="420" y2="255" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="505" y1="30" x2="505" y2="255" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="590" y1="30" x2="590" y2="255" stroke="#E2E8F0" stroke-width="1"/>
+
+        <!-- X-axis ticks (0 to 3.0B, scale: 165 + val_in_B * 141.67) -->
+        <text x="165" y="276" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">0</text>
+        <text x="236" y="276" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">5億</text>
+        <text x="307" y="276" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">10億</text>
+        <text x="448" y="276" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">20億</text>
+        <text x="590" y="276" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">30億</text>
+        <text x="378" y="302" text-anchor="middle" font-size="13" fill="#475569">週次 Muse トークン上限（トークン／週）</text>
+
+        <!-- Row 1: Free -->
+        <text x="152" y="66" text-anchor="end" font-size="15" font-weight="700" fill="#0F172A">Free</text>
+        <text x="152" y="85" text-anchor="end" font-size="13" fill="#475569">$0 / 月</text>
+        <rect x="165" y="50" width="28" height="34" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="204" y="72" font-size="14" fill="#475569">公式に上限数値・倍率の表記なし（週次更新）</text>
+
+        <!-- Row 2: Power (0.5B -> width 71px) -->
+        <text x="152" y="142" text-anchor="end" font-size="15" font-weight="700" fill="#0F172A">Power</text>
+        <text x="152" y="161" text-anchor="end" font-size="13" fill="#475569">$20 / 月</text>
+        <rect x="165" y="126" width="71" height="34" fill="#1D4ED8"/>
+        <text x="248" y="148" font-size="14" font-weight="700" fill="#1E3A8A">5億トークン/週（$1あたり 2,500万 / 週）</text>
+
+        <!-- Row 3: Maximum (3.0B -> width 425px) -->
+        <text x="152" y="218" text-anchor="end" font-size="15" font-weight="700" fill="#0F172A">Maximum</text>
+        <text x="152" y="237" text-anchor="end" font-size="13" fill="#475569">$100 / 月</text>
+        <rect x="165" y="202" width="425" height="34" fill="#047857"/>
+        <text x="600" y="216" font-size="14" font-weight="700" fill="#065F46">30億トークン/週</text>
+        <text x="600" y="235" font-size="13" fill="#065F46">Power比 6倍（$1あたり 3,000万）</text>
+      </svg>
+      <figcaption>単位: Muse トークン／週。出典: <a href="https://www.meta.com/ja-jp/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">Meta ヘルプセンター「Museサブスクリプションについて」</a>。Free の数値は公式非公開（二次情報として約1億トークン/週との言及あり）。</figcaption>
+    </figure>
+
+    <div class="cols-3">
+      <div class="col-item sub">
+        <h3>無料プラン比の倍率は公式非公開</h3>
+        <p>Meta 公式ヘルプは Free プランについて「使用制限付きで無料（available for free with a usage limit）」と記すのみで、具体的なトークン数や有料プランとの倍率を公表していません。一部二次情報（<a href="https://www.the-ai-corner.com/p/meta-muse-operating-manual-prompts-money-recovery-connector-play-2026" target="_blank" rel="noopener noreferrer">The AI Corner</a>）では約 1 億トークン/週との言及もありますが、公式ドキュメント上は未確認です。</p>
+      </div>
+      <div class="col-item sub">
+        <h3>リセット曜日・時刻も公式未明記</h3>
+        <p>無料枠・有料枠ともに週単位でリセットされますが、具体的なリセット曜日や時刻は公式ヘルプに記載がありません（二次解説 <a href="https://limitwatchai.dev/guides/meta-muse/" target="_blank" rel="noopener noreferrer">LimitWatch</a> でも同様に非公開と確認）。アプリや Web の設定画面（Settings）から残量を確認する運用になります。</p>
+      </div>
+      <div class="col-item sub">
+        <h3>タスク種別とモデルで消費量は変動</h3>
+        <p>公式 FAQ は「消費される Muse トークン量は、機能・要求の複雑さ・入出力サイズ・<strong>モデル階層</strong> によって変動する」と明記しています。ブラウザ操作やファイル生成、さらに上位モデル Muse Wonder の稼働時は、短いチャットより多くの枠を消費します。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Models & Benchmarks -->
+  <section class="sec sec-rule">
+    <h2>Muse Spark 1.3 から Muse Wonder へ：エージェント実務と正確性が大幅に向上</h2>
+    <p class="measure">Meta の 2026 年 10 月 12 日の公式発表（<a href="https://research.meta.ai/blog/muse-wonder" target="_blank" rel="noopener noreferrer">Muse Wonder 公式ブログ</a>）では、Muse 系列のモデルは <strong>Muse Spark（現行 1.3）</strong>、<strong>Muse Wonder</strong>、最上位の <strong>Muse Wonder Full</strong> の 3 階層で構成されます。同ブログは、Muse Wonder が Muse アプリ内の体験を駆動し、まずサブスクリプション加入者から展開されること、さらに成果物生成（artifact generation）や高度な知能を要する処理を担うことを明記しています。</p>
+    <p class="measure">有料プランでは、メインの会話・成果物作成・定期実行・サブエージェント・バックグラウンド作業を Muse Wonder が担う一方、最上位の Muse Wonder Full は別製品「Muse Code」の上位プラン限定であり、Muse 本体の Power / Maximum では利用できません。</p>
+
+    <figure>
+      <p class="fig-title">第三者実測（Artificial Analysis v4.3）で Muse Wonder は端末作業 +19pt・業務自動化 +10pt・幻覚率 −6pt を達成</p>
+      <svg viewBox="0 0 700 410" width="100%" role="img" aria-label="Muse Spark 1.3、Muse Wonder、Muse Wonder Full の第三者ベンチマーク比較グラフ">
+        <!-- Legend -->
+        <rect x="190" y="8" width="14" height="14" fill="#94A3B8"/>
+        <text x="210" y="20" font-size="13.5" fill="#1E293B">Muse Spark 1.3 (Free)</text>
+        <rect x="378" y="8" width="14" height="14" fill="#1D4ED8"/>
+        <text x="398" y="20" font-size="13.5" font-weight="700" fill="#1E3A8A">Muse Wonder (有料Muse)</text>
+        <rect x="572" y="8" width="14" height="14" fill="#047857"/>
+        <text x="592" y="20" font-size="13.5" fill="#065F46">Wonder Full (Code)</text>
+
+        <!-- Axis (x=190 to 630, width=440px represents 0 to 80; scale = 5.5px per unit) -->
+        <line x1="190" y1="42" x2="190" y2="360" stroke="#94A3B8" stroke-width="1"/>
+        <line x1="300" y1="42" x2="300" y2="360" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="410" y1="42" x2="410" y2="360" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="520" y1="42" x2="520" y2="360" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="630" y1="42" x2="630" y2="360" stroke="#E2E8F0" stroke-width="1"/>
+
+        <text x="190" y="380" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">0</text>
+        <text x="300" y="380" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">20</text>
+        <text x="410" y="380" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">40</text>
+        <text x="520" y="380" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">60</text>
+        <text x="630" y="380" text-anchor="middle" font-size="13" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">80</text>
+        <text x="410" y="402" text-anchor="middle" font-size="13" fill="#475569">スコア（点 / %）※ハルシネーション率のみ低いほど良好</text>
+
+        <!-- Group 1: Intelligence Index (48, 52, 56) -->
+        <text x="178" y="76" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">Intelligence Index</text>
+        <text x="178" y="94" text-anchor="end" font-size="12.5" fill="#475569">総合知能 (v4.3)</text>
+        <rect x="190" y="52" width="264" height="14" fill="#94A3B8"/>
+        <text x="462" y="64" font-size="13.5" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">48</text>
+        <rect x="190" y="70" width="286" height="14" fill="#1D4ED8"/>
+        <text x="484" y="82" font-size="13.5" font-weight="700" fill="#1E3A8A" font-family="ui-monospace, SFMono-Regular, monospace">52 (+4)</text>
+        <rect x="190" y="88" width="308" height="14" fill="#047857"/>
+        <text x="506" y="100" font-size="13.5" fill="#065F46" font-family="ui-monospace, SFMono-Regular, monospace">56 (+8)</text>
+
+        <!-- Group 2: Terminal-Bench 4.0 (33%, 52%, 57%) -->
+        <text x="178" y="156" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">Terminal-Bench 4.0</text>
+        <text x="178" y="174" text-anchor="end" font-size="12.5" fill="#475569">自律端末・実行作業</text>
+        <rect x="190" y="132" width="181.5" height="14" fill="#94A3B8"/>
+        <text x="380" y="144" font-size="13.5" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">33%</text>
+        <rect x="190" y="150" width="286" height="14" fill="#1D4ED8"/>
+        <text x="484" y="162" font-size="13.5" font-weight="700" fill="#1E3A8A" font-family="ui-monospace, SFMono-Regular, monospace">52% (+19pt)</text>
+        <rect x="190" y="168" width="313.5" height="14" fill="#047857"/>
+        <text x="512" y="180" font-size="13.5" fill="#065F46" font-family="ui-monospace, SFMono-Regular, monospace">57% (+24pt)</text>
+
+        <!-- Group 3: AutomationBench-AA (58%, 68%, 71%) -->
+        <text x="178" y="236" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">AutomationBench-AA</text>
+        <text x="178" y="254" text-anchor="end" font-size="12.5" fill="#475569">業務ワークフロー自動化</text>
+        <rect x="190" y="212" width="319" height="14" fill="#94A3B8"/>
+        <text x="517" y="224" font-size="13.5" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">58%</text>
+        <rect x="190" y="230" width="374" height="14" fill="#1D4ED8"/>
+        <text x="572" y="242" font-size="13.5" font-weight="700" fill="#1E3A8A" font-family="ui-monospace, SFMono-Regular, monospace">68% (+10pt)</text>
+        <rect x="190" y="248" width="390.5" height="14" fill="#047857"/>
+        <text x="588" y="260" font-size="13.5" fill="#065F46" font-family="ui-monospace, SFMono-Regular, monospace">71% (+13pt)</text>
+
+        <!-- Group 4: Hallucination Rate (33%, 27%, 23% - lower is better) -->
+        <text x="178" y="316" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">ハルシネーション率</text>
+        <text x="178" y="334" text-anchor="end" font-size="12.5" fill="#475569">低いほど正確（改善）</text>
+        <rect x="190" y="292" width="181.5" height="14" fill="#94A3B8"/>
+        <text x="380" y="304" font-size="13.5" fill="#475569" font-family="ui-monospace, SFMono-Regular, monospace">33%</text>
+        <rect x="190" y="310" width="148.5" height="14" fill="#1D4ED8"/>
+        <text x="347" y="322" font-size="13.5" font-weight="700" fill="#1E3A8A" font-family="ui-monospace, SFMono-Regular, monospace">27% (−6pt)</text>
+        <rect x="190" y="328" width="126.5" height="14" fill="#047857"/>
+        <text x="325" y="340" font-size="13.5" fill="#065F46" font-family="ui-monospace, SFMono-Regular, monospace">23% (−10pt)</text>
+      </svg>
+      <figcaption>すべて最大推論設定（max effort）での計測値。出典: <a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis「Muse Wonder and Muse Wonder Full」（2026年10月12日）</a>。</figcaption>
+    </figure>
+
+    <h3>公式発表ベンチマークと第三者実測の照合</h3>
+    <p class="measure"><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis の第三者レポート</a> で公表された数値は、Intelligence Index（48 / 52 / 56）、Terminal-Bench 4.0（33% → 52%）、AutomationBench-AA（58% → 68%）、ハルシネーション率（33% → 27%）のいずれも完全に一致しています。一方、Meta の公式モデルカード（<a href="https://research.meta.ai/blog/muse-wonder" target="_blank" rel="noopener noreferrer">公式ブログ</a> およびモデルカード集計 <a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">DEV Community</a>）では、独自の長文脈記憶評価（MemoryBench）や目標完遂評価（FocusBench）、長時間コーディング（SWE-Marathon）での優位が強調されています。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>評価指標</th>
+            <th>測定対象・区分</th>
+            <th class="mono">Spark 1.3</th>
+            <th class="mono">Wonder</th>
+            <th class="mono">Wonder Full</th>
+            <th>出典・注記</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-head">Intelligence Index v4.3</td>
+            <td>第三者・総合知能（10評価）</td>
+            <td class="mono">48</td>
+            <td class="mono highlight">52</td>
+            <td class="mono">56</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a>（max effort）</td>
+          </tr>
+          <tr>
+            <td class="row-head">Terminal-Bench 4.0</td>
+            <td>第三者・端末エージェント作業</td>
+            <td class="mono">33%</td>
+            <td class="mono highlight">52%</td>
+            <td class="mono">57%</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a></td>
+          </tr>
+          <tr>
+            <td class="row-head">AutomationBench-AA</td>
+            <td>第三者・業務ワークフロー自動化</td>
+            <td class="mono">58%</td>
+            <td class="mono highlight">68%</td>
+            <td class="mono">71%</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a>（※1）</td>
+          </tr>
+          <tr>
+            <td class="row-head">ハルシネーション率</td>
+            <td>第三者・誤情報生成率（低い程良）</td>
+            <td class="mono">33%</td>
+            <td class="mono highlight">27%</td>
+            <td class="mono">23%</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a></td>
+          </tr>
+          <tr>
+            <td class="row-head">Coding Agents Index</td>
+            <td>第三者・コーディングエージェント</td>
+            <td class="mono">54</td>
+            <td class="mono highlight">63</td>
+            <td class="mono">68</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a>（Muse Code 上）</td>
+          </tr>
+          <tr>
+            <td class="row-head">AA-Omniscience</td>
+            <td>第三者・モデル単体の知識想起</td>
+            <td class="mono">25</td>
+            <td class="mono">25</td>
+            <td class="mono">30</td>
+            <td><a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis</a>（知識暗記は弱点）</td>
+          </tr>
+          <tr>
+            <td class="row-head">MemoryBench</td>
+            <td>Meta 独自・64K〜100K 長文記憶</td>
+            <td class="mono">—</td>
+            <td class="mono highlight">85.6</td>
+            <td class="mono">85.5</td>
+            <td>Meta 公式（Opus 5.5 は 81.5、<a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">集計</a>）</td>
+          </tr>
+          <tr>
+            <td class="row-head">FocusBench</td>
+            <td>Meta 独自・障害迂回と目標持続</td>
+            <td class="mono">—</td>
+            <td class="mono">44.9</td>
+            <td class="mono">54.2</td>
+            <td>Meta 公式（Opus 5.5 は 45.8、<a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">集計</a>）</td>
+          </tr>
+          <tr>
+            <td class="row-head">SWE-Marathon</td>
+            <td>Meta 公表・長時間ソフト開発</td>
+            <td class="mono">—</td>
+            <td class="mono highlight">53.1%</td>
+            <td class="mono">57.5%</td>
+            <td>Meta 公式（Opus 5.5 は 46.3%、<a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">集計</a>）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">※1 AutomationBench-AA は、Meta モデルカード表（<a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">DEV Community 集計</a>）では Wonder 39.1 / Full 45.4 と報告されており、評価版・実行ハーネスの違いにより Artificial Analysis 記事（68% / 71%）と数値体系が異なります。また MemoryBench・FocusBench は Meta 独自の非公開テストであり、第三者による再現検証は行われていません。</p>
+
+    <div class="callout-line">
+      <strong>トークン消費の隠れた注意点：</strong>Artificial Analysis の計測では、Muse Wonder（max）は Spark 1.3 より出力トークンが約 10% 少ない（54k vs 60k）一方、<strong>入力トークンは 28% 多い（7.69M vs 6.03M）</strong> 結果となりました。API 単価も入力 $4 / 出力 $20（Spark 1.3 は $1.25 / $4.25）と高コスト構造のため、有料プラン移行後に同じ定期ジョブを回しても、トークン消費ペース自体は Spark 時代より増える可能性があります。
+    </div>
+  </section>
+
+  <!-- Section 5: Feature Differences -->
+  <section class="sec sec-rule">
+    <h2>機能差は限定的：Muse Mail は無料でも利用可、Home Link は米国限定</h2>
+    <p class="measure">Muse 本体のプラン設計は「機能のロック解除」よりも「上位モデル（Wonder）と週次容量の拡張」が中心です。チャット・スペース・コネクター連携・定期実行・仮想マシン（VM）・ブラウザ操作（内蔵ブラウザおよび Muse Chrome Extension）といった中核機能は、無料プランから利用できます（<a href="https://www.toolcolumn.com/learn/meta-muse-usage-limits-by-plan" target="_blank" rel="noopener noreferrer">ToolColumn</a>）。</p>
+
+    <div class="cols-2">
+      <div class="col-item">
+        <h3>Muse Mail（@muse.ai 専用メール）</h3>
+        <p>エージェント専用の <code>@muse.ai</code> アドレスを発行し、メール転送や外部との連絡を任せられる機能です。Meta 公式ヘルプ「<a href="https://www.meta.com/help/superintelligence/1149305437517250/" target="_blank" rel="noopener noreferrer">About Muse email addresses</a>」に有料プラン限定との記載はなく、送信回数制限（Sending limits）はあるものの誰でも設定できます。二次情報（<a href="https://muse-lab.biz/news/muse-news-1122-freemail/" target="_blank" rel="noopener noreferrer">Muse Lab</a> 等）でも、2026年11月20日頃から無料プランでも専用アドレスを作成可能になったことが確認されています。</p>
+      </div>
+      <div class="col-item">
+        <h3>Muse Home Link（スマートホーム連携機器）</h3>
+        <p>自宅 Wi-Fi に接続して家電やローカル HTTP API 機器を操作できる USB-C デバイス（ESP32-C5 搭載）です。公式ページ「<a href="https://gadgets.muse.ai/home-link" target="_blank" rel="noopener noreferrer">Muse Home Link</a>」には <strong>「Included with an active Muse subscription in the United States only, limit one per subscriber（米国の有効な Muse サブスク加入者限定で 1 人 1 台付属）」</strong> と明記されており、<strong>日本在住ユーザーは特典対象外</strong> です（オープンソースの ESP32 Device SDK を用いた自作は技術的に可能）。</p>
+      </div>
+      <div class="col-item sub">
+        <h3>電話発信機能（Phone calls）</h3>
+        <p>公式ヘルプでプラン差が明確に数値化されている数少ない機能差です。Power は <strong>1 日 10 回</strong>、Maximum は <strong>1 日 20 回</strong> の通話発信上限が設定されています（Free には回数表記なし）。ただし、通話機能を含む一部特典は地域・アカウントごとに提供状況が異なります。</p>
+      </div>
+      <div class="col-item sub">
+        <h3>優先処理・新機能への早期アクセス</h3>
+        <p>Muse 本体の Power / Maximum プランについて、処理の優先キューや新機能への早期アクセス（Early access）を保証する公式記載は確認できませんでした。なお、「Early access to new features」が公式に明記されているのは、次節で述べる別製品 <strong>Muse Code</strong> の Power Usage（$50/月）以上のプランです。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Muse vs Muse Code -->
+  <section class="sec sec-rule">
+    <h2>Muse 本体と Muse Code は別製品：Wonder Full を使うには Muse Code 契約が必要</h2>
+    <p class="measure">名前が似ていて混同されやすい「<strong>Muse Code</strong>」は、Meta の開発者向け CLI コーディングエージェント（<a href="https://dev.meta.ai/products/muse-code" target="_blank" rel="noopener noreferrer">dev.meta.ai/products/muse-code</a>）であり、パーソナル AI エージェント「Muse」とは<strong>アカウント課金・プラン体系・上限管理のすべてが別系統</strong>です。Muse 本体の Maximum（$100/月）を契約しても、Muse Code や最上位モデル <strong>Muse Wonder Full</strong> は利用できません。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>製品・プラン</th>
+            <th class="mono">月額</th>
+            <th>利用上限の考え方</th>
+            <th>Wonder / Wonder Full</th>
+            <th>主な違い・特典</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-head">Muse 本体：Power / Maximum</td>
+            <td class="mono">$20 / $100</td>
+            <td>週次トークン（5億 / 30億）＋日次通話</td>
+            <td>Wonder 対応／<strong>Full 非対応</strong></td>
+            <td>個人向け自律エージェント（アプリ・Web・定期実行・コネクター）</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Code：Everyday Usage</td>
+            <td class="mono">$5</td>
+            <td>5時間ごとに 10〜50 プロンプト（1x）</td>
+            <td>Spark / Wonder 対応／Full 非対応</td>
+            <td>CLI コーディング入門、画像・動画入力、音声、Web検索</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Code：High Usage</td>
+            <td class="mono">$15</td>
+            <td>Everyday の 5 倍</td>
+            <td>Spark / Wonder 対応／Full 非対応</td>
+            <td>マルチモーダル入力枠の拡大</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Code：Power Usage</td>
+            <td class="mono highlight">$50</td>
+            <td>Everyday の 20 倍</td>
+            <td class="highlight">Muse Wonder Full 利用可</td>
+            <td>新機能早期アクセス、ファイルアップロード上限拡大</td>
+          </tr>
+          <tr>
+            <td class="row-head">Muse Code：Maximum Usage</td>
+            <td class="mono highlight">$200</td>
+            <td>Everyday の 80 倍</td>
+            <td class="highlight">Muse Wonder Full 利用可</td>
+            <td>大規模開発・並列マルチエージェント向け最上位枠</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">出典: <a href="https://dev.meta.ai/products/muse-code" target="_blank" rel="noopener noreferrer">Muse Code 公式ページ</a>、<a href="https://dev.meta.ai/docs/muse-wonder" target="_blank" rel="noopener noreferrer">Meta Model API「Muse Wonder」ドキュメント</a>。なお、Muse Wonder Full は API 従量課金でも提供されておらず、Muse Code の Power Usage / Maximum Usage 限定です（通常の Muse Wonder を max 推論設定にしても Full には切り替わりません）。また、Muse Code サブスクはデフォルトで学習協力（Contributor mode）が有効であり、オフにすると実質枠が減る仕様です（<a href="https://www.toolcolumn.com/learn/meta-muse-usage-limits-by-plan" target="_blank" rel="noopener noreferrer">ToolColumn</a>）。</p>
+  </section>
+
+  <!-- Section 7: Decision Framework for Heavy Users -->
+  <section class="sec sec-rule">
+    <h2>ヘビーユーザー向けの判断材料：どのプランがどんな利用状況に合うか</h2>
+    <p class="measure">定期実行ジョブ（健康チェック・週次レポート・監視など）と自律的な目標管理を多数稼働させ、<strong>無料枠を週の途中で約 38% 消費している利用者</strong>を前提に、3 つの選択肢の判断材料を整理します。結論を断定せず、重視する軸に応じた見極めポイントを提示します。</p>
+
+    <div class="cols-3">
+      <div class="col-item">
+        <h3>Free 継続（＋必要時に買い切り追加トークン）が合うケース</h3>
+        <ul>
+          <li>週途中で 38% 消費のペースであれば、1 週間トータルでは 70〜80% 前後に収まる見込みであり、「枠が足りずに止まる」問題だけで見れば Free 継続でも回る可能性が高い。</li>
+          <li>現在の Muse Spark 1.3 の出力品質・定期実行の成功率・自律判断の精度に大きな不満がない。</li>
+          <li>突発的な重い調査で枠を超えた週だけ、<strong>無期限の買い切り追加トークン</strong>でスポット補填する方が月額固定費を抑えられる。</li>
+        </ul>
+      </div>
+      <div class="col-item">
+        <h3>Power（$20/月）への課金価値が出やすいケース</h3>
+        <ul>
+          <li><strong>「モデルの賢さの伸び」を重視する場合</strong>：定期実行・監視・自律目標管理は、Terminal-Bench（33%→52%）や AutomationBench（58%→68%）、ハルシネーション率改善（33%→27%）、Active Memory 強化の恩恵を最も受けやすい領域。</li>
+          <li>手戻りや誤報告が減ることで、エージェントの監督コスト自体を下げたい。</li>
+          <li>今後ジョブ数やブラウザ操作・成果物生成を増やす予定があり、週 5 億トークンの明示的な余裕を確保したい。</li>
+        </ul>
+      </div>
+      <div class="col-item">
+        <h3>Maximum（$100/月）を検討すべきケース</h3>
+        <ul>
+          <li>Power との公式差は「週次トークン 6 倍（30 億）」「1 日通話 2 倍（20 回）」であり、<strong>モデル性能の差は公式確認されていない</strong>。</li>
+          <li>したがって、最初から Maximum を選ぶ根拠は薄い。まず Power で 1〜2 週間運用し、Wonder 稼働に伴うトークン消費増を含めて<strong>週 5 億トークンを恒常的に超過する</strong>と実測できた場合にアップグレードするのが合理的。</li>
+          <li>なお、日本在住では Muse Home Link 特典が対象外のため、ハードウェア特典を課金理由に含めない判断が必要。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sources -->
+  <section class="sec sec-rule">
+    <h2>出典一覧</h2>
+    <ol class="sources-list">
+      <li><span class="src-type">[一次]</span> <a href="https://www.meta.com/ja-jp/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">Meta ヘルプセンター「Museサブスクリプションについて」（日本語版）</a> — Power ($20/月・週5億トークン・10通話/日)、Maximum ($100/月・週30億トークン・20通話/日)、毎月自動更新。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://www.meta.com/help/subscriptions/1021145227643680/" target="_blank" rel="noopener noreferrer">Meta Help Center: About Muse subscriptions（英語版）</a> — プラン別上限、利用資格、請求更新条件。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://www.meta.com/help/subscriptions/28153473374286914/" target="_blank" rel="noopener noreferrer">Meta Help Center: How to buy additional Muse tokens</a> — 買い切り追加トークン（無期限・解約後維持）、週次枠の繰越なし、モデル階層による消費量変動。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://www.meta.com/help/superintelligence/1149305437517250/" target="_blank" rel="noopener noreferrer">Meta Help Center: About Muse email addresses</a> — Muse Mail（@muse.ai）の仕様、送信制限、外部メール検証。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://gadgets.muse.ai/home-link" target="_blank" rel="noopener noreferrer">Muse Gadgets: Muse Home Link 公式ページ</a> — 米国在住の有効サブスク加入者限定（1人1台）、ESP32-C5 仕様。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://research.meta.ai/blog/muse-wonder" target="_blank" rel="noopener noreferrer">Meta AI Research Blog: Muse Wonder: A Frontier Model For Personal &amp; Professional AI Agents（2026年10月12日）</a> — Muse Wonder / Wonder Full の発表、Active Memory / Active Focus、Muse サブスク加入者への優先展開。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://dev.meta.ai/products/muse-code" target="_blank" rel="noopener noreferrer">Meta AI: Muse Code 公式製品ページ</a> — Everyday ($5) / High ($15) / Power ($50) / Maximum ($200) の 4 プラン、5時間枠、Wonder Full 提供条件。</li>
+      <li><span class="src-type">[一次]</span> <a href="https://dev.meta.ai/docs/muse-wonder" target="_blank" rel="noopener noreferrer">Meta Model API Documentation: Muse Wonder</a> — Muse Code 全プランでの Wonder 対応、Power/Maximum での Wonder Full 対応。</li>
+      <li><span class="src-type">[第三者]</span> <a href="https://artificialanalysis.ai/articles/muse-wonder" target="_blank" rel="noopener noreferrer">Artificial Analysis: Muse Wonder and Muse Wonder Full（2026年10月12日）</a> — Intelligence Index v4.3 (48/52/56)、Terminal-Bench 4.0、AutomationBench-AA、ハルシネーション率、入出力トークン数とコスト分析。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://www.toolcolumn.com/learn/meta-muse-usage-limits-by-plan" target="_blank" rel="noopener noreferrer">ToolColumn: Meta Muse Usage Limits by Plan（2026年11月25日更新）</a> — プラン別上限・日本ヘルプ円表記なし確認・提供地域拡大履歴・Contributor mode 仕様。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://dev.to/hassann/muse-wonder-benchmarks-1h1n" target="_blank" rel="noopener noreferrer">DEV Community: Muse Wonder Benchmarks（2026年10月15日）</a> — Meta モデルカード表（MemoryBench / FocusBench / SWE-Marathon / DeepSWE / Harvey LAB）と Artificial Analysis 数値差異の整理。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://superapp.dev/blog/meta-muse-pricing" target="_blank" rel="noopener noreferrer">Superapp: Meta Muse Pricing 2026（2026年11月15日）</a> — 年払いプランなしの確認。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://limitwatchai.dev/guides/meta-muse/" target="_blank" rel="noopener noreferrer">LimitWatch: Meta Muse plans, weekly token limits, and access（2026年11月7日）</a> — 無料枠数値およびリセット日時の公式非公開確認。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://www.the-ai-corner.com/p/meta-muse-operating-manual-prompts-money-recovery-connector-play-2026" target="_blank" rel="noopener noreferrer">The AI Corner: Meta Muse Operating Manual（2026年9月22日）</a> — 無料枠約1億トークン/週に関する言及（公式ドキュメント外）。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://muse-lab.biz/news/muse-news-1122-freemail/" target="_blank" rel="noopener noreferrer">Muse Lab: Museの専用メールアドレスが無料プランでも作れるように（2026年11月22日）</a> — 無料プランでの Muse Mail 作成解禁の報告。</li>
+      <li><span class="src-type">[二次]</span> <a href="https://finance.biggo.com/news/32e121d5-12f3-4038-8bab-c942d74908ea" target="_blank" rel="noopener noreferrer">BigGo Finance: Meta Brings AI Agent 'Muse' to Japan（2026年11月23日）</a> ／ <a href="https://tech-go.jp/it-engineer/skill/ai/meta-muse" target="_blank" rel="noopener noreferrer">Tech-Go: Muse料金プラン解説（2026年11月23日）</a> — 国内アプリ内課金での円表示目安（Power 2,799〜3,499円、Maximum 16,990円前後）。</li>
+    </ol>
+  </section>
+
+</main>
+</body>
+</html>
