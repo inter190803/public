@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addness（アドネス）徹底調査レポート｜個人マルチAI構成への導入効果と判断材料</title>
+<style>
+/*
+  Utilitarian / Deep Research · Mobile-First Single-Column Editorial HTML
+  Zero external CDN dependency · Zero JavaScript · Self-contained CSS
+  Palette: Crisp White (#FFFFFF), Slate Tint (#F1F5F9), Deep Ink (#0F172A), Cobalt Accent (#1D4ED8 / #1E3A8A), Emerald (#047857 / #065F46), Amber (#92400E)
+*/
+:root {
+  --paper: #FFFFFF;
+  --band: #F1F5F9;
+  --ink: #0F172A;
+  --ink2: #1E293B;
+  --mute: #475569;
+  --hair: #CBD5E1;
+  --hair-strong: #94A3B8;
+  --accent: #1D4ED8;
+  --accent-text: #1E3A8A;
+  --accent-bg: #EFF6FF;
+  --accent-2: #047857;
+  --accent-2-text: #065F46;
+  --accent-2-bg: #ECFDF5;
+  --warn-text: #92400E;
+  --warn-bg: #FFFBEB;
+  --font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", "Meiryo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16.5px;
+  line-height: 1.78;
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 18px 64px;
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding: 48px 28px 80px;
+  }
+}
+
+/* Header */
+.hero {
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink);
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(26px, 6vw, 36px);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.deck {
+  margin: 0 0 12px;
+  font-size: 16.5px;
+  line-height: 1.7;
+  color: var(--ink2);
+}
+
+.meta-line {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--mute);
+}
+
+/* Verdict Band */
+.verdict-band {
+  margin: 24px -18px 0;
+  padding: 24px 18px;
+  background: var(--band);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+@media (min-width: 640px) {
+  .verdict-band {
+    margin: 28px 0 0;
+    padding: 28px 24px;
+  }
+}
+
+.verdict-band h2 {
+  margin: 0 0 14px;
+  padding: 0;
+  border: none;
+  font-size: 21px;
+}
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 18px 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--hair-strong);
+  border-bottom: 1px solid var(--hair-strong);
+}
+
+.kpi-item {
+  min-width: 0;
+}
+
+.kpi-val {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--accent-text);
+}
+
+.kpi-val.em {
+  color: var(--accent-2-text);
+}
+
+.kpi-desc {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--mute);
+}
+
+/* Table of Contents */
+.toc {
+  margin: 28px 0 0;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.toc-title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--mute);
+}
+
+.toc-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.toc-list li {
+  margin: 6px 0;
+  font-size: 15.5px;
+}
+
+/* Sections */
+.sec {
+  margin-top: 44px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hair);
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: clamp(21px, 4.8vw, 26px);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  font-weight: 800;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 18.5px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 16px;
+  color: var(--ink2);
+}
+
+ul, ol {
+  margin: 0 0 18px;
+  padding-left: 22px;
+  color: var(--ink2);
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-word;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--band);
+  padding: 2px 5px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+pre {
+  margin: 14px 0 18px;
+  padding: 14px;
+  background: var(--ink);
+  color: #F8FAFC;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.55;
+  overflow-x: auto;
+  border-radius: 4px;
+}
+
+/* Callouts (left border only, open canvas) */
+.callout {
+  margin: 18px 0;
+  padding: 4px 0 4px 14px;
+  border-left: 3px solid var(--accent);
+}
+
+.callout.warn {
+  border-left-color: var(--warn-text);
+}
+
+.callout.ok {
+  border-left-color: var(--accent-2);
+}
+
+.callout-title {
+  margin: 0 0 6px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Responsive Scrollable Tables */
+.table-wrap {
+  margin: 18px 0 22px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--hair-strong);
+}
+
+table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+th, td {
+  padding: 10px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hair);
+}
+
+th {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--band);
+  white-space: nowrap;
+}
+
+td.num, th.num {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.table-hint {
+  margin: -14px 0 18px;
+  font-size: 12.5px;
+  color: var(--mute);
+}
+
+/* Figures & Inline SVG */
+figure {
+  margin: 24px 0;
+}
+
+.fig-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Tag pill */
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.tag-ok {
+  background: var(--accent-2-bg);
+  color: var(--accent-2-text);
+}
+
+.tag-warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.tag-info {
+  background: var(--accent-bg);
+  color: var(--accent-text);
+}
+
+/* Sources */
+.sources-list {
+  padding-left: 22px;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.sources-list li {
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <h1>Addness（アドネス）徹底調査：個人のマルチAI運用に導入する価値はあるか</h1>
+    <p class="deck">ゴールツリー・今日のToDo・ナレッジ・KPIを1画面に統合し、MCP・CLI・ChatGPT公式プラグイン経由でAIエージェントと共有する「カンパニーブレイン」Addnessの仕組みと、すでに「AI覚醒」型の自前マルチAI構成を持つ個人ITエンジニアにとっての導入効果を一次情報ベースで検証します。</p>
+    <p class="meta-line">調査基準日：2026年11月27日 ／ 対象：アドネス株式会社「Addness」</p>
+  </header>
+
+  <section class="verdict-band" id="verdict">
+    <h2>冒頭結論：思想が実装済みの個人には「全面移行」より「Starter（$4.99/月）での部分検証」が現実的</h2>
+    <p>結論から述べると、すでに Goal / State / Knowledge の分離、Git＋クラウドドライブの二重同期、定期実行司令塔を備えた個人ITエンジニアにとって、<strong>Addnessを全面導入して現行基盤を置き換える必然性は高くありません</strong>。最大の理由は、Addnessが「チームとAIが同じ文脈を見る法人向け統合SaaS」として設計されており、Git管理の完全な主権やカスタム定期ジョブの自由度では自前構成が優位なためです。</p>
+    <p>一方で、<strong>「構造化されたゴールツリー＋KPI達成率の視覚化」「ワンクリックで文脈をAIへ渡す『アドる』」「複数の商用AI（Claude Code / Codex / Cursor / ChatGPT）が同一ツリーを読み書きする体験」「スマホからの確認・操作」</strong>の4点は、Markdown手組みの自前構成にはない強みです。2026年11月16日にFreeプランが終了した現在、最安の<strong>Starterプラン（$4.99/人/月）</strong>で1アカウントだけ契約し（AIエージェントは何体つないでも無料）、まずはゴールツリーと実装エージェントの接続ハブとして試すのが最も低リスクな判断材料になります。</p>
+
+    <div class="kpi-strip">
+      <div class="kpi-item">
+        <span class="kpi-val">$4.99〜$69</span>
+        <span class="kpi-desc">1人あたり月額（Freeプランは2026-11-16提供終了）</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-val em">AI数 無制限</span>
+        <span class="kpi-desc">MCP接続のAIエージェントは何体でも課金対象外</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-val">1人〜OK</span>
+        <span class="kpi-desc">個人1名から契約可（AI側の契約は別途必要）</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-val">Starter可</span>
+        <span class="kpi-desc">MCP・ゴール・CRM・KPIツリーは最安プランから利用可</span>
+      </div>
+    </div>
+  </section>
+
+  <nav class="toc" aria-label="目次">
+    <p class="toc-title">目次（ページ内リンク）</p>
+    <ol class="toc-list">
+      <li><a href="#verdict">冒頭結論：導入判断の要点</a></li>
+      <li><a href="#architecture">製品の全体像と動作の仕組み（詳細）</a></li>
+      <li><a href="#ai-connection">AI接続の仕組み（MCP / CLI / ChatGPT / Desktop）</a></li>
+      <li><a href="#pricing">料金・プラン体系と総コスト</a></li>
+      <li><a href="#cases">活用事例と「AI覚醒」思想との対応関係</a></li>
+      <li><a href="#impact">現行の個人マルチAI構成への導入効果（核心）</a></li>
+      <li><a href="#conclusion">結論：判断基準と導入する場合の最初の一歩</a></li>
+      <li><a href="#sources">出典一覧</a></li>
+    </ol>
+  </nav>
+
+  <!-- Section 2 -->
+  <section class="sec" id="architecture">
+    <h2>1. 製品の全体像と動作の仕組み（詳細）</h2>
+    <p>Addness（<a href="https://hp.addness.com/ja" target="_blank" rel="noopener noreferrer">公式サイト</a>）は、アドネス株式会社（代表取締役：三上功太）が提供する「ゴールから、人とAIの仕事を一つにする」カンパニーブレインです。最大の設計思想は、バラバラのツールに散らばった目標・タスク・会話・議事録・ファイル・顧客・数字を「同じゴールの下」に集約し、接続したAIエージェントに都度ゼロから前提を説明しなくても続きから動ける状態を作る点にあります（<a href="https://hp.addness.com/ja/features" target="_blank" rel="noopener noreferrer">機能一覧</a>）。</p>
+
+    <figure>
+      <p class="fig-title">Addnessは「ゴールツリー」を核に会話・資料・数字を束ね、MCPで外部AIへ文脈を供給する</p>
+      <svg viewBox="0 0 640 360" width="100%" role="img" aria-label="Addnessのデータ構造と外部AI連携の全体像">
+        <rect x="10" y="10" width="620" height="340" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+        <!-- Top layer: External AI -->
+        <rect x="40" y="28" width="560" height="66" rx="6" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="1.5"/>
+        <text x="320" y="54" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A8A">外部AIエージェント（利用者自身の契約）</text>
+        <text x="320" y="78" text-anchor="middle" font-size="13" fill="#1E293B">Claude Code / Codex / Cursor / Claude Desktop / ChatGPT公式プラグイン</text>
+
+        <!-- Arrows -->
+        <line x1="210" y1="94" x2="210" y2="132" stroke="#1D4ED8" stroke-width="2"/>
+        <polygon points="210,136 204,126 216,126" fill="#1D4ED8"/>
+        <line x1="430" y1="136" x2="430" y2="98" stroke="#047857" stroke-width="2"/>
+        <polygon points="430,94 424,104 436,104" fill="#047857"/>
+        <text x="125" y="118" text-anchor="middle" font-size="12" font-weight="700" fill="#1E3A8A">アドる / MCP読取</text>
+        <text x="520" y="118" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">進捗・AIメモリ書戻し</text>
+
+        <!-- Middle layer: MCP & CLI -->
+        <rect x="110" y="136" width="420" height="36" rx="4" fill="#1E3A8A"/>
+        <text x="320" y="159" text-anchor="middle" font-size="13.5" font-weight="700" fill="#FFFFFF">Addness MCP (vt.api.addness.com/mcp) / CLI / OAuth権限制御</text>
+
+        <!-- Core Goal Tree -->
+        <rect x="40" y="192" width="560" height="66" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+        <text x="320" y="218" text-anchor="middle" font-size="15" font-weight="800" fill="#0F172A">ゴールツリー（親ゴール → 子ゴール → 今日のToDo）</text>
+        <text x="320" y="242" text-anchor="middle" font-size="13" fill="#475569">保持コンテキスト：理想（完了基準）・メモ・AIメモリ・担当者・期日・KPIリング</text>
+
+        <!-- Bottom layer: Integrated Modules -->
+        <rect x="40" y="276" width="128" height="54" rx="4" fill="#FFFFFF" stroke="#94A3B8"/>
+        <text x="104" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">チャット/通話</text>
+        <text x="104" y="318" text-anchor="middle" font-size="12" fill="#475569">投稿＝コメント</text>
+
+        <rect x="184" y="276" width="128" height="54" rx="4" fill="#FFFFFF" stroke="#94A3B8"/>
+        <text x="248" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">AIドライブ</text>
+        <text x="248" y="318" text-anchor="middle" font-size="12" fill="#475569">資料・議事録・録画</text>
+
+        <rect x="328" y="276" width="128" height="54" rx="4" fill="#FFFFFF" stroke="#94A3B8"/>
+        <text x="392" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">KPI / 分析</text>
+        <text x="392" y="318" text-anchor="middle" font-size="12" fill="#475569">KPIツリー・CRM</text>
+
+        <rect x="472" y="276" width="128" height="54" rx="4" fill="#FFFFFF" stroke="#94A3B8"/>
+        <text x="536" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">型・外部連携</text>
+        <text x="536" y="318" text-anchor="middle" font-size="12" fill="#475569">テンプレ・Slack等</text>
+      </svg>
+      <figcaption>出典：<a href="https://hp.addness.com/ja/features/goals" target="_blank" rel="noopener noreferrer">ゴール・タスク・KPI</a>、<a href="https://hp.addness.com/ja/connect/mcp" target="_blank" rel="noopener noreferrer">Addness MCP</a>、<a href="https://hp.addness.com/ja/features/drive" target="_blank" rel="noopener noreferrer">AIドライブ</a>の公開仕様をもとに整理。</figcaption>
+    </figure>
+
+    <h3>1-1. ゴールツリーの構造と「理想・メモ・AIメモリ」</h3>
+    <p>Addnessの<a href="https://hp.addness.com/ja/features/goals" target="_blank" rel="noopener noreferrer">ゴールツリー</a>は、組織の最上位目標から担当者の具体的な一歩までを単一の親子階層で管理します。単にタスクを並べるのではなく、各ゴールに<strong>「理想（達成状態の定義）」「メモ」「リソース（添付ファイルや議事録）」</strong>を持たせられる点が特徴です。ここに記載した内容がそのまま接続先AIへのコンテキストになります。</p>
+    <p>ツリーの構築は「①完了基準を言葉にする → ②最初の関門を1〜2個だけ見つける → ③自分やAIがこなせる粒度まで割る → ④責任者と期日を入れる」という4ステップで進めます。最初から完璧なツリーをすべて描き切ることは推奨されておらず、<strong>結果が返ってきたところで次の関門を足していく（差分駆動）</strong>運用が前提です。また、AIがそのゴールで作業すると、決めたこと・作ったもの・分かったことが<strong>「AIメモリ」</strong>としてゴールに自動蓄積されます（<a href="https://hp.addness.com/ja/features/goals" target="_blank" rel="noopener noreferrer">Addness公式 ゴール機能</a>）。</p>
+
+    <h3>1-2. 「今やるべきToDo」の生成と日次ループ</h3>
+    <p>ゴールページには「ゴール由来のToDo」と「今やるべきToDo」が並びます。期日が今日になったゴールが勝手に「今やるべきToDo」へ入るのではなく、<strong>ゴール行頭の「＋」ボタンで人が選んで並べる</strong>仕組みです（ただし<a href="https://hp.addness.com/ja/features/templates" target="_blank" rel="noopener noreferrer">テンプレートのルーティン</a>から自動生成されたゴールだけは、指定日に担当者の「今やるべきToDo」へ自動投入されます）。</p>
+    <p>ステータスは行頭のボタンで「未着手 → 実行中（✓）→ 完了（✓✓）」と遷移し、未完了のものは日付を跨いでも残り、完了したToDoは翌日（組織タイムゾーンの午前4時）に一覧から消えます。「今やるべきToDo」見出し横の<strong>「タスクをクリーニングする」</strong>を押すと、AIが溜まったToDoの整理案を出し、今日やるものを上から順に決める支援を行います。Focus以上のプランでは、Googleカレンダーの予定も同じリスト上に読み取り専用で表示されます（<a href="https://hp.addness.com/features/integrations" target="_blank" rel="noopener noreferrer">Slack・Googleカレンダー連携</a>）。</p>
+
+    <h3>1-3. 「アドる」の具体的な動作</h3>
+    <p>「アドる」は、Addness上の文脈を外部AIエージェントへワンクリックで渡す起動トリガーです。ゴール行右側の「アドる」メニューには<strong>「進める」「壁打ちする」「質問する」</strong>の選択肢があり、「進める」を選ぶと<strong>そのゴールのURLと進め方を含んだ指示文</strong>が自動生成されます（<a href="https://hp.addness.com/ja/features/goals" target="_blank" rel="noopener noreferrer">ゴール機能</a>）。</p>
+    <p>続けて「指示文をコピー」「Claudeで開く」「Codexで開く」を選択すると、Claude CodeやCodexなどのアプリが指示文の入力済み状態で起動し、送信するだけで作業が始まります。この仕組みはゴールだけでなく、<a href="https://hp.addness.com/ja/features/analytics" target="_blank" rel="noopener noreferrer">アナリティクス</a>画面の「このダッシュボードをアドる」「この定義をアドる」や、チャット・議事録・ドライブが紐づくゴールにも一貫して組み込まれています。</p>
+
+    <h3>1-4. チャット・通知・コメントの位置づけ</h3>
+    <p>Addnessのチャットは「ゴールのチャット」「グループ（チャンネル）」「DM」の3種類が左リストに1本で並びます。ここで最も重要な仕様は、<strong>「ゴールのチャットへの投稿＝そのゴールのコメント」</strong>という同一データモデルになっている点です（<a href="https://hp.addness.com/ja/features/chat" target="_blank" rel="noopener noreferrer">チャット・ハドル通話</a>）。</p>
+    <p>スレッドでのやり取りは片付いたら「解決にする」でクローズでき、完了・期日変更などのアクティビティも同タイムラインに流れます（AIによる一括作業は「◯件のアクティビティ」に折りたたまれます）。そのため、雑談ではなく「仕事の話」をゴールのチャットに集めるだけで、経緯がそのままゴールの文脈として残り、後から「アドる」でAIが参照できるようになります。通知はブラウザ通知・デスクトップアプリのOS通知のほか、Focus以上ではSlackへ通知を送ったり、指定Slackチャンネルの会話からAIが1日1回ゴール候補を提案するアンビエント連携も備えます（<a href="https://hp.addness.com/features/integrations" target="_blank" rel="noopener noreferrer">連携仕様</a>）。</p>
+
+    <h3>1-5. ナレッジ・AIドライブ・議事録・画面録画がAIの文脈になる仕組み</h3>
+    <ul>
+      <li><strong>ナレッジとテンプレートの役割分担</strong>：<a href="https://hp.addness.com/ja/features/templates" target="_blank" rel="noopener noreferrer">テンプレート・ルーティンFAQ</a>によると、「ナレッジ」は組織で使い回す個別手順（やり方）の置き場であり、AIは仕事開始時にナレッジを探し、終了時に残す価値のあるやり方を書き残すようAddness側から指示されています。一方「テンプレート」は、ツリー構造・理想・メモ・コメント・リソース一式を複製できるゴールツリーの雛形です。</li>
+      <li><strong>AIドライブ</strong>：<a href="https://hp.addness.com/ja/features/drive" target="_blank" rel="noopener noreferrer">AIドライブ</a>はゴールのリソース、議事録、画面録画、直接アップロードしたファイル（1ファイル50MB・一度に100件まで）を一元管理します。ゴールに紐づくリソースは<strong>そのゴールの閲覧権限を自動継承</strong>し、MCP連携したAIは依頼者が閲覧権限を持つ範囲から名前・タグ・フォルダ・ゴールで検索し、テキスト系ファイルは本文まで読んで回答します。</li>
+      <li><strong>Meet・Zoom議事録Bot / ハドル / 対面会議</strong>：<a href="https://hp.addness.com/ja/features/meetings" target="_blank" rel="noopener noreferrer">議事録機能</a>では、Google Meet・ZoomにURL指定またはChrome拡張「Addness Meet Recorder」でBotを参加させるほか、Addness内のハドル通話やPCを置いた対面会議でも文字起こし（日・英・越対応、最大50名）とAI要約を生成します（Microsoft Teamsは非対応）。生成された議事録はMarkdownとしてゴールのリソースに入り、AIが読んで「誰が・何を・いつまで」のToDoへ分解できます。</li>
+      <li><strong>画面録画・文字起こし</strong>：Pro以上で月3本、Focusで月300本、Unlimitedで無制限に画面と声を録画し、文字起こし（Focus以上）とあわせてゴールの手順・背景リソースとして蓄積できます（<a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">料金プラン比較表</a>）。</li>
+    </ul>
+
+    <h3>1-6. KPIツリー・アナリティクス・活用レポート・CRM・DB/フォーム</h3>
+    <p><a href="https://hp.addness.com/ja/features/analytics" target="_blank" rel="noopener noreferrer">アナリティクス（Beta）</a>は「ダッシュボード（ウィジェット表示）」「KPI定義（数え方・取得元・更新契約）」「集計済みデータベース（取得元からAIが収集した材料）」の3層で構成されます。ダッシュボード自体はAIでなくGUIで組むのではなく<strong>Claude Code等からMCPで作成する前提</strong>となっており、子KPIが更新されると親KPIの達成率や月末着地見込みが自動連動します。朝の定期更新が失敗すると赤い帯で「走らなかった／失敗／実行中のまま／数字欠け」の内訳が出て、「この定義をアドる」からそのままAIに修復を依頼できます（ダッシュボード一覧50件、Daily表示1年、ゴール紐づけKPI 500件の上限あり）。</p>
+    <p><strong>活用レポート</strong>はFocusプランで「概要」、Unlimitedプランで「全部＋CSV（メンバー・チーム・機能・AIの詳細、CSV出力）」が提供されますが、具体的な指標項目の完全な一覧は公開ページ上で確認できませんでした（<a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">料金ページ</a>）。<strong>AddnessCRM</strong>は全プランに含まれ、顧客情報とやり取りを案件ゴールへ紐づけますが、CRM単体の詳細仕様ページや提案資料で言及されている<strong>「フォーム」</strong>単体の詳細動作についても、公開Web上の一次情報では確認できませんでした。</p>
+  </section>
+
+  <!-- Section 3 -->
+  <section class="sec" id="ai-connection">
+    <h2>2. AI接続の仕組み（MCP / CLI / ChatGPT / Desktop）</h2>
+    <p>Addnessは自社専用のLLMだけを閉じて使うのではなく、利用者が契約している外部AIエージェントを繋ぐことを前提に、4つの接続経路を用意しています。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>接続方式</th>
+            <th>対象クライアント</th>
+            <th>認証・セットアップ</th>
+            <th>特徴・制限</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>リモートMCP</strong></td>
+            <td>Claude Code, Codex, Cursor, Claude Desktop, その他MCP対応クライアント</td>
+            <td>OAuth（ブラウザでAddnessログイン・許可。APIキー不要）</td>
+            <td>エンドポイント <code>https://vt.api.addness.com/mcp</code>。全プラン対応。権限はログインユーザーと同一。</td>
+          </tr>
+          <tr>
+            <td><strong>ChatGPT公式プラグイン</strong></td>
+            <td>ChatGPT（無料版含む全プラン）</td>
+            <td>ChatGPT上で <code>@Addness</code> 選択 → ブラウザでOAuth許可</td>
+            <td>2026-09-30公開。会話横にゴール一覧を開き、読み書き可能。書き込み前に画面確認が出る。</td>
+          </tr>
+          <tr>
+            <td><strong>Addness CLI</strong></td>
+            <td>ターミナル / Claude Code / GitHub Copilot等</td>
+            <td><code>addness login</code> でブラウザ認証しAPIキー自動生成</td>
+            <td><code>--json</code> 構造化出力、<code>addness skills</code> でAI向け命令出力。macOS/Linux/Windows対応。</td>
+          </tr>
+          <tr>
+            <td><strong>Desktopアプリ</strong></td>
+            <td>macOS (Apple Silicon/Intel), Windows 10/11 (x64)</td>
+            <td>初回起動時にAddnessログイン</td>
+            <td>アプリ自体はAIモデルに接続せず、PC経由のLINE/Messenger連携をMCP経由でAIへ橋渡し。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-hint">※表は横にスクロールできます。出典：<a href="https://hp.addness.com/ja/connect/mcp" target="_blank" rel="noopener noreferrer">Addness MCP</a>、<a href="https://hp.addness.com/connect/cli" target="_blank" rel="noopener noreferrer">Addness CLI</a>、<a href="https://hp.addness.com/ja/desktop" target="_blank" rel="noopener noreferrer">Desktopアプリ</a>、<a href="https://prtimes.jp/main/html/rd/p/000000059.000084753.html" target="_blank" rel="noopener noreferrer">PR TIMES</a>。</p>
+
+    <h3>2-1. リモートMCPと読み書き権限・確認フロー</h3>
+    <p>リモートMCPサーバー（<code>https://vt.api.addness.com/mcp</code>）は、Claude Code では <code>claude mcp add --transport http --scope user addness https://vt.api.addness.com/mcp</code> と <code>claude mcp login addness</code> で導入でき、Cursor では <code>~/.cursor/mcp.json</code>、Claude Desktop ではカスタムコネクタとして登録します（<a href="https://hp.addness.com/ja/connect/mcp" target="_blank" rel="noopener noreferrer">Addness MCP</a>、<a href="https://hp.addness.com/ja/connect/mcp/cursor" target="_blank" rel="noopener noreferrer">Cursor設定</a>、<a href="https://hp.addness.com/ja/connect/mcp/claude-desktop" target="_blank" rel="noopener noreferrer">Claude設定</a>）。</p>
+    <p>AIができる操作は、<strong>ゴールの読み書き（作成・更新・完了）、今やるべきToDoの確認、進捗・アクティビティ把握、コメント投稿・通知処理、成果物の登録、ゴール検索</strong>です。重要な点として、<strong>AIが見られる範囲は「OAuthでログインしたユーザー本人がAddness上で閲覧権限を持つ範囲」に厳格に限定</strong>されます。アサインされていないゴールや他組織データは参照できず、管理者がメンバーを組織から外すとその人のAIからのアクセスも即座に遮断されます（<a href="https://hp.addness.com/ja/security" target="_blank" rel="noopener noreferrer">セキュリティページ</a>）。なお、書き込み時の確認フローについては、ChatGPT公式プラグインでは「ゴールの作成・更新・完了など書き込む前にChatGPT画面に確認が出る」と<a href="https://prtimes.jp/main/html/rd/p/000000059.000084753.html" target="_blank" rel="noopener noreferrer">公式プレスリリース</a>に明記されています。一方、Claude Code等の汎用MCPクライアントにおける書き込み承認UIは各クライアント側のツール実行承認設定に依存します。</p>
+
+    <h3>2-2. 公式対応AIとその他MCPクライアントの接続可否</h3>
+    <p>公式が設定ガイドや対応を明記しているのは<strong>Claude Code、Codex、Cursor、Claude Desktop、ChatGPT（公式プラグイン）</strong>の5つ（加えてCLIページでGitHub Copilot連携を例示）です。これら以外についても、公式ページでは<strong>「MCP対応のAIエージェントなら、どれでもAddnessに接続できます」</strong>と表明されています（<a href="https://hp.addness.com/ja/connect/mcp" target="_blank" rel="noopener noreferrer">Addness MCP</a>）。ただし、独自のチャットツールやWebサービスがStreamable HTTP＋OAuthのリモートMCPに対応していない場合は直接接続できず、後述するCLI経由またはプロンプト橋渡しが必要になります。</p>
+
+    <h3>2-3. Addness CLI と Desktopアプリの補足</h3>
+    <p><a href="https://hp.addness.com/connect/cli" target="_blank" rel="noopener noreferrer">Addness CLI</a>（2026年3月公開ページ確認）は、ターミナルから <code>addness goals list --json</code> や <code>addness comments create</code> で操作でき、<code>addness skills</code> コマンドで <code>CLAUDE.md</code> 等に貼れるAI向けコマンド定義を出力できます。また<a href="https://hp.addness.com/ja/desktop" target="_blank" rel="noopener noreferrer">Desktopアプリ</a>は、個人のLINE（Pro以上でグループLINEのAddyも利用可）やFacebook MessengerをローカルPC経由でAddness MCPにつなぐ機能（履歴はクラウドに複製せずローカル保持）や、グローバルショートカット・音声入力を備えますが、<strong>Windows版は未署名のためSmartScreenの警告が出ることがあり、会社PCでは実行できない場合がある</strong>と公式に注意書きされています。</p>
+  </section>
+
+  <!-- Section 4 -->
+  <section class="sec" id="pricing">
+    <h2>3. 料金・プラン体系と総コスト</h2>
+    <p><a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">Addness公式料金ページ</a>および<a href="https://hp.addness.com/ja/news" target="_blank" rel="noopener noreferrer">お知らせ（2026年10月27日）</a>によると、<strong>Free（無料）プランは2026年9月16日に新規受付を終了し、2026年11月16日をもって提供自体も終了</strong>しました。現在は以下の4つの有料プランのみ（米ドル建て、地域によりVAT/GST等の税加算あり）となっています。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>プラン</th>
+            <th class="num">月払い (/人)</th>
+            <th class="num">年払い (/人)</th>
+            <th>主な違い・上限</th>
+            <th>向いている用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Starter</strong></td>
+            <td class="num">$4.99</td>
+            <td class="num">なし</td>
+            <td>トライアルなし。ゴール/ナレッジ/CRM/KPI/MCP利用可。<strong>アプリ内AIなし</strong>。ルーティン3本、ドライブ1GB、広告あり。</td>
+            <td>1人で自分のAIをMCP接続してゴール管理を試す</td>
+          </tr>
+          <tr>
+            <td><strong>Pro</strong></td>
+            <td class="num">$19</td>
+            <td class="num">$190 ($15.83/月)</td>
+            <td>7日間無料トライアル可。Meet/Zoom/ハドル議事録Bot、画面録画3本/月、グループLINE読み取り、広告非表示、ドライブ15GB。</td>
+            <td>会議議事録やLINEも含めてAIに文脈を渡したい</td>
+          </tr>
+          <tr>
+            <td><strong>Focus</strong></td>
+            <td class="num">$39</td>
+            <td class="num">$390 ($32.50/月)</td>
+            <td>議事録枠大幅増（超過時は追加料金で継続可）、録画300本/月＋文字起こし、ルーティン無制限、<strong>Slack/Googleカレンダー連携</strong>、活用レポート概要、ドライブ30GB。</td>
+            <td>日常の会議記録やカレンダー/Slackと連動させたい</td>
+          </tr>
+          <tr>
+            <td><strong>Unlimited</strong></td>
+            <td class="num">$69</td>
+            <td class="num">$690 ($57.50/月)</td>
+            <td>議事録枠Focusの3倍、録画・文字起こし・音声入力無制限、ファイル送信500GB/人、<strong>活用レポート全部＋CSV</strong>、ドライブ100GB/人。</td>
+            <td>容量・上限を気にせず組織全体で使い倒す</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-hint">※表は横にスクロールできます。出典：<a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">Addness料金プラン</a>、<a href="https://hp.addness.com/ja/blog/what-is-addness" target="_blank" rel="noopener noreferrer">Addness解説ブログ</a>。</p>
+
+    <h3>3-1. 個人利用・人数カウント・教育事業との関係・総コスト</h3>
+    <ul>
+      <li><strong>1人から利用可能・最低人数・初期費用なし</strong>：法人向け色が強いものの「1人から使える」と明記されており、初期費用は公式ページ上確認されません（<a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">料金ページ</a>）。</li>
+      <li><strong>AIエージェントは人数に数えない</strong>：課金対象は人間のメンバーのみ。ゲスト（閲覧・コメント・チャットのみ）や他組織で課金済みの外部メンバー、さらに<strong>MCPでつないだAIエージェントは何体いても無料</strong>です。</li>
+      <li><strong>AI利用料は別契約（総コストの考え方）</strong>：Addnessの料金にはAIモデルの利用料が含まれません。公式FAQでは「Claude Codeを使う人はClaude Pro（月$20〜）、Codexを使う人はChatGPT Plusから始めれば十分」と案内されています。したがって個人でStarter（$4.99）＋Claude Pro（$20）を使う場合、総コストは<strong>月額約$25（約3,900〜4,000円前後）〜</strong>となります。すでにAI契約を持っている個人エンジニアであれば、追加コストはAddnessの月額（最安$4.99）のみです。</li>
+      <li><strong>教育事業との関係と留意点</strong>：アドネス株式会社は社会人向けオンラインスクール「スキルプラス」や「AIラボ」も運営しており、<strong>受講生向けの専用クーポンが存在する</strong>ことが<a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">公式FAQ</a>に明記されています。なお、同社の教育・電話勧誘販売事業をめぐっては2025年12月に消費者庁から特定商取引法に基づく「指示」の行政処分を受けた公表事実（<a href="https://www.caa.go.jp/notice/assets/consumer_transaction_cms203_251225_01.pdf" target="_blank" rel="noopener noreferrer">消費者庁PDF</a>）がありますが、業務停止命令ではなく、AddnessというSaaS自体の技術仕様・セキュリティとは切り離して評価すべき点です。</li>
+    </ul>
+  </section>
+
+  <!-- Section 5 -->
+  <section class="sec" id="cases">
+    <h2>4. 活用事例と「AI覚醒」思想との対応関係</h2>
+    <p><a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">公式の実例紹介ページ</a>および<a href="https://hp.addness.com/ja/blog/what-is-addness" target="_blank" rel="noopener noreferrer">公式ブログ</a>では、導入企業とアドネス社内の運用実例が具体的な数値つきで公開されています。</p>
+
+    <h3>4-1. 導入企業とアドネス社内の運用実例</h3>
+    <ul>
+      <li><strong>株式会社イノセント（バク転教室3店舗）</strong>：代表の頭の中にあった約100件の問い合わせ対応基準をAddnessのナレッジに移し、社員のAIも参照できるようにした結果、LINE問い合わせ対応（1日約10件）が<strong>1日約100分から約10分に短縮（試算）</strong>（<a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">実例紹介</a>）。</li>
+      <li><strong>株式会社Canvi（営業支援・採用支援）</strong>：PMの管理をAddnessとAIに任せ、ディレクター採用が不要となり<strong>人件費を年間600万円削減</strong>（<a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">実例紹介</a>）。</li>
+      <li><strong>株式会社ontsugi（業務改善・マーケ支援）</strong>：案件情報をAddnessに残しAIが続きから動くことで、<strong>資料準備作業を90％省力化</strong>（<a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">実例紹介</a>）。</li>
+      <li><strong>アドネス社内の実例（note連載 vol.1〜13）</strong>：約100人規模の進捗を一画面で可視化（vol.2）、約40分の会議議事録からAIが宿題10件＋打ち合わせ2件を担当者別ToDo化（vol.11）、営業3人分の商談議事録44本から約16分で営業回答集を作成（vol.7）、LINEでの出稿依頼と入金照合をAIが自動回しして停止判断のみ人が実施（vol.6）、記事制作を3日間で6本公開（vol.10）、採用応募79件を3日で対応（vol.13）など、社内で約200案件を並列駆動している様子が語られています（<a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">実例紹介</a>、<a href="https://ai-kidou.jp/video-report-adness-mikami-ai-kaisha/" target="_blank" rel="noopener noreferrer">対談書き起こし</a>）。</li>
+    </ul>
+
+    <h3>4-2. 三上氏の「AI覚醒」思想とAddness製品機能の対応</h3>
+    <p>代表の三上功太氏がYouTube対談等で語る「AI覚醒（意図実現システム／カンパニーブレイン）」の思想と、Addnessの製品機能、および自前実装との対応は以下の通り整理できます（<a href="https://ai-kidou.jp/video-report-adness-mikami-ai-kaisha/" target="_blank" rel="noopener noreferrer">三上氏対談レポート</a>、<a href="https://note.com/mikami_01/n/n6f65c8157609" target="_blank" rel="noopener noreferrer">三上氏note</a>）。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>「AI覚醒」の思想概念</th>
+            <th>Addnessでの製品実装</th>
+            <th>思想のみの自前実装（Markdown/Git等）との差</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>赤ちゃんから「ドラえもん」へ</strong><br>（新セッションでも前提を忘れない）</td>
+            <td>MCPサーバー＋ゴール詳細（理想・メモ・AIメモリ）を即読込</td>
+            <td>自前でも `CLAUDE.md` やルールファイルで可能だが、案件・タスク単位の動的切り替えは手動になりやすい。</td>
+          </tr>
+          <tr>
+            <td><strong>Goal / State / Knowledge の3分離</strong><br>（Stateは貯めずKnowledgeは貯める）</td>
+            <td>ゴールツリー（Goal）、進捗・現在地（State）、ナレッジ/テンプレート（Knowledge）</td>
+            <td>自前でもディレクトリ分離で再現済み。Addnessでは「完了は翌日午前4時に消え、やり方はナレッジに残る」UIが組み込み済み。</td>
+          </tr>
+          <tr>
+            <td><strong>ゴールツリーと差分駆動</strong><br>（全部描かず次の関門だけ足す）</td>
+            <td>4ステップ分解UI＋「今やるべきToDo」への手動選定＋「アドる」</td>
+            <td>Markdownは一覧性やドラッグ操作・期日バッジ・KPIリング連動で劣る。一方、テキスト編集の速さはMarkdownが上。</td>
+          </tr>
+          <tr>
+            <td><strong>経営（意図）と執行（実行）の分離</strong><br>（人は意図を決め、AIがやり抜く）</td>
+            <td>人は「理想」と「OK出し」、AIが分解・実行・書戻し</td>
+            <td>設計思想自体は自前でも完全に一致。Addnessは「他人のAI」と接続して仕事を渡せる点が異なる。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-hint">※表は横にスクロールできます。</p>
+  </section>
+
+  <!-- Section 6 -->
+  <section class="sec" id="impact">
+    <h2>5. 現行の個人マルチAI構成への導入効果（核心）</h2>
+    <p>ここからは、すでに以下の構成を自前で構築・運用している個人ITエンジニアの環境を前提に、Addnessを導入する実質的な効果を検証します。</p>
+    <div class="callout">
+      <p class="callout-title">前提とする現行の個人マルチAI構成（一般化）</p>
+      <ul>
+        <li><strong>パーソナルエージェント（チャット型）</strong>：記憶・目標管理・定期実行ジョブ（朝の確認、週次レポート、各種監視）・他AIへの指示出しを担う司令塔。</li>
+        <li><strong>実装エージェント（自宅PC上）</strong>：コード実装やファイル生成を担い、チケット形式の「引き継ぎ」ファイルで指示を受ける。</li>
+        <li><strong>調査用AI（Webチャット型）</strong>：ファイル経由のリクエストチャネルで調査・文書作成を担う。</li>
+        <li><strong>共有基盤</strong>：Gitリポジトリ＋クラウドドライブの二重同期。目標・状態・知識はMarkdown群とパーソナルエージェント側のゴール管理UIで保持。</li>
+      </ul>
+    </div>
+
+    <h3>5-1. Addnessを入れると「新しくできるようになること」</h3>
+    <ol>
+      <li><strong>ゴールツリーとKPI数値（達成率リング・着地見込み）の一体管理</strong>：Markdownの階層リストでは実現しにくい「親ゴールと子ゴールの構造＋KPI達成率の視覚的連動＋AIによる毎朝データ更新と停止検知」が標準で手に入ります。</li>
+      <li><strong>「アドる」によるワンクリック文脈渡し</strong>：現在のようにチケット形式の引き継ぎファイルを起票・同期しなくても、ゴール行の「アドる → 進める」からClaude CodeやCodexをプロンプト入力済みで即起動でき、作業後の進捗・成果物リンクもMCP経由でそのままゴールへ書き戻せます。</li>
+      <li><strong>チャット＝コメントによる文脈の自動蓄積とスマホ確認</strong>：Git上のMarkdownをスマホから編集・確認するのは手間がかかりますが、AddnessにはiOS/AndroidアプリとブラウザUIがあり、外出先から「今やるべきToDo」の確認やゴールチャットへの指示メモ残しが容易になります。</li>
+      <li><strong>PC経由LINE・議事録・画面録画の文脈統合（Pro以上）</strong>：自宅PCのDesktopアプリを使えば個人LINEのやり取りをMCP経由でAIに読ませたり、会議や操作手順の録画を直接ゴールに紐づけられます。</li>
+    </ol>
+
+    <h3>5-2. 現行構成と重複する部分・置き換わる部分</h3>
+    <p>すでに自前実装済みの<strong>「Goal / State / Knowledge の記憶管理」「引き継ぎチケットによる実装エージェントへの指示出し」「ゴール管理UI」</strong>はAddnessと機能的に大きく重複します。もしAddnessへ寄せる場合、ゴール管理と引き継ぎチケットの役割はAddnessのゴールツリー＋コメント＋AIメモリに置き換えられます。</p>
+    <p>逆に、<strong>「朝の確認や各種監視を行う定期実行ジョブ（司令塔）」「Gitによるコード・成果物の厳密なバージョン管理とローカル完結のファイル連携」</strong>はAddness単体では代替できません（Addnessのルーティンは定型ToDoを今日に並べる機能であり、自律的な監視バッチ実行エンジンではありません）。</p>
+
+    <h3>5-3. 現行の各エージェントはAddnessにつながるか（接続の現実性）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>現行エージェント</th>
+            <th>Addness接続の現実性</th>
+            <th>接続ルートと制約・注意点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>実装エージェント（自宅PC上）</strong></td>
+            <td><span class="tag tag-ok">直結可能（高）</span></td>
+            <td>Claude Code / Codex / Cursor 等であれば <code>https://vt.api.addness.com/mcp</code>（OAuth）または <code>Addness CLI</code> で即座に読み書き可能。</td>
+          </tr>
+          <tr>
+            <td><strong>調査用AI（Webチャット型）</strong></td>
+            <td><span class="tag tag-warn">環境依存（中）</span></td>
+            <td>ChatGPTなら公式プラグイン、Claudeならカスタムコネクタで接続可。一方、それ以外のWebチャットAIや独自ファイル監視チャネルを使う場合はMCP非対応の可能性があるため、従来通りファイル経由の橋渡しが必要（公式で未確認のクライアントは不可前提で設計すべき）。</td>
+          </tr>
+          <tr>
+            <td><strong>パーソナルエージェント（司令塔・定期ジョブ）</strong></td>
+            <td><span class="tag tag-warn">要確認（低〜中）</span></td>
+            <td>お使いのパーソナルエージェントが外部リモートMCP（Streamable HTTP + OAuth）またはローカルシェル実行（<code>Addness CLI</code>）に対応していれば接続可能。非対応のクローズドなチャット型エージェントの場合、Addnessと直接同期できないため二重管理の温床になる。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-hint">※表は横にスクロールできます。</p>
+
+    <h3>5-4. 共存設計の現実的な2パターン</h3>
+    <p>全面移行ではなく、現行の「司令塔＋Git/ドライブ基盤」の強みを活かした段階的共存設計としては、次の2案が現実的です。</p>
+    <ul>
+      <li><strong>案A：ゴールツリー＆引き継ぎハブ限定導入（Starter $4.99/月）</strong><br>Markdownの「ゴール管理・引き継ぎチケット」部分だけをAddnessのゴールツリーへ移し、自宅PCの実装エージェントをMCP接続する。コードや成果物ファイルの実体は従来通りGit＋クラウドドライブに置き、Addnessのゴールには「成果物パス／URL」と「決定事項」だけを書戻す。司令塔や調査用AIがMCP非対応でも、人がスマホやブラウザで「アドる」起点のディレクションを行えるため破綻しにくい。</li>
+      <li><strong>案B：ハイブリッド運用（CLI + Gitフック連携）</strong><br>自宅PC上の <code>Addness CLI</code>（<code>--json</code>）を定期スクリプトや実装エージェントから叩き、Git側の目標・状態ファイルとAddness側を同期させる構成。ただしAPI/CLIの仕様変更追従や同期バグの保守コストが発生するため、個人の省力化目的とは相反するリスクがある。</li>
+    </ul>
+
+    <h3>5-5. リスクと制約（個人ITエンジニア視点）</h3>
+    <div class="callout warn">
+      <p class="callout-title">導入前に押さえるべき5つの制約</p>
+      <ol>
+        <li><strong>Freeプラン廃止による固定費</strong>：2026年11月16日のFree終了により、維持だけで最低月額$4.99（機能フル活用なら$19〜$39）が発生します。</li>
+        <li><strong>法人向け機能の余剰と「スマホ完結不可」</strong>：公式も「スマホだけで完結させたい場合は向いていない（AIアプリを動かすPCが必要）」と明記しています。またCRMや会議Bot・活用レポート等は個人開発では持て余しやすい機能です。</li>
+        <li><strong>データ主権とベンダーロックイン</strong>：Git＋Markdownであればローカルに全テキストが残り、いつでも任意のエージェントやツールへ移行できますが、Addness中心にすると状態・会話・AIメモリがクラウドSaaS（AWS東京リージョン＋一部米国外部処理）側に寄ります。なお解約してもデータは削除されず再契約で再開可能ですが、契約停止中は閲覧・MCP利用ができなくなります。</li>
+        <li><strong>二重管理の危険</strong>：パーソナルエージェント側のゴール管理UIとAddnessのゴールツリーの両方を生かすと、どちらが正本か分からなくなり確実に運用が崩れます。導入するなら「ゴールの正本はどちらか一方」に決める必要があります。</li>
+        <li><strong>セキュリティ認証とOS制約</strong>：ISMS・SOC 2等の第三者認証は現時点で未取得（チェックシート個別対応）。またWindows版Desktopアプリは未署名のためSmartScreen警告が出る場合があります。</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Section 7 -->
+  <section class="sec" id="conclusion">
+    <h2>6. 結論：判断基準と導入する場合の最初の一歩</h2>
+    <p>「思想は導入済み、製品は未導入」の個人ITエンジニアにとって、Addnessは<strong>必須のインフラではなく、UI・文脈接続の快適さを買うオプションツール</strong>です。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>判断の軸</th>
+            <th>Addnessを入れる価値がある条件</th>
+            <th>現行の自前構成で足りる条件</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>運用UI・スマホ操作</strong></td>
+            <td>MarkdownやGit操作を離れ、スマホやブラウザでゴールツリーとKPI達成率を直感的に見たい。</td>
+            <td>現在のパーソナルエージェントUIとMarkdown一覧で視認性・操作性に不満がない。</td>
+          </tr>
+          <tr>
+            <td><strong>AIへの指示出し</strong></td>
+            <td>Claude Code / Codex / Cursor / ChatGPT間を「アドる」一発でシームレスに引き継ぎたい。</td>
+            <td>引き継ぎファイル起票＋ドライブ同期の現行フローでストレスを感じていない。</td>
+          </tr>
+          <tr>
+            <td><strong>データ主権・自由度</strong></td>
+            <td>月$4.99〜$19のSaaS課金を許容でき、将来的なチーム/外注への展開も視野に入れている。</td>
+            <td>全データのローカル/Git完結と、定期ジョブ司令塔による完全自動化・無料維持を重視したい。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-hint">※表は横にスクロールできます。</p>
+
+    <h3>導入を検討する場合の「最初の一歩」（最小検証ステップ）</h3>
+    <p>もし「実際の使用感で判断したい」という場合は、いきなりPro以上や全面移行へ進まず、以下の手順で<strong>1週間・$4.99の検証</strong>を行うのが最も合理的です。</p>
+    <ol>
+      <li><strong>Starterプラン（$4.99/月・1人組織）で登録する</strong>：無料トライアルは付きませんが、解約すれば翌月以降は課金されません。まずは最も安い構成でゴールツリーとMCPだけを評価します。</li>
+      <li><strong>進行中の1プロジェクトだけゴールツリーに置く</strong>：大目標と「理想」、最初の関門2〜3個だけを書き、既存Gitにある全てのタスクは移しません。</li>
+      <li><strong>自宅PCの実装エージェントにMCPを繋ぐ</strong>：<code>https://vt.api.addness.com/mcp</code> を設定し、OAuthでログイン。Addness画面の「アドる → 進める」から実装エージェントを起動し、「今の引き継ぎチケット運用と比べて本当に速く・楽になるか」を3〜5回試して最終判断します。</li>
+    </ol>
+  </section>
+
+  <!-- Section 8 -->
+  <section class="sec" id="sources">
+    <h2>出典一覧（一次情報中心）</h2>
+    <ol class="sources-list">
+      <li><a href="https://hp.addness.com/ja" target="_blank" rel="noopener noreferrer">Addness公式サイト（トップ・FAQ・お知らせ）</a></li>
+      <li><a href="https://hp.addness.com/ja/features" target="_blank" rel="noopener noreferrer">Addness 機能一覧</a></li>
+      <li><a href="https://hp.addness.com/ja/features/goals" target="_blank" rel="noopener noreferrer">Addness 機能：ゴール・タスク・KPI（「アドる」「今やるべきToDo」）</a></li>
+      <li><a href="https://hp.addness.com/ja/features/analytics" target="_blank" rel="noopener noreferrer">Addness 機能：アナリティクス（KPIダッシュボード）</a></li>
+      <li><a href="https://hp.addness.com/ja/features/drive" target="_blank" rel="noopener noreferrer">Addness 機能：AIドライブ</a></li>
+      <li><a href="https://hp.addness.com/ja/features/meetings" target="_blank" rel="noopener noreferrer">Addness 機能：Meet・Zoom議事録Bot</a></li>
+      <li><a href="https://hp.addness.com/ja/features/chat" target="_blank" rel="noopener noreferrer">Addness 機能：チャット・ハドル通話</a></li>
+      <li><a href="https://hp.addness.com/ja/features/templates" target="_blank" rel="noopener noreferrer">Addness 機能：テンプレート・ルーティン</a></li>
+      <li><a href="https://hp.addness.com/ja/features/network" target="_blank" rel="noopener noreferrer">Addness 機能：Network</a></li>
+      <li><a href="https://hp.addness.com/features/integrations" target="_blank" rel="noopener noreferrer">Addness 機能：Slack・Googleカレンダー連携（英語公式ページ）</a></li>
+      <li><a href="https://hp.addness.com/ja/connect/mcp" target="_blank" rel="noopener noreferrer">Addness MCPサーバー設定ガイド（https://vt.api.addness.com/mcp）</a></li>
+      <li><a href="https://hp.addness.com/ja/connect/mcp/cursor" target="_blank" rel="noopener noreferrer">CursorのMCP設定｜Addness</a></li>
+      <li><a href="https://hp.addness.com/ja/connect/mcp/claude-desktop" target="_blank" rel="noopener noreferrer">Claudeのコネクタ設定｜Addness</a></li>
+      <li><a href="https://hp.addness.com/connect/cli" target="_blank" rel="noopener noreferrer">Addness CLI 公式ページ</a></li>
+      <li><a href="https://hp.addness.com/ja/desktop" target="_blank" rel="noopener noreferrer">Addness デスクトップアプリ（音声入力・OS通知・LINE/Messenger連携）</a></li>
+      <li><a href="https://hp.addness.com/ja/pricing" target="_blank" rel="noopener noreferrer">Addness 料金プラン（Starter / Pro / Focus / Unlimited・FAQ）</a></li>
+      <li><a href="https://hp.addness.com/ja/security" target="_blank" rel="noopener noreferrer">Addnessのセキュリティ（インフラ・権限・外部連携・認証状況）</a></li>
+      <li><a href="https://hp.addness.com/ja/cases" target="_blank" rel="noopener noreferrer">Addnessの実例（導入事例・社内使いこなし事例）</a></li>
+      <li><a href="https://hp.addness.com/ja/blog/what-is-addness" target="_blank" rel="noopener noreferrer">Addness公式ブログ：Addness（アドネス）とは？料金・評判・できること・向いている会社（2026-10-15）</a></li>
+      <li><a href="https://prtimes.jp/main/html/rd/p/000000059.000084753.html" target="_blank" rel="noopener noreferrer">PR TIMES：アドネス、チームの記憶をAIと共有する「Addness」のChatGPT公式プラグインを公開（2026-10-27発表／2026-09-30公開）</a></li>
+      <li><a href="https://note.com/mikami_01/n/n6f65c8157609" target="_blank" rel="noopener noreferrer">三上功太 note：アドる。"Addness it!!"（2025-09-28）</a></li>
+      <li><a href="https://ai-kidou.jp/video-report-adness-mikami-ai-kaisha/" target="_blank" rel="noopener noreferrer">【二次情報・対談書き起こし】AI氣道：アドネスの仕組みは、AIに会社の目標と現状を渡すこと。三上功太さんが語る</a></li>
+      <li><a href="https://www.caa.go.jp/notice/assets/consumer_transaction_cms203_251225_01.pdf" target="_blank" rel="noopener noreferrer">消費者庁：電話勧誘販売業者【アドネス株式会社】に対する行政処分について（2025-12-25）</a></li>
+    </ol>
+  </section>
+
+</main>
+</body>
+</html>
