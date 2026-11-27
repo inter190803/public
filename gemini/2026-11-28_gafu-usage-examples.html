@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パーソナル AI エージェント活用事例集 ― 仕事・暮らし・学び・創作を広げる使い方</title>
+<style>
+/* Balanced · Personal AI Usage Guide · Answer-first editorial hero + tap-friendly TOC · System Sans + Serif accents · Cool Slate Mist light / Deep Charcoal dark (prefers-color-scheme) · 0px image radius · Editorial typographic hierarchy + hairline rules · 2 inline SVG conceptual diagrams */
+
+:root {
+  --paper: #F4F6F8;
+  --surface-band: #E9EEF2;
+  --ink: #11161B;
+  --ink2: #2B343D;
+  --mute: #4A5562;
+  --hair: #CFD7DF;
+  --accent: #0F6B5E;
+  --accent-text: #0A5247;
+  --accent-soft: #E2F1EE;
+  --accent-2: #2B539A;
+  --accent-2-text: #1E3E78;
+  --accent-2-soft: #E6EDF8;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-serif: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #111418;
+    --surface-band: #1A1F26;
+    --ink: #F2F5F8;
+    --ink2: #D4DCE4;
+    --mute: #A4B0BD;
+    --hair: #2D3540;
+    --accent: #4CC9B0;
+    --accent-text: #6EE0C9;
+    --accent-soft: #162B28;
+    --accent-2: #7AA7F8;
+    --accent-2-text: #9BC0FF;
+    --accent-2-soft: #182336;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: 0;
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 36px clamp(18px, 5.5vw, 40px) 72px;
+}
+
+/* Header & Answer-first Hero */
+header.hero {
+  padding-bottom: 28px;
+  border-bottom: 2px solid var(--ink);
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: clamp(1.85rem, 6.2vw, 2.75rem);
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.deck {
+  margin: 0 0 20px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink2);
+}
+
+.meta-note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--mute);
+  line-height: 1.6;
+}
+
+/* Tap-friendly TOC */
+nav.toc {
+  margin: 28px 0 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hair);
+}
+
+.toc-title {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 560px) {
+  .toc-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+}
+
+.toc-list a {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px 14px;
+  color: var(--accent-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-band);
+  transition: opacity 0.15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a:focus-visible {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+/* Sections */
+section {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hair);
+}
+
+section:first-of-type {
+  margin-top: 32px;
+  border-top: none;
+  padding-top: 0;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: clamp(1.4rem, 4.8vw, 1.9rem);
+  line-height: 1.32;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+h3 {
+  margin: 32px 0 12px;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 16px;
+  color: var(--ink2);
+}
+
+a {
+  color: var(--accent-text);
+  text-underline-offset: 3px;
+}
+
+/* Three Pillars Strip (Open layout, no boxes) */
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 24px 0 32px;
+}
+
+@media (min-width: 600px) {
+  .pillars {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+.pillar {
+  padding-top: 14px;
+  border-top: 2px solid var(--accent);
+}
+
+.pillar-num {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--accent-text);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.pillar-head {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pillar p {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+/* Figures & Inline SVG */
+figure {
+  margin: 28px 0 36px;
+  padding: 0;
+}
+
+.fig-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+
+figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+figcaption {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--mute);
+  line-height: 1.55;
+}
+
+/* Category Jump Links */
+.cat-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 16px 0 28px;
+}
+
+.cat-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* Case Entry (Open Editorial Layout, hairline separated) */
+.cat-heading {
+  margin: 40px 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.case-item {
+  padding: 22px 0 24px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.case-item:last-of-type {
+  border-bottom: none;
+}
+
+.case-header {
+  margin-bottom: 12px;
+}
+
+.case-title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.basis-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.basis-video {
+  color: var(--accent-text);
+  background: var(--accent-soft);
+}
+
+.basis-apply {
+  color: var(--accent-2-text);
+  background: var(--accent-2-soft);
+}
+
+.case-dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.case-row {
+  margin: 0;
+}
+
+.case-label {
+  display: inline;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin-right: 6px;
+}
+
+.case-text {
+  display: inline;
+  font-size: 0.96rem;
+  color: var(--ink2);
+}
+
+.prompt-quote {
+  display: block;
+  margin: 6px 0 2px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-band);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* Open Table (Mobile-safe horizontal scroll wrapper) */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 20px 0 28px;
+}
+
+table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 10px 12px 10px 0;
+  border-bottom: 2px solid var(--ink);
+  white-space: nowrap;
+}
+
+td {
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink2);
+  vertical-align: top;
+}
+
+/* Full-Bleed Accent Band (Max 1 per report) */
+.band {
+  margin: 48px calc(-1 * clamp(18px, 5.5vw, 40px));
+  padding: 36px clamp(18px, 5.5vw, 40px);
+  background: var(--surface-band);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+.band h2 {
+  margin-top: 0;
+}
+
+/* Scenarios */
+.scenario {
+  padding: 20px 0;
+  border-top: 1px solid var(--hair);
+}
+
+.scenario:first-of-type {
+  border-top: none;
+  padding-top: 8px;
+}
+
+.scenario h3 {
+  margin: 0 0 10px;
+  font-size: 1.12rem;
+  color: var(--accent-text);
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.timeline li {
+  position: relative;
+  padding-left: 72px;
+  margin-bottom: 12px;
+  font-size: 0.96rem;
+  color: var(--ink2);
+}
+
+.timeline li:last-child {
+  margin-bottom: 0;
+}
+
+.tl-time {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Phrase List */
+.phrase-group {
+  margin: 24px 0;
+}
+
+.phrase-group h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.phrase-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.phrase-list li {
+  padding: 10px 0 10px 14px;
+  border-left: 2px solid var(--accent-2);
+  margin-bottom: 8px;
+  font-size: 0.96rem;
+  color: var(--ink);
+}
+
+.phrase-note {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--mute);
+  margin-top: 2px;
+}
+
+/* Pull Quote */
+blockquote.pull {
+  margin: 36px 0;
+  padding: 8px 0 8px 20px;
+  border-left: 4px solid var(--accent);
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 4vw, 1.38rem);
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* Sources */
+ol.sources {
+  margin: 16px 0 0;
+  padding-left: 22px;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--mute);
+}
+
+ol.sources li {
+  margin-bottom: 8px;
+}
+
+.back-top {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  text-decoration: none;
+}
+
+footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hair);
+  font-size: 0.84rem;
+  color: var(--mute);
+}
+</style>
+</head>
+<body>
+<div class="page" id="top">
+
+  <header class="hero">
+    <h1>頼む前から動き、裏側で整えてくれる。パーソナル AI エージェントの暮らしと仕事の使い方</h1>
+    <p class="deck">チャットで質問に答えるだけの AI から、予定を見守り、定例を回し、別の専門 AI へ作業を委任する「司令塔」へ。2026年秋の実践事例をもとに、IT エンジニアの仕事・家族との暮らし・学習・創作・健康・趣味まで、今日から真似できる使い方をまとめました。</p>
+    <p class="meta-note">本ページは 2026年10月28日〜11月28日公開の日英 YouTube 実践動画（厳選15件＋補完5件）および公式情報をもとに構成しています。各事例では<strong>「動画で確認された実例」</strong>と、そこから導いた<strong>「一般運用への応用提案」</strong>を明示的に区別しています。</p>
+  </header>
+
+  <nav class="toc" aria-label="目次">
+    <p class="toc-title">このページの目次（タップで移動）</p>
+    <ul class="toc-list">
+      <li><a href="#overview">1. まず全体像：3つの動き方</a></li>
+      <li><a href="#scenes">2. 場面別の活用事例（14選）</a></li>
+      <li><a href="#products">3. 他製品の使い方から学ぶ（4製品）</a></li>
+      <li><a href="#scenarios">4. 1日の使い方シナリオ（3本）</a></li>
+      <li><a href="#phrases">5. そのまま使える「一言」例文集</a></li>
+      <li><a href="#sources">6. 出典・参考動画一覧</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. 全体像 -->
+  <section id="overview">
+    <h2>「聞かれたら答える」から「先回り・定例・委任」へ</h2>
+    <p>従来のチャット型 AI は、人間が毎回プロンプトを打って初めて動きます。一方、Meta の「Muse」、OpenAI の「dots」、X の「Grok Bot」、Anthropic の「Claude Duet」といったパーソナル AI エージェントは、記憶・予定・メール・外部ツールにつながった状態で常駐し、次の3つの動き方を組み合わせて人間の判断負荷を減らします。</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-num">01</span>
+        <p class="pillar-head">先回りの監視</p>
+        <p>メールや予定、公式サイトの変更を読み取り専用で見守り、キャンセル期限や誤記、更新漏れだけを先に知らせます。</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">02</span>
+        <p class="pillar-head">定期実行と記憶</p>
+        <p>毎朝のブリーフィングや週次レビューを自動で回し、決まった方針や進行中の状態をメモとして引き継ぎます。</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">03</span>
+        <p class="pillar-head">複数 AI への委任</p>
+        <p>司令塔が窓口となり、重い調査やコード実装は別の専門 AI に任せて、人間には「判断待ち」だけを届けます。</p>
+      </div>
+    </div>
+
+    <figure>
+      <p class="fig-title">パーソナル AI エージェントは「会話の窓口」から「判断だけを人間に届ける司令塔」へ変わる</p>
+      <svg viewBox="0 0 680 340" width="100%" role="img" aria-label="パーソナルAIエージェントの3つの動き方の概念図">
+        <!-- Background clean -->
+        <!-- Left: Human -->
+        <rect x="20" y="120" width="130" height="84" rx="8" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="85" y="156" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">利用者</text>
+        <text x="85" y="180" text-anchor="middle" font-size="13" fill="var(--mute)">一言の指示・承認</text>
+
+        <!-- Arrow 1 -->
+        <line x1="158" y1="162" x2="218" y2="162" stroke="var(--accent)" stroke-width="2.5"/>
+        <polygon points="218,156 230,162 218,168" fill="var(--accent)"/>
+
+        <!-- Center: Personal Agent -->
+        <rect x="236" y="96" width="176" height="132" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="324" y="136" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-text)">パーソナル AI</text>
+        <text x="324" y="160" text-anchor="middle" font-size="13" fill="var(--ink)">司令塔・窓口</text>
+        <text x="324" y="184" text-anchor="middle" font-size="13" fill="var(--mute)">記憶・目標・ボード</text>
+        <text x="324" y="206" text-anchor="middle" font-size="13" fill="var(--mute)">承認ゲート管理</text>
+
+        <!-- Arrows to Right 3 branches -->
+        <line x1="418" y1="122" x2="472" y2="66" stroke="var(--ink2)" stroke-width="1.8"/>
+        <polygon points="467,62 478,60 475,71" fill="var(--ink2)"/>
+
+        <line x1="418" y1="162" x2="472" y2="162" stroke="var(--ink2)" stroke-width="1.8"/>
+        <polygon points="470,156 482,162 470,168" fill="var(--ink2)"/>
+
+        <line x1="418" y1="202" x2="472" y2="258" stroke="var(--ink2)" stroke-width="1.8"/>
+        <polygon points="475,253 478,264 467,262" fill="var(--ink2)"/>
+
+        <!-- Right Box 1 -->
+        <rect x="484" y="26" width="176" height="74" rx="8" fill="none" stroke="var(--hair)" stroke-width="1.8"/>
+        <text x="572" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">1. 先回り監視</text>
+        <text x="572" y="80" text-anchor="middle" font-size="13" fill="var(--mute)">メール・期限・更新検知</text>
+
+        <!-- Right Box 2 -->
+        <rect x="484" y="125" width="176" height="74" rx="8" fill="none" stroke="var(--hair)" stroke-width="1.8"/>
+        <text x="572" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">2. 定期ジョブ</text>
+        <text x="572" y="179" text-anchor="middle" font-size="13" fill="var(--mute)">朝の確認・週次整理</text>
+
+        <!-- Right Box 3 -->
+        <rect x="484" y="224" width="176" height="74" rx="8" fill="none" stroke="var(--hair)" stroke-width="1.8"/>
+        <text x="572" y="254" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">3. 専門 AI へ委任</text>
+        <text x="572" y="278" text-anchor="middle" font-size="13" fill="var(--mute)">調査・実装・独立点検</text>
+
+        <!-- Return feedback arc at bottom -->
+        <path d="M 324 234 L 324 306 L 85 306 L 85 214" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-dasharray="5,4"/>
+        <polygon points="79,218 85,206 91,218" fill="var(--accent-2)"/>
+        <text x="205" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-2-text)">「要確認・承認待ち」と成果物だけを通知</text>
+      </svg>
+      <figcaption>先行調査の複数事例（Meta Muse・OpenAI dots・Grok Bot・Claude Duet・Orca Bots）から抽出した共通の役割分担モデル。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2. 場面別の活用事例 -->
+  <section id="scenes">
+    <h2>場面別の活用事例（全14選）</h2>
+    <p>IT エンジニアの仕事から、家族4人の暮らし、日々の学習、創作、健康、趣味・推し活まで、スマホからそのままイメージできる14の使い方を整理しました。各事例の冒頭で、YouTube 動画で確認された実例か、実例をもとにした応用提案かを明記しています。</p>
+
+    <div class="cat-nav" aria-label="場面ジャンプ">
+      <a href="#cat-work">仕事の日</a>
+      <a href="#cat-life">生活・家族</a>
+      <a href="#cat-learn">学習</a>
+      <a href="#cat-create">創作</a>
+      <a href="#cat-health">健康</a>
+      <a href="#cat-hobby">推し活・趣味</a>
+    </div>
+
+    <!-- 仕事の日 -->
+    <h3 class="cat-heading" id="cat-work">仕事の日（IT エンジニア・M365 運用など）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">1. 朝のブリーフィングと重要メールの自動仕分け</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">毎朝の決まった時刻に、今日の予定と未読メールを巡回し、対応が必要な数件だけに絞って要点と返信案を届けてくれます（Grok Bot の15分巡回や Claude Duet の朝ブリーフ、OpenClaw の朝配信などの動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「平日の朝7時に、今日の予定と『返信が必要・期限あり』のメールだけ3〜5件に絞ってまとめて。返信文のたたき台もつけて、送信はしないで」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">今日の予定一覧と、重要メールごとの「背景1行＋返信案」。不要なメルマガや通知は自動で除外されます。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">朝の立ち上がりを速くしたい平日に最適です。誤送信を防ぐため、メール送信は必ず「下書きまで・承認必須」に固定してください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">2. 定例会議の事前準備と、終了後のアクション整理</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">会議前に前回のメモや関連メールを拾って論点リストを作り、会議後は決定事項と自分の宿題だけを整理してくれます（dots の定例打ち合わせ準備や Grok Bot v1.0 の会議参加・議事録生成の動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「毎週水曜の8時に、午前の定例に関係する直近1週間のメモと未決事項を3点にまとめておいて」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">前回からの宿題一覧、確認すべき質問リスト、関連資料へのリンクが1画面で届きます。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">複数案件を並行する週に効果的です。勤務先の機密情報や社外秘メールを個人契約のエージェントへ直接つながないよう、利用規定の範囲で使い分けてください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-apply">一般応用提案</span>
+        <h4 class="case-title">3. Microsoft 365 やクラウド製品の更新・障害情報の定期監視</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">公開されている公式ブログや更新履歴（Microsoft 365 の変更点、セキュリティ更新など）を定期巡回し、自分の担当領域に関係する項目だけを要約して知らせます（dots のサーバー更新検知や Antigravity の公式更新履歴自動要約を応用）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「週2回、Microsoft 365 の管理・セキュリティ関連の公式更新を確認して、運用に影響が出そうな変更だけURL付きで3行要約して。異常なければ1行でいいよ」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">影響度つきの変更サマリーと一次ソース URL。変化がない回は「今週は重要変更なし」の1行だけが届きます。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">情報収集の抜け漏れを防ぎたい運用担当者にぴったりです。通知疲れを防ぐため「異常なし時は1行」と明示するのがコツです。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">4. 重い調査や資料たたき台の「裏作業・別 AI への委任」</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">司令塔に目的と条件を伝えるだけで、調査担当 AI や実装担当 AI へ依頼を渡し、完了後に別視点のチェックを通してから結果を返せます（Grok Bot→Claude Code 委任や、生成役と点検役の分離ハーネスの動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「〇〇と△△の比較調査を裏で進めておいて。公式価格と制限の2点は必須、出典URLつきでスマホで読める形にして」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">一次情報リンク付きの比較レポートや、そのまま共有できる整理済みドキュメント。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">移動中や会議の合間に調査を仕込みたいときに便利です。数値や規約など誤りが許されない項目は、生成と別のセッションで元データと照合する点検を挟むと精度が上がります。</span></p>
+      </div>
+    </article>
+
+    <!-- 生活・家族 -->
+    <h3 class="cat-heading" id="cat-life">生活・家族（家族4人の暮らし・休日）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-apply">一般応用提案</span>
+        <h4 class="case-title">5. 週末の家族向けイベント・お出かけ候補の自動ピックアップ</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">天気予報・移動時間・子どもが楽しめる条件を記憶させておき、毎週木曜や金曜に「今週末の候補3つ」を自動で提案させます（Claude Duet のチラシ・候補地からの移動順最適化や定期リサーチの応用）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「毎週金曜の昼に、週末の天気と雨天でも行ける家族向けスポット候補を3つ出して。駐車場の有無と所要時間も添えて」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">晴れプラン／雨プランに分かれた3候補、公式サイト URL、おおよその移動・滞在スケジュール。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">「週末どうしよう」を毎回ゼロから検索する手間をなくせます。開催時間や臨時休業は直前に公式リンク先で最終確認してください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">6. 旅行・帰省の計画整理と「予約キャンセル忘れ」の先回り検知</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">旅程や持ち物リストをボードで管理するだけでなく、予定変更後に消し忘れたホテル・荷物預かりなどの予約をメールから見つけ、無料キャンセル期限の前に知らせてくれます（dots の予約キャンセル期限前通知の動画実例）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「家族旅行の予定を変更したから、予約確認メールの中に不要になった予約やキャンセル期限が近いものがないか見ておいて」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">該当する予約名・金額・無料キャンセル期限と、確認用のメール抜粋。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">予定が変わりやすい家族旅行や連休に大きな実利があります。キャンセル操作自体は自動実行させず、必ず人間が確認してから行ってください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">7. サブスク管理と家計の見守り（読み取り専用の安全設計）</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">契約中のサブスク一覧をボードで管理し、解約メールや値上げ通知が届いたら更新を提案してくれます。家計管理アプリを使う場合も「読み取り専用」でつなぐことで安全に月次チェックができます（Meta Muse のサブスクボード・Claude Duet の read-only 家計連携の動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「サブスク関連の更新・値上げ・解約メールが来たら検知して、管理リストの更新案を出して」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">変更があったサービス名、次回請求日、月額の変化とボード更新の提案。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">固定費の放置を防ぎたいときに役立ちます。銀行口座や決済サービスへ直接の書き込み権限は与えず、参照専用に留めるのが鉄則です。</span></p>
+      </div>
+    </article>
+
+    <!-- 学習 -->
+    <h3 class="cat-heading" id="cat-learn">学習（英語・IT 資格など）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">8. 毎日5分の英語・資格ワークと復習ペースの伴走</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">決まった時刻に「今日の3問」や短い英文を出し、間違えた問題だけを記録して数日後に自動で再出題してくれます（Meta Muse の英語学習ボードで日次ワークを継続支援する動画実例）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「毎晩21時に、IT エンジニア向けの英語表現か資格の4択を3問だけ出して。間違えた項目は復習リストに入れて週末にもう一度出して」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">スマホで1〜2分で解ける3問と短い解説、週末の弱点まとめ。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">スキマ時間で学習を習慣化したいときに最適です。資格試験の最新シラバスや法改正が絡む問題は、公式教材や過去問集と併用してください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">9. 技術記事・学習メモの自動蓄積と週末の振り返り</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">気になった公式ドキュメントや学習メモを渡すと、要約＋元 URL をノート基盤（Gemini Notebook や Markdown フォルダ）へ自動蓄積し、週末に1週間分の学びを要約してくれます（Antigravity × Gemini Notebook API や Obsidian 週次レビューの動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「この技術記事を3行で要約して、元 URL と一緒に学習ノートへ入れておいて。日曜の夜に今週分をまとめて振り返りたい」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">整理済みの知識ノートと、日曜夜に届く「今週学んだことの要点3つ」。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">調べたことを読みっぱなしにしがちな人に効きます。記憶ファイルが肥大化しないよう、詳細はテーマ別フォルダへ逃がし、目次だけ軽く保つ運用が長持ちします。</span></p>
+      </div>
+    </article>
+
+    <!-- 創作 -->
+    <h3 class="cat-heading" id="cat-create">創作（スタンプ・ゲーム・音声コンテンツ）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-apply">一般応用提案</span>
+        <h4 class="case-title">10. スタンプ・イラスト量産の仕様整理と「別視点の品質チェック」</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">16点などのセット制作で、ポーズ案・セリフ一覧・統一ルールを管理しつつ、出来上がった画像や手順書を「制作とは別の点検役」にチェックさせてブレを減らせます（生成役と点検役の分離ハーネス、デザイン先行フローの動画知見を応用）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「スタンプ16点の進行表を更新して。描き味・色・文字の読みやすさの3条件だけで、今回の試作を別視点から厳しく点検して」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">未着手／調整中／完了の進捗リストと、基準からズレている点の具体的な指摘メモ。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">複数点を揃える制作物の品質管理に向きます。微妙な描き味や可愛さなど感覚的な最終判断は必ず人間の目で確認してください。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">11. ミニゲーム・自作ツールの「夜間試作→朝に動作確認」</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">夜のうちに仕様と完了条件（画面表示・テスト合格など）だけ合意しておき、実装担当 AI に試作と自動確認を任せて、翌朝に動く成果物を受け取れます（Claude Code × Codex の夜間セッション→翌朝マージや Cloud Sessions の動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「この仕様メモをもとに、ブラウザで動くミニゲームの試作を今夜中に進めておいて。仕様に迷う点が出たら進めずに確認待ちにして」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">翌朝には試作ファイル一式と変更点の要約、または仕様判断が必要な質問リストが届きます。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">平日にまとまった開発時間が取りにくい個人開発に最適です。無限ループやクレジット浪費を防ぐため、やり直し回数の上限（例：最大3回）を決めておくと安心です。</span></p>
+      </div>
+    </article>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-video">動画実例ベース</span>
+        <h4 class="case-title">12. 散歩・通勤中の音声メモから企画構成・台本たたき台を作成</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">思いついたアイデアをスマホで声に出して伝えるだけで、裏側でリサーチと構成案づくりを進め、帰宅するころには台本や記事のたたき台に仕上げておけます（Grok Bot の高速ボイス指示→バックグラウンド調査や Claude Code 毎朝台本生成の動画で紹介）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「さっき話したネタをもとに、3分で聞ける音声コンテンツの構成案と導入セリフを3パターン作っておいて」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">見出し構成、話し言葉のたたき台、補足すべき調べものリスト。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">机に向かう前に「0→1」を終わらせたいときに効果的です。SNS 等へ公開する場合は自動投稿にせず、必ず下書き・予約ツール経由で人間が確認してから出してください。</span></p>
+      </div>
+    </article>
+
+    <!-- 健康 -->
+    <h3 class="cat-heading" id="cat-health">健康（スマートウォッチ・体調の見守り）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-apply">一般応用提案</span>
+        <h4 class="case-title">13. ウォッチ記録の週次見守りと「いつもと違う変化」だけの通知</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">睡眠時間・歩数・安静時心拍などの記録（エクスポートファイルやメモ）を週1回チェックし、普段の自分の平均から大きく外れた週だけ軽く声をかけてくれます（定期ジョブ＋2段階通知トリアージの応用）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「毎週日曜の夜に今週の睡眠と歩数メモを見て、先週より睡眠が1時間以上減った日が3日以上続いていたら教えて。順調なら一言だけでOK」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">週次トレンドの短いまとめと、生活リズムが崩れ始めたタイミングでの早期アラート。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">忙しい時期に体調の崩れを自覚する前に気づく用途に向いています。AI は医療診断を行えないため、体調不良や異常値が続く場合は必ず医療機関へ相談してください。</span></p>
+      </div>
+    </article>
+
+    <!-- 推し活・趣味 -->
+    <h3 class="cat-heading" id="cat-hobby">推し活・趣味（ゲーム・サッカー・野球応援など）</h3>
+
+    <article class="case-item">
+      <div class="case-header">
+        <span class="basis-tag basis-apply">一般応用提案</span>
+        <h4 class="case-title">14. 試合日程・ゲームセールの監視と「ネタバレ回避」の細かい配慮</h4>
+      </div>
+      <div class="case-dl">
+        <p class="case-row"><span class="case-label">何ができるか</span><span class="case-text">応援しているサッカー・野球チームの試合予定や、気になっているゲームのセール・大型アプデ情報を定期巡回しつつ、「録画視聴する日は試合結果を絶対に書かない」といった細かな好み（ルール）を守らせることができます（Grok Bot の定時トレンド巡回、dots の条件監視、Meta Muse の好み記憶ルールの応用）。</span></p>
+        <p class="case-row"><span class="case-label">どう頼むか</span><span class="prompt-quote">「応援チームの今週の試合日程と開始時刻だけ教えて。試合結果やスコアは僕が『見ていいよ』と言うまで絶対に書かないで。あとウィッシュリストのゲームが30%以上セールになったら知らせて」</span></p>
+        <p class="case-row"><span class="case-label">何が返ってくるか</span><span class="case-text">ネタバレを完全に伏せた試合カレンダー通知と、条件を満たしたセール情報だけのピンポイント速報。</span></p>
+        <p class="case-row"><span class="case-label">向いている場面・注意点</span><span class="case-text">見逃し配信や録画派のスポーツファン、積みゲー管理に重宝します。「ネタバレ禁止」などの絶対ルールは会話の都度ではなく、プロフィールやルールファイルに明記しておくと忘れにくくなります。</span></p>
+      </div>
+    </article>
+  </section>
+
+  <!-- 3. 他製品の使い方から学べる事例 -->
+  <section id="products">
+    <h2>他製品の使い方から盗める4つの発想</h2>
+    <p>2026年11月時点で実在が確認されている4つの主要パーソナル AI エージェントは、それぞれ得意な「振る舞い」が異なります。使っている製品が1つであっても、他製品の優れた使い方を自分の運用へ翻訳して取り入れることができます。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>製品名</th>
+            <th>動画で光っていた使い方</th>
+            <th>自分の運用へ翻訳するポイント</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OpenAI「dots」</strong></td>
+            <td><strong>非依頼型の先回りリサーチ</strong><br>頼んでいないのに「キャンセル忘れの予約」「送信済みメールの終了時刻誤記」「サーバー更新」を外部公式サイトと突合して通知（<a href="https://www.youtube.com/watch?v=cf8cnkCuNMM" target="_blank" rel="noopener noreferrer">長島氏動画</a>）。</td>
+            <td>「毎週決まった作業」だけでなく、読み取り専用の<strong>先回りチェック（予定・メモと一次情報のズレ探し）</strong>を週1回だけ仕込む。通知は「即時」と「日次まとめ」の2段階に分ける。</td>
+          </tr>
+          <tr>
+            <td><strong>X「Grok Bot」</strong></td>
+            <td><strong>スマホ起点の司令塔×専門分業</strong><br>チャット窓口から別マシンのコーディング AI を指揮したり、15体の専門ボットを連鎖させたり、収支を見て衝動的な投資を止める「ブレーキ役」を配置（<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">Ross Mike 氏</a> / <a href="https://www.youtube.com/watch?v=dmAKrl-EBs0" target="_blank" rel="noopener noreferrer">Knock 動画</a>）。</td>
+            <td>司令塔に全部やらせず<strong>「窓口・文脈統合」と「重い実装・調査」を分ける</strong>。終わった案件のボットやメモは即片付け、意思決定の「冷静なブレーキ役」を頼む。</td>
+          </tr>
+          <tr>
+            <td><strong>Anthropic「Claude Duet」</strong></td>
+            <td><strong>判断待ちの単一窓口化＋承認ゲート</strong><br>音声で経理記帳を調べさせ、人間の「はい、記帳して」承認後に実行。並列稼働する複数 AI の「確認待ち」をスマホ1画面へ集約（<a href="https://www.youtube.com/watch?v=O7TG9E0gjZo" target="_blank" rel="noopener noreferrer">中村氏動画</a>）。</td>
+            <td>複数の調査・実装を同時進行するときほど、<strong>「迷ったこと・承認が必要なことだけ1箇所に集めて」</strong>と決める。送信・決済・削除以外でも「実行前に見せて」を習慣にする。</td>
+          </tr>
+          <tr>
+            <td><strong>Meta「Muse」</strong></td>
+            <td><strong>ボード×記憶のスリム運用</strong><br>Spaces（表示）・サイドチャット（判断）・テーマ別フォルダ4点セット（記録）に分け、定常記憶を目次だけにして肥大化を防止（<a href="https://www.youtube.com/watch?v=66Az0YidrtI" target="_blank" rel="noopener noreferrer">長島氏動画</a>）。</td>
+            <td>長く使うほど記憶が重くなるため、<strong>「いつも読む記憶はルールと目次だけ、詳細は別ファイル」</strong>に整理する。月1回、AI に不要メモの削除候補を出させて棚卸しする。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="pull">「AI に全部を自動でやらせる」よりも、「迷うところと最終確認だけを人間に届けてもらう」設計のほうが、日常では圧倒的に安心して長く使える。</blockquote>
+  </section>
+
+  <!-- 4. 1日の使い方シナリオ（Full-bleed band） -->
+  <div class="band" id="scenarios">
+    <h2>1日の使い方シナリオ（3本）</h2>
+    <p>個別の技を組み合わせると、1日の流れはどう変わるでしょうか。IT エンジニアで家族と暮らす利用者をイメージした3つの短いシナリオです。</p>
+
+    <figure>
+      <p class="fig-title">朝の確認・日中の音声委任・夜間の裏作業がつながると、机に向かう前に下準備が終わる</p>
+      <svg viewBox="0 0 680 210" width="100%" role="img" aria-label="朝・日中・夜の1日サイクル図">
+        <!-- Timeline rail -->
+        <line x1="60" y1="88" x2="620" y2="88" stroke="var(--hair)" stroke-width="3"/>
+
+        <!-- Node 1: Morning -->
+        <circle cx="110" cy="88" r="14" fill="var(--accent)"/>
+        <text x="110" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-text)">朝 07:00</text>
+        <text x="110" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">受け取る</text>
+        <text x="110" y="150" text-anchor="middle" font-size="13" fill="var(--mute)">夜間の成果物確認</text>
+        <text x="110" y="170" text-anchor="middle" font-size="13" fill="var(--mute)">重要メール3件確認</text>
+
+        <!-- Node 2: Daytime -->
+        <circle cx="340" cy="88" r="14" fill="var(--accent-2)"/>
+        <text x="340" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-2-text)">日中 12:30</text>
+        <text x="340" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">一言で流す</text>
+        <text x="340" y="150" text-anchor="middle" font-size="13" fill="var(--mute)">音声メモ・承認タップ</text>
+        <text x="340" y="170" text-anchor="middle" font-size="13" fill="var(--mute)">裏側で調査や整理</text>
+
+        <!-- Node 3: Night -->
+        <circle cx="570" cy="88" r="14" fill="var(--ink)"/>
+        <text x="570" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">夜 22:30</text>
+        <text x="570" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">仕込んで寝る</text>
+        <text x="570" y="150" text-anchor="middle" font-size="13" fill="var(--mute)">仕様合意→専門AI委任</text>
+        <text x="570" y="170" text-anchor="middle" font-size="13" fill="var(--mute)">独立点検まで自動実行</text>
+      </svg>
+      <figcaption>夜間実行→朝回収のサイクルは The Gray Cat 氏・Claude Code Cloud Sessions 等の実例をもとに一般化。</figcaption>
+    </figure>
+
+    <div class="scenario">
+      <h3>シナリオ A：平日の朝〜日中（立ち上がりと判断待ちの整理）</h3>
+      <ul class="timeline">
+        <li><span class="tl-time">07:00</span>スマホに朝のブリーフィングが届く。今日の予定、返信が必要なメール2件の下書き、Microsoft 365 関連の注目更新1件だけを3分で把握。</li>
+        <li><span class="tl-time">08:20</span>通勤中に音声で「午後の定例用に前回の残課題を3行で思い出させて」と一言。会議室に入る前に要点がまとまっている。</li>
+        <li><span class="tl-time">12:40</span>昼休みに、裏で動いていた技術比較調査の「確認待ち」通知を開き、追加で調べたい観点だけ1行返して午後へ戻る。</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h3>シナリオ B：夜に仕込んで、翌朝に成果物を受け取る</h3>
+      <ul class="timeline">
+        <li><span class="tl-time">22:30</span>就寝前に5分だけ、個人開発中のミニゲームや資料作成の「合格条件3つ」を司令塔と合意し、「今夜中に実装と別視点チェックまで進めておいて」と委任してPCを閉じる。</li>
+        <li><span class="tl-time">02:00</span>裏側で専門 AI が試作と自動チェックを実行。迷う仕様が出た場合は勝手に進めず「判断待ち」として停止し、記憶ファイルの整理も完了。</li>
+        <li><span class="tl-time">07:15</span>翌朝コーヒーを飲みながら、スマホで成果物と点検結果を確認。OK ならそのまま採用し、微調整だけ一言で返す。</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h3>シナリオ C：休日の家族時間と、夜のリラックス</h3>
+      <ul class="timeline">
+        <li><span class="tl-time">09:00</span>金曜に提案してもらっていた3候補から、当日の天気を見て屋内スポットに決定。駐車場と昼食候補のリンクを家族へ共有。</li>
+        <li><span class="tl-time">17:30</span>応援チームの試合が終了した時間帯だが、「録画視聴なのでスコア非表示」のルール通りネタバレは一切なし。開始時刻と放送枠のリマインドだけを確認。</li>
+        <li><span class="tl-time">21:30</span>子どもが寝たあと、毎日5分の英語3問をスマホで解き、ついでに日曜夜のウォッチ睡眠サマリーを眺めて1日を終える。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 頼み方の例文集 -->
+  <section id="phrases">
+    <h2>そのまま使える「一言」頼み方の例文集</h2>
+    <p>パーソナル AI エージェントは、長いプロンプトを毎回書くより「短い一言＋外せない条件1つ」で頼むほうが続きやすくなります。そのままコピペしたり、状況に合わせて提案の引き出しとして使ったりできる例文集です。</p>
+
+    <div class="phrase-group">
+      <h3>仕事の日</h3>
+      <ul class="phrase-list">
+        <li>「毎朝7時に今日の予定と重要メール3件だけまとめて。送信はしないで下書きまで」<span class="phrase-note">用途：朝の立ち上げ短縮・誤送信防止</span></li>
+        <li>「この技術テーマ、公式情報だけで比較表を作って。不明な点は推測せず未確認と書いて」<span class="phrase-note">用途：裏調査の委任・ハルシネーション抑制</span></li>
+        <li>「この資料、作った会話とは別の目線で『数字と前提のズレ』だけ厳しくチェックして」<span class="phrase-note">用途：生成役と点検役の分離</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>生活・家族</h3>
+      <ul class="phrase-list">
+        <li>「今週末、雨でも家族4人で半日遊べる候補を3つ出して。駐車場と予算感もつけて」<span class="phrase-note">用途：週末の企画を数秒で完了</span></li>
+        <li>「予定を変えたから、メールにキャンセル期限が近い予約が残っていないか見ておいて」<span class="phrase-note">用途：先回りのキャンセル忘れ防止</span></li>
+        <li>「サブスクの値上げや更新通知が来たら検知して、見直しリストに入れておいて」<span class="phrase-note">用途：固定費の放置防止</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>学習（英語・資格）</h3>
+      <ul class="phrase-list">
+        <li>「毎晩21時に英語表現を3問だけ出して。間違えたものだけ日曜に再テストして」<span class="phrase-note">用途：5分習慣化＋自動復習</span></li>
+        <li>「この公式記事を3行で要約して、元 URL つきで学習メモへ保存しておいて」<span class="phrase-note">用途：調べっぱなし防止・知識の蓄積</span></li>
+        <li>「今週の学習メモから、まだ説明に自信がなさそうな論点を3つだけ抜き出して」<span class="phrase-note">用途：週末の弱点あぶり出し</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>創作（スタンプ・ゲーム・音声）</h3>
+      <ul class="phrase-list">
+        <li>「このアイデアを今夜中に試作して。仕様で迷ったら勝手に決めず確認待ちにして」<span class="phrase-note">用途：夜間委任＋承認ゲート</span></li>
+        <li>「スタンプ案16点の進行表を作って、未確定のセリフだけ一覧にしておいて」<span class="phrase-note">用途：セット制作の抜け漏れ防止</span></li>
+        <li>「さっき音声で話したネタを、3分の台本構成に整えて。公開はせず下書き止めで」<span class="phrase-note">用途：移動中の 0→1 作成</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>健康</h3>
+      <ul class="phrase-list">
+        <li>「日曜夜に今週の睡眠と歩数を見て、先週より明確に落ちた週だけ声をかけて」<span class="phrase-note">用途：異常トレンドだけの静かな見守り</span></li>
+        <li>「ここ2週間で寝不足が続いている曜日パターンがあれば教えて」<span class="phrase-note">用途：生活リズムの振り返り</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>推し活・趣味</h3>
+      <ul class="phrase-list">
+        <li>「今週の試合日程だけ教えて。結果とスコアは僕が聞くまで絶対に書かないで」<span class="phrase-note">用途：録画派のネタバレ完全回避</span></li>
+        <li>「このゲームが30%オフ以上になったら即通知、それ以外のニュースは週1まとめで」<span class="phrase-note">用途：2段階の通知トリアージ</span></li>
+        <li>「気になるガジェット、今の自分の目標と予算に照らして『買わない理由』を3つ言って」<span class="phrase-note">用途：衝動買いのブレーキ役（Grok Bot 事例の応用）</span></li>
+      </ul>
+    </div>
+
+    <div class="phrase-group">
+      <h3>エージェントのメンテナンス（長く賢く保つ一言）</h3>
+      <ul class="phrase-list">
+        <li>「記憶ファイルが重くなっていないか見て、アーカイブ候補だけリストにして。消す前に確認させて」<span class="phrase-note">用途：月1回の提案型棚卸し（Meta Muse 事例）</span></li>
+        <li>「この件は完了したから、要点だけ残して進行中リストから外しておいて」<span class="phrase-note">用途：文脈の鮮度維持・ノイズ削減</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6. 出典一覧 -->
+  <section id="sources">
+    <h2>出典・参考動画一覧</h2>
+    <p>本事例集の根拠とした公式情報および 2026年10月28日〜11月28日公開の YouTube 実践動画です。</p>
+    <ol class="sources">
+      <li><a href="https://openai.com/ja-JP/index/introducing-dots/" target="_blank" rel="noopener noreferrer">OpenAI 公式：dots 紹介ページ</a> / <a href="https://help.openai.com/ja-jp/articles/20001530-getting-started-with-your-dot" target="_blank" rel="noopener noreferrer">OpenAI Help Center</a></li>
+      <li><a href="https://x.ai/bot" target="_blank" rel="noopener noreferrer">SpaceXSI（x.ai）公式：Grok Bot</a> / <a href="https://x.ai/changelog/bot" target="_blank" rel="noopener noreferrer">Grok Bot Changelog</a></li>
+      <li><a href="https://claude.com/product/claude-duet" target="_blank" rel="noopener noreferrer">Anthropic 公式：Claude Duet 製品ページ</a> / <a href="https://www.techno-edge.net/article/2026/11/27/5841.html" target="_blank" rel="noopener noreferrer">TechnoEdge（2026-11-27 日本展開報道）</a></li>
+      <li><a href="https://ai.meta.com/muse/" target="_blank" rel="noopener noreferrer">Meta 公式：Muse</a> / <a href="https://www.watch.impress.co.jp/docs/news/2154793.html" target="_blank" rel="noopener noreferrer">Impress Watch（2026-11-06 機能強化報道）</a></li>
+      <li>社長のAI実践チャンネル -眼から鱗 長島-（2026-11-21）：<a href="https://www.youtube.com/watch?v=cf8cnkCuNMM" target="_blank" rel="noopener noreferrer">ChatGPT DotsがPlusにも拡大！驚異の先回り事例公開｜Museと違うDotsの真価</a></li>
+      <li>Hostinger Academy（2026-11-10）：<a href="https://www.youtube.com/watch?v=FW5WvY_aoxk" target="_blank" rel="noopener noreferrer">ChatGPT Dots: The ULTIMATE Guide (Everything Explained) - 2026</a></li>
+      <li>Greg Isenberg / ゲスト Ross Mike（2026-11-11）：<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">Use Grok Bot Better Than 99% of People (Full Course)</a></li>
+      <li>Knock / Scott Strand（2026-11-18）：<a href="https://www.youtube.com/watch?v=dmAKrl-EBs0" target="_blank" rel="noopener noreferrer">How to run marketing with a Grok Bot team</a></li>
+      <li>中村祐太のFindUアカデミー（2026-11-27）：<a href="https://www.youtube.com/watch?v=O7TG9E0gjZo" target="_blank" rel="noopener noreferrer">【神機能】Claude Duet 使い方入門！アプリを閉じても仕事を進めるAI秘書に、経理の記帳を任せてみた</a></li>
+      <li>社長のAI実践チャンネル -眼から鱗 長島-（2026-11-20）：<a href="https://www.youtube.com/watch?v=66Az0YidrtI" target="_blank" rel="noopener noreferrer">【大公開】Meta Museを壊さない運用法！記憶の肥大化防止とスペース活用法を徹底解説</a></li>
+      <li>The Gray Cat（2026-11-03）：<a href="https://www.youtube.com/watch?v=3hF2lVNsXuo" target="_blank" rel="noopener noreferrer">How I Use Claude Code and Codex on a Real Feature in late 2026</a></li>
+      <li>Sura×Asura For AI Agent（2026-11-22）：<a href="https://www.youtube.com/watch?v=wgFpE9lICaM" target="_blank" rel="noopener noreferrer">【Orca Bots】Claude Codeを"呼ぶ"から"任せる"へ</a></li>
+      <li>まじん（2026-11-23）：<a href="https://www.youtube.com/watch?v=kcuPWuWVMmw" target="_blank" rel="noopener noreferrer">Gemini Notebook に公式APIが登場。Antigravity から使えるまでを徹底解説</a></li>
+      <li>超実践AIエージェント×Webマーケティングスクール WEBMARKS（2026-11-24）：<a href="https://www.youtube.com/watch?v=tIlOF1uqRWk" target="_blank" rel="noopener noreferrer">AIの「完了しました」、信じて大丈夫？ Anthropicの実験に学ぶ、確かめ方3つ</a></li>
+      <li>Samautomation（2026-11-22）：<a href="https://www.youtube.com/watch?v=KpUDokvv3NU" target="_blank" rel="noopener noreferrer">Why Claude Code Ignores Your Rules (Tested on 752 Sessions)</a></li>
+      <li>Dangerous Media（2026-11-19）：<a href="https://www.youtube.com/watch?v=YhSne8hFfpQ" target="_blank" rel="noopener noreferrer">Obsidian + Claude Code on Windows: Full Setup, CLAUDE.md, Skills &amp; MCP (2026)</a></li>
+    </ol>
+    <a class="back-top" href="#top">ページの先頭へ戻る ↑</a>
+  </section>
+
+  <footer>
+    作成日：2026-11-28 ／ 公開前提の一般化ガイド（単一 HTML・外部 CDN 非依存・ダークモード対応）
+  </footer>
+
+</div>
+</body>
+</html>

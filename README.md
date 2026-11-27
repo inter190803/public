@@ -19,6 +19,7 @@
 - [OpenAI 公式 Agent Skills 完全ガイド — openai/skills 全スキル体系解説](https://inter190803.github.io/public/gemini/2026-11-25_openai-skills-guide.html) (`gemini/2026-11-25_openai-skills-guide.html`)
 - [Addness（アドネス）徹底調査レポート｜個人マルチAI構成への導入効果と判断材料](https://inter190803.github.io/public/gemini/2026-11-27_addness-deep-dive.html) (`gemini/2026-11-27_addness-deep-dive.html`)
 - [Meta Muse 料金プラン詳細比較（Free / Power / Maximum）— 2026年11月版](https://inter190803.github.io/public/gemini/2026-11-27_muse-plans-comparison.html) (`gemini/2026-11-27_muse-plans-comparison.html`)
+- [パーソナル AI エージェント活用事例集 ― 仕事・暮らし・学び・創作を広げる使い方](https://inter190803.github.io/public/gemini/2026-11-28_gafu-usage-examples.html) (`gemini/2026-11-28_gafu-usage-examples.html`)
 - [購入した本 5冊（2026年11月24日）](https://inter190803.github.io/public/guff/2026-11-25_purchased-books.html) (`guff/2026-11-25_purchased-books.html`)
 - [guff/pptx-builder/sample-deck.pptx](https://inter190803.github.io/public/guff/pptx-builder/sample-deck.pptx) (`guff/pptx-builder/sample-deck.pptx`)
 - [Microsoft 365 Copilot「ワークスペース（旧ノートブック）」網羅調査レポート](https://inter190803.github.io/public/reports/copilot-workspaces-research.html) (`reports/copilot-workspaces-research.html`)
