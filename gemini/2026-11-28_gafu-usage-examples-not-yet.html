@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パーソナル AI エージェント活用事例集【未導入編】― 次の7つの進化パターン</title>
+<style>
+/* Utilitarian-Editorial Hybrid · Mobile-first vertical reader · Compact answer-first hero · System Sans + Mono accents · Crisp White light / Deep Slate dark (prefers-color-scheme) · Cobalt + Amber accents · 0 cards, open hairline layout · 1 inline SVG architecture delta diagram */
+
+:root {
+  --paper: #FFFFFF;
+  --surface-band: #F3F5F9;
+  --ink: #11151C;
+  --ink2: #2C3440;
+  --mute: #4E5968;
+  --hair: #D5DCE6;
+  --accent: #2D45A3;
+  --accent-text: #223582;
+  --accent-soft: #E9EEFA;
+  --accent-2: #8C4F00;
+  --accent-2-text: #734000;
+  --accent-2-soft: #FCF3E3;
+  --cost-low-bg: #E5F4EC;
+  --cost-low-fg: #0D5C38;
+  --cost-mid-bg: #FCF3E3;
+  --cost-mid-fg: #734000;
+  --cost-high-bg: #FCE9E9;
+  --cost-high-fg: #8C1D1D;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0F1216;
+    --surface-band: #181D25;
+    --ink: #F2F5F9;
+    --ink2: #D3DBE5;
+    --mute: #A0ACBC;
+    --hair: #2A3240;
+    --accent: #8EA6FF;
+    --accent-text: #A8BCFF;
+    --accent-soft: #1B2440;
+    --accent-2: #F0B454;
+    --accent-2-text: #F7C776;
+    --accent-2-soft: #302412;
+    --cost-low-bg: #122E21;
+    --cost-low-fg: #7AE0AE;
+    --cost-mid-bg: #302412;
+    --cost-mid-fg: #F7C776;
+    --cost-high-bg: #36191B;
+    --cost-high-fg: #FF9C9C;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px clamp(18px, 5.5vw, 40px) 72px;
+}
+
+/* Header */
+header.hero {
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.sequel-note {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(1.75rem, 6vw, 2.55rem);
+  line-height: 1.26;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.deck {
+  margin: 0 0 16px;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--ink2);
+}
+
+.scope-line {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--mute);
+  line-height: 1.6;
+}
+
+/* Tap-friendly TOC */
+nav.toc {
+  margin: 24px 0 36px;
+}
+
+.toc-title {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 560px) {
+  .toc-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 14px;
+  }
+}
+
+.toc-list a {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px 14px;
+  color: var(--accent-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.94rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-band);
+}
+
+.toc-list a:hover,
+.toc-list a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Sections */
+section {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hair);
+}
+
+h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.32rem, 4.6vw, 1.75rem);
+  line-height: 1.32;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+h3 {
+  margin: 24px 0 10px;
+  font-size: 1.12rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 14px;
+  color: var(--ink2);
+}
+
+a {
+  color: var(--accent-text);
+  text-underline-offset: 3px;
+}
+
+/* Figure & SVG */
+figure {
+  margin: 24px 0 32px;
+  padding: 0;
+}
+
+.fig-title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+figcaption {
+  margin-top: 8px;
+  font-size: 0.84rem;
+  color: var(--mute);
+  line-height: 1.55;
+}
+
+/* Structured 5-part Item */
+.item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cost-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.cost-low {
+  background: var(--cost-low-bg);
+  color: var(--cost-low-fg);
+}
+
+.cost-mid {
+  background: var(--cost-mid-bg);
+  color: var(--cost-mid-fg);
+}
+
+.cost-high {
+  background: var(--cost-high-bg);
+  color: var(--cost-high-fg);
+}
+
+.field-list {
+  margin: 0;
+  padding: 0;
+}
+
+.field-block {
+  margin: 0 0 14px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.field-body {
+  margin: 0;
+  font-size: 0.96rem;
+  color: var(--ink2);
+  line-height: 1.72;
+}
+
+.step-box {
+  margin: 6px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-band);
+  font-size: 0.94rem;
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.code-inline {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 1px 5px;
+  background: var(--surface-band);
+  color: var(--ink);
+}
+
+/* Open Table (mobile scroll safe) */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 18px 0 24px;
+}
+
+table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+  font-size: 0.91rem;
+  line-height: 1.6;
+}
+
+th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 10px 12px 10px 0;
+  border-bottom: 2px solid var(--ink);
+  white-space: nowrap;
+}
+
+td {
+  padding: 11px 12px 11px 0;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink2);
+  vertical-align: top;
+}
+
+/* Product entry inside item 7 */
+.prod-entry {
+  padding: 16px 0;
+  border-top: 1px solid var(--hair);
+}
+
+.prod-entry:first-of-type {
+  border-top: none;
+  padding-top: 6px;
+}
+
+.prod-entry h3 {
+  margin: 0 0 8px;
+  font-size: 1.06rem;
+  color: var(--accent-text);
+}
+
+/* Full-bleed summary band (max 1) */
+.band {
+  margin: 44px calc(-1 * clamp(18px, 5.5vw, 40px)) 0;
+  padding: 28px clamp(18px, 5.5vw, 40px);
+  background: var(--surface-band);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+.band h2 {
+  margin-top: 0;
+}
+
+/* Sources */
+ol.sources {
+  margin: 14px 0 0;
+  padding-left: 22px;
+  font-size: 0.87rem;
+  line-height: 1.65;
+  color: var(--mute);
+}
+
+ol.sources li {
+  margin-bottom: 7px;
+}
+
+.back-top {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  text-decoration: none;
+}
+
+footer {
+  margin-top: 44px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hair);
+  font-size: 0.84rem;
+  color: var(--mute);
+}
+</style>
+</head>
+<body>
+<div class="page" id="top">
+
+  <header class="hero">
+    <p class="sequel-note">本ページは、パーソナル AI エージェント活用事例集（本編）と対になる続編「未導入編」です。</p>
+    <h1>すでに三役分担と定期ジョブを回している人へ。次に足すべき「未導入」の7手</h1>
+    <p class="deck">ある IT エンジニアの個人 AI 運用のように、司令塔・実装役・調査役の分担、定例報告、記憶の階層化、ゴール単位の自律運用まで整えた先にある「まだ入っていない7つの実践パターン」だけを厳選しました。</p>
+    <p class="scope-line">根拠：2026年10月28日〜11月28日公開の日英 YouTube 実践動画（先行調査15件＋補完5件）と公式情報。導入済みの基礎運用は再掲せず、差分と最初の一歩だけに絞っています。</p>
+  </header>
+
+  <nav class="toc" aria-label="目次">
+    <p class="toc-title">未導入の7項目（タップで移動）</p>
+    <ul class="toc-list">
+      <li><a href="#item-1">1. 夜の指示箱 → 朝に成果物</a></li>
+      <li><a href="#item-2">2. 分野別ボットの分離</a></li>
+      <li><a href="#item-3">3. セッション終了時の自動改善ループ</a></li>
+      <li><a href="#item-4">4. カレンダー駆動タスク</a></li>
+      <li><a href="#item-5">5. 構造強制の発展形</a></li>
+      <li><a href="#item-6">6. 隔離ワーカーの常設化</a></li>
+      <li><a href="#item-7">7. 4製品の入口ガイド</a></li>
+      <li><a href="#cost-map">導入コスト早見表・出典一覧</a></li>
+    </ul>
+  </nav>
+
+  <figure>
+    <p class="fig-title">導入済みの土台の上に「夜間キュー・専門分離・構造強制・隔離評価」の4層を足すと自律度が一段上がる</p>
+    <svg viewBox="0 0 680 320" width="100%" role="img" aria-label="導入済みの土台と未導入7項目の位置づけ図">
+      <!-- Base layer: already implemented -->
+      <rect x="20" y="226" width="640" height="72" rx="8" fill="var(--surface-band)" stroke="var(--hair)" stroke-width="1.8"/>
+      <text x="340" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="var(--mute)">導入済みの土台（本編でカバー済み）</text>
+      <text x="340" y="278" text-anchor="middle" font-size="13" fill="var(--mute)">三役分担・引き継ぎファイル ／ 定期ジョブ ／ 記憶三層化 ／ ゴール運用</text>
+
+      <!-- Arrow up -->
+      <line x1="340" y1="220" x2="340" y2="196" stroke="var(--accent)" stroke-width="2.5"/>
+      <polygon points="334,200 340,188 346,200" fill="var(--accent)"/>
+
+      <!-- New layer: 3 columns -->
+      <!-- Col 1: Input & Rhythm -->
+      <rect x="20" y="28" width="198" height="152" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+      <text x="119" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="var(--accent-text)">入力・リズムの拡張</text>
+      <text x="119" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">1. 夜の指示箱→朝PR</text>
+      <text x="119" y="114" text-anchor="middle" font-size="12" fill="var(--mute)">一回性の夜間キュー</text>
+      <text x="119" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">4. カレンダー駆動</text>
+      <text x="119" y="168" text-anchor="middle" font-size="12" fill="var(--mute)">当日発火タスク管理</text>
+
+      <!-- Col 2: Architecture & Roles -->
+      <rect x="241" y="28" width="198" height="152" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+      <text x="340" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="var(--accent-text)">役割・評価の分離</text>
+      <text x="340" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">2. 分野別ボット分離</text>
+      <text x="340" y="114" text-anchor="middle" font-size="12" fill="var(--mute)">専門窓口とコスト制御</text>
+      <text x="340" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">6. 隔離ワーカー常設</text>
+      <text x="340" y="168" text-anchor="middle" font-size="12" fill="var(--mute)">文脈遮断の冷徹点検</text>
+
+      <!-- Col 3: Harness & Self-Improvement -->
+      <rect x="462" y="28" width="198" height="152" rx="8" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.8"/>
+      <text x="561" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="var(--accent-2-text)">仕組み強制と還流</text>
+      <text x="561" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">3. 終了時自動改善</text>
+      <text x="561" y="114" text-anchor="middle" font-size="12" fill="var(--mute)">失敗の1行還流ループ</text>
+      <text x="561" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">5. 構造強制の発展形</text>
+      <text x="561" y="168" text-anchor="middle" font-size="12" fill="var(--mute)">Deny・Hook・承認ゲート</text>
+    </svg>
+    <figcaption>7番目の「4製品の入口ガイド」は、これらのパターンを各社パーソナル AI エージェントで試す際の着手順序として末尾に配置。</figcaption>
+  </figure>
+
+  <!-- 項目 1 -->
+  <section id="item-1">
+    <h2>1. 夜の指示箱 → 朝に成果物</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-mid">導入コスト：中</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">就寝前に「今夜やっておいてほしい一回性の作業（小機能の実装、バグ修正、試作など）」を指示箱へまとめて投げておき、翌朝には GitHub 上にブランチや PR として成果物が上がっている非同期リズムです。導入済みの定期ジョブが「同じ定型作業の繰り返し」なのに対し、こちらは<strong>その夜ごとに内容が違う一回性の指示を夜間に一括消化する</strong>点が決定的に異なります。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">Ross Mike 氏の Grok Bot オーケストレーター実例（<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">Greg Isenberg チャンネル, 2026-11-11</a>：スマホから Grok Bot → Tailscale 経由で開発 PC の Claude Code を複数起動し PR 作成）と、The Gray Cat 氏の夜間マージ運用（<a href="https://www.youtube.com/watch?v=3hF2lVNsXuo" target="_blank" rel="noopener noreferrer">2026-11-03</a>：Orca worktree で並列実行し、停止ワーカーをオーケストレーターが自動再起動、レビュー上限3回で打ち切って翌朝マージ）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">導入済みの Git 経由引き継ぎ基盤を活かし、新たに「夜間キュー用ディレクトリ（例：<span class="code-inline">night-queue/</span>）」を設けます。夜に司令塔へ口頭やチャットで複数タスクを投げると、司令塔が独立した作業ブランチ単位の引き継ぎチケットに分解してキューへ投入。自宅 PC 側の実装役が深夜に順次処理し、テスト通過済みの PR と「未解決の質問メモ」を翌朝の確認一覧へ並べます。無限ループを防ぐため、差し戻しや再試行の上限（例：最大3回）を明示しておくのが鍵です。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>中</strong> — 既存の Git 引き継ぎ導線を流用できる一方、夜間バッチの順次起動・再試行上限・停止時のタイムアウト処理を組み込む初期手間がかかります。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">「今夜の一回性タスクを2件だけ <span class="code-inline">night-queue/</span> に分けて積んで。各チケットに『完了条件（テスト通過）』『再試行は最大3回』『仕様に迷ったらPRを作らず質問メモだけ残す』を明記して、明朝に結果だけまとめて」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 2 -->
+  <section id="item-2">
+    <h2>2. 分野別ボットの分離</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-mid">導入コスト：中</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">開発・デザイン・収支・コンテンツなど、領域ごとに役割と接続ツールを絞った専門ボットを分離し、司令塔が案件に応じて振り分ける構成です。単一の司令塔に全分野の記憶とツールを集約する現行構成とは対照的に、<strong>ボット単位で「見る情報」「使うモデル」「触れる権限」を切り離す</strong>運用です。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">Knock（Scott Strand 氏）の 15 ボット・3グループチャット連鎖実例（<a href="https://www.youtube.com/watch?v=dmAKrl-EBs0" target="_blank" rel="noopener noreferrer">2026-11-18</a>：CopyBot / DesignBot / WebsiteBot 等を分離し、単発質問用の InternBot は社内ツール接続を遮断してトークン節約）、Ross Mike 氏の財務ブレーキ役（Advisor Bot）分離＆完了ボット即削除（<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">2026-11-11</a>）、Leo Tohyama 氏のメイン＋専門8体構成（<a href="https://www.youtube.com/watch?v=HM3OfoQqG8k" target="_blank" rel="noopener noreferrer">2026-11-04</a>）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">導入済みの「司令塔一人集約」と比べた利点とコストは次の通りです。いきなり多体編成にせず、現行の司令塔を母艦に残したまま、<strong>①外部ツールを一切つながない「軽い壁打ち専用」</strong>と<strong>②買い出しや新規着手へ冷静に異議を唱える「意思決定ブレーキ役」</strong>の1〜2役だけ独立させると、管理コストを抑えつつ恩恵を得られます。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>比較軸</th>
+                <th>現行（司令塔への集約）</th>
+                <th>分野別ボットの分離</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>文脈の純度</td>
+                <td>生活・仕事・開発が1つの記憶に混ざりやすい</td>
+                <td>専門領域のルールだけを読み、ノイズが減る</td>
+              </tr>
+              <tr>
+                <td>権限とコスト</td>
+                <td>全ツール接続が前提になり消費が増えやすい</td>
+                <td>単発質問役はツール遮断・軽量モデルで節約可能</td>
+              </tr>
+              <tr>
+                <td>運用の手間</td>
+                <td>窓口が1つで迷わず管理しやすい</td>
+                <td>情報分断や「ボット疲れ」が起きやすく、不要ボットの即削除規律が必須</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>中</strong> — 最初から多体化すると管理負荷と利用枠消費が跳ね上がるため、まず1〜2分野の限定分離と「完了したら即削除」の運用ルール策定が必要です。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">まずは専門役割を1つだけ分離する設定：「【意思決定ブレーキ役】外部ツール接続なし。新しいツール契約や新規プロジェクトの提案を受けたら、既存の目標・運用負荷・重複機能の3点から『今やらない理由』を必ず3つ挙げてから賛否を述べる」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 3 -->
+  <section id="item-3">
+    <h2>3. セッション終了時の自動改善ループ</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-low">導入コスト：低</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">1つの作業セッションが終わるたびに、その回で起きた「手戻り・誤解・人間が直した判断」を自動で棚卸しし、指示ファイル（<span class="code-inline">AGENTS.md</span> 等）やスキル定義へ1行ずつ還流させる自己改善サイクルです。導入済みの記憶三層分離が「知識の整理・保管」であるのに対し、こちらは<strong>エージェント自身の行動ルールを失敗ベースで自動進化させる</strong>仕組みです。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">AI with Tech Dad 氏の3エージェント実測（<a href="https://www.youtube.com/watch?v=7316sjwJpGU" target="_blank" rel="noopener noreferrer">2026-11-16</a>：最初から長大なルールを書かず、実際に間違えた制約だけ <span class="code-inline">AGENTS.md</span> へ1行追記しモデル更新時にリセット）、Sura×Asura 氏の Orca Bots 実機検証（<a href="https://www.youtube.com/watch?v=wgFpE9lICaM" target="_blank" rel="noopener noreferrer">2026-11-22</a>：人間の承認判断を <span class="code-inline">SOUL.md</span> へ自動保存）、Dangerous Media 氏のセッション末 <span class="code-inline">Session Log</span> / <span class="code-inline">Decisions</span> 書き出し（<a href="https://www.youtube.com/watch?v=YhSne8hFfpQ" target="_blank" rel="noopener noreferrer">2026-11-19</a>）、Samautomation 氏の Stop Hook 自動退避（<a href="https://www.youtube.com/watch?v=KpUDokvv3NU" target="_blank" rel="noopener noreferrer">2026-11-22</a>）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">実装役・調査役の作業完了時に「今回つまずいた点と再発防止ルール案（最大1行）」を結果メモ末尾へ必ず出力させ、承認したものだけ <span class="code-inline">AGENTS.md</span> や該当スキルへ追記します。そのまま増やし続けると指示書が肥大化するため、既存の月次棚卸しやモデル更新のタイミングで「最新モデルなら書かなくても守れる古いルール」をまとめて削る（Nate Herk 氏紹介の <span class="code-inline">/doctor prompt audit</span> 発想）運用とセットで回します。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>低</strong> — 結果レポートのテンプレート末尾に「改善候補1行」の欄を足すだけで始められ、慣れたら終了フックで半自動化できます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">作業終了時の定型指示：「今回の作業でやり直しになった点や、僕が途中で軌道修正した判断を1つだけ挙げて。<span class="code-inline">AGENTS.md</span> に足すべき1行ルール案を提示し、僕の承認後にだけ追記して」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 4 -->
+  <section id="item-4">
+    <h2>4. カレンダー駆動タスク</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-low">導入コスト：低</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">「解約の締切日」「申込の解禁日」「更新手続きの開始日」など、<strong>その日にならないと着手できない一回性の作業</strong>を普段の ToDo リストから追い出し、カレンダー上の未来日付にだけ預けておく管理法です。当日になって初めてエージェントが表へ引き出すため、普段のタスクリストが「まだできないこと」で汚れません。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">OpenAI dots のメール・予定表突合による「キャンセル期限当日の直前通知」（<a href="https://www.youtube.com/watch?v=cf8cnkCuNMM" target="_blank" rel="noopener noreferrer">長島氏, 2026-11-21</a>）、Claude Duet のイベント情報からの日時付きカレンダー登録と当日提案（<a href="https://www.youtube.com/watch?v=uNsA7pkpVPg" target="_blank" rel="noopener noreferrer">Marty AI, 2026-11-25</a>）、Claude Code の日時指定一回性スケジュール（<a href="https://www.youtube.com/watch?v=-kBfKn_qaEs" target="_blank" rel="noopener noreferrer">Prompt Vidya AI, 2026-11-23</a>）から抽出した運用設計です（※専用製品の標準機能ではなく、既存カレンダー連携を活かした管理パターンの応用です）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">導入済みの定期ジョブ（毎週・毎日の反復）とは明確に分け、「特定日に1回だけ発火する待機タスク」をカレンダーの専用プレフィックス（例：<span class="code-inline">[AI待機]</span>）付き終日予定として登録します。司令塔は普段そのタスクを記憶や ToDo に載せず、当日の朝になって初めて予定表から拾い上げ、関連メモや手順を添えて表へ出します。週次確認のノイズが減り、期限ものだけを確実に捕まえられます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>低</strong> — 新規ツール不要で、カレンダーの命名規約を1つ決め、朝の定例確認に「当日の待機タグ予定を拾う」ルールを1行加えるだけです。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">「この手続きは来月15日にならないとできないから、ToDo には入れずカレンダーの来月15日に『<span class="code-inline">[AI待機]</span> 手続き開始』として登録して。当日朝にだけ詳細とURLを添えて表に出して」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 5 -->
+  <section id="item-5">
+    <h2>5. 構造強制の発展形（Deny リスト・承認ゲート・Hooks）</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-mid">導入コスト：中</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">「絶対に消さないで」「上限サイズを守って」といったプロンプト上のお願い（ソフトルール）を卒業し、<strong>やってはいけないことは権限と Deny リストで物理的に塞ぎ、必ず守る検査はフック（コード）で自動差し戻しする</strong>設計です。現行構成に部分的に入っている承認フローを、AI の気まぐれに依存しない仕組みへ引き上げます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">Samautomation 氏の 752 セッション実測（<a href="https://www.youtube.com/watch?v=KpUDokvv3NU" target="_blank" rel="noopener noreferrer">2026-11-22</a>：<span class="code-inline">MEMORY.md</span> の自己管理ルールが約63%で超過した実証を受け、上限70%バッファ＋Stop Hook による自動退避へ移行）、Nate Herk 氏の3層ガード（<a href="https://www.youtube.com/watch?v=8Pg6G5h05hk" target="_blank" rel="noopener noreferrer">2026-11-17</a>：settings の Deny リスト、サンドボックス、失敗時に <span class="code-inline">exit code 2</span> を返して修正ループへ差し戻す検証 Hooks）、Sura×Asura 氏の Orca Bots <span class="code-inline">ask for approval</span> / <span class="code-inline">needs you</span> ゲート（<a href="https://www.youtube.com/watch?v=wgFpE9lICaM" target="_blank" rel="noopener noreferrer">2026-11-22</a>）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">現在のルールを「①絶対禁止」「②機械検証」「③人間判断」の3層に仕分けます。①秘密鍵や認証情報の読取・本番削除・外部送信はツール設定の Deny リストや read-only 権限で物理ブロック。②記憶ファイルの上限超過・禁止語句の混入・テスト失敗は、完了前に走る検証スクリプト／Hook が自動で弾いて修正へ差し戻し（<span class="code-inline">exit code 2</span> 型）。③仕様の分岐や外部公開だけ承認ゲートで止めることで、「AI がうっかりルールを忘れる」事故を構造的に潰せます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>中</strong> — ツールごとの設定ファイルやローカル検証スクリプトを書く手間はあるものの、最も事故りやすい3項目から順にコード化すれば無理なく移行できます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">既存の運用ルールから「破られたら困る上位3つ（例：機密ファイル参照禁止、記憶ファイル上限チェック、公開前の個人情報・NG語句スキャン）」を選び、プロンプトではなく設定の Deny リストと自動チェックスクリプト（失敗時非ゼロ終了）へ移す。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 6 -->
+  <section id="item-6">
+    <h2>6. 隔離ワーカーの常設化（文脈を持たない評価専用役）</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-low">導入コスト：低</span>
+    </div>
+    <div class="field-list">
+      <div class="field-block">
+        <span class="field-label">どんな使い方か</span>
+        <p class="field-body">成果物を作るワーカーとは別に、<strong>生成途中の会話履歴を一切見せない「評価専用・使い捨てワーカー」</strong>を常設し、合格条件・元データ・成果物の3点だけを冷徹に突き合わせる運用です。導入済みの「高精度モデルでの最終確認」がモデルの賢さに頼るのに対し、こちらは<strong>確認する側が文脈（思い込み・苦労の経緯）を持たないこと</strong>自体を武器にします。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">元ネタ</span>
+        <p class="field-body">WEBMARKS 氏の生成役・点検役分離ハーネス実演（<a href="https://www.youtube.com/watch?v=tIlOF1uqRWk" target="_blank" rel="noopener noreferrer">2026-11-24</a>：途中履歴を遮断した独立点検チャットで元表とレポートの数値誤記を検出）、The Gray Cat 氏の異種モデル独立レビュー（<a href="https://www.youtube.com/watch?v=3hF2lVNsXuo" target="_blank" rel="noopener noreferrer">2026-11-03</a>：実装とレビューを別モデル・別セッションに分離）、mapell-dev 氏の読み取り専用 <span class="code-inline">reviewer</span> サブエージェント（<a href="https://www.youtube.com/watch?v=bpyMbmzggPg" target="_blank" rel="noopener noreferrer">2026-11-15</a>）。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">この構成に取り込むとどうなるか</span>
+        <p class="field-body">調査レポートや実装 PR が上がった際、同じスレッドで「合ってる？」と聞く代わりに、履歴ゼロの新規セッション（または読み取り専用の評価ワーカー）へ「①依頼書の制約リスト ②元データ ③成果物」の3点だけを機械的に渡します。途中経過を知らないため、要件漏れ・除外項目の混入・数字の転記ミスに対する検出力が跳ね上がります。なお、動画内でも「評価役だけで完全には防げないため、高リスク箇所は人間が最終確認する」前提が明記されています。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">導入コスト</span>
+        <p class="field-body"><strong>低</strong> — 新しいツール契約は不要で、レビュー時に「履歴なしの新規セッション＋3点セット渡し」を定型手順にするだけで即日導入できます。</p>
+      </div>
+      <div class="field-block">
+        <span class="field-label">最初の一歩</span>
+        <div class="step-box">新規セッションでそのまま貼る点検用テンプレート：「以下の『合格条件』『元データ』『成果物』の3点だけを見て判定して。推測や好意的な補完は禁止。条件ごとに合格／不合格と不一致箇所だけを箇条書きで出して」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 項目 7 -->
+  <section id="item-7">
+    <h2>7. 4製品の入口ガイド（個人・秘書的用途の最初の一歩）</h2>
+    <div class="item-meta">
+      <span class="cost-badge cost-low">導入コスト：低（1製品ずつ検証）</span>
+    </div>
+    <p>先行調査で2026年11月時点の実在と実演動画が確認できた4製品（OpenAI dots・X Grok Bot・Anthropic Claude Duet・Meta Muse）について、個人・秘書的用途で触り始めるなら「まずこれ1つ」という入口を、確認済みの範囲だけで整理しました（未確認の機能は含めていません）。</p>
+
+    <div class="prod-entry">
+      <h3>OpenAI「dots」― 読み取り専用の「先回り監査」を1週間だけ観察する</h3>
+      <p class="field-body"><strong>どんな使い方か：</strong>メール・予定表の背景だけ共有し、明示的な依頼なしで予約キャンセル期限や送信済みメールの誤記、公式サイト更新とのズレを拾わせる使い方です。</p>
+      <p class="field-body"><strong>元ネタ：</strong><a href="https://www.youtube.com/watch?v=cf8cnkCuNMM" target="_blank" rel="noopener noreferrer">長島氏（2026-11-21）</a>の非依頼型先回り3事例、<a href="https://www.youtube.com/watch?v=FW5WvY_aoxk" target="_blank" rel="noopener noreferrer">Hostinger Academy（2026-11-10）</a>の4段階 Custom Rules、<a href="https://www.youtube.com/watch?v=A8rYejndy6U" target="_blank" rel="noopener noreferrer">Amrit Talks（2026-11-02）</a>の初週オンボーディング設計。</p>
+      <p class="field-body"><strong>この構成に取り込むと：</strong>定例チェックは現行構成に任せ、dots には「自分が頼み忘れたズレや期限漏れを拾う第2の目」だけを担当させます。通知過多になりやすいため、初週は「緊急以外は1日1回のまとめ」に絞るのが定石です。</p>
+      <p class="field-body"><strong>導入コスト：</strong><strong>低</strong>（設定は短時間だが、上位プラン要件や展開状況の確認が必要）。</p>
+      <div class="step-box">最初の一歩：Custom Rules で外部送信・フォーム操作を「毎回事前承認」に固定したうえで、「メールと予定表を読み取り専用で見守り、キャンセル期限が迫る予約や公式サイト情報との矛盾を見つけたら1日1回のまとめで教えて」と設定する。</div>
+    </div>
+
+    <div class="prod-entry">
+      <h3>X「Grok Bot」― 学習オプトアウト後に「専門ボット1体」だけ作る</h3>
+      <p class="field-body"><strong>どんな使い方か：</strong>用途別に独立したボットを作り、定時巡回や他ツール（Tailscale 経由のコーディング AI や X トレンド収集等）の司令塔として使う設計です。</p>
+      <p class="field-body"><strong>元ネタ：</strong><a href="https://www.youtube.com/watch?v=HM3OfoQqG8k" target="_blank" rel="noopener noreferrer">Leo Tohyama 氏（2026-11-04）</a>のセキュリティ初期設定と専門分離、<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">Ross Mike 氏（2026-11-11）</a>の定時トレンド配信・ブレーキ役。</p>
+      <p class="field-body"><strong>この構成に取り込むと：</strong>司令塔の置き換えではなく、X の最新動向収集や単一テーマの専門担当として横付けできます。なお、動画内ではローカル PC 権限が全ボット一括適用になる制約も指摘されているため、最初はクラウド完結の読み取り用途から入るのが安全です。</p>
+      <p class="field-body"><strong>導入コスト：</strong><strong>低〜中</strong>（初期の学習オプトアウト2箇所と自然言語権限ルールの設定が必須）。</p>
+      <div class="step-box">最初の一歩：Grok Web 版と X 設定の双方で学習利用をオフにし、権限の自動レビューを有効にしたうえで、「毎日決まった時刻に指定トピックの最新トレンドを3件だけ要約して届ける」単機能ボットを1体だけ作成する。</div>
+    </div>
+
+    <div class="prod-entry">
+      <h3>Anthropic「Claude Duet」― 共通ルール設定＋「判断待ち」の集約窓口にする</h3>
+      <p class="field-body"><strong>どんな使い方か：</strong>アプリを閉じていても裏で作業を進め、メール返信や日程調整、会計記帳などの承認が必要な場面だけスマホの Tasks タブに集約してワンタップ承認する使い方です。</p>
+      <p class="field-body"><strong>元ネタ：</strong><a href="https://www.youtube.com/watch?v=5rHK82vemvc" target="_blank" rel="noopener noreferrer">Shaz Mathew 氏（2026-11-17）</a>の導入48時間チェックリスト、<a href="https://www.youtube.com/watch?v=O7TG9E0gjZo" target="_blank" rel="noopener noreferrer">中村氏（2026-11-27）</a>の日本プレビュー実演（音声指示＋承認ゲート付き実務・判断待ち集約）。</p>
+      <p class="field-body"><strong>この構成に取り込むと：</strong>Claude Code や Cowork を併用する環境では、並列稼働中の作業から上がる「確認待ち」だけを1箇所で捌くモバイル承認ハブとして機能します。バックグラウンド巡回も通常プランの利用枠を消費するため、常時監視を増やしすぎない設計が重要です。</p>
+      <p class="field-body"><strong>導入コスト：</strong><strong>低</strong>（対象プランとプレビュー招待があれば、初回48時間チェックリストで立ち上げ可能）。</p>
+      <div class="step-box">最初の一歩：Everything Chat で「外部送信・決済・署名・削除・データ更新は必ず実行前に内容を見せて承認を得ること」と共通ルールを登録し、まず朝夜の2本ブリーフだけを動かして Tasks タブの承認リズムを掴む。</div>
+    </div>
+
+    <div class="prod-entry">
+      <h3>Meta「Muse」― 台帳 Spaces 1つ＋「目次だけの記憶」から始める</h3>
+      <p class="field-body"><strong>どんな使い方か：</strong>Spaces（見える台帳）・連動サイドチャット（判断）・テーマ別フォルダ（詳細記録）を分け、定常記憶ファイルが肥大化しない形で長く使い続ける設計です。</p>
+      <p class="field-body"><strong>元ネタ：</strong><a href="https://www.youtube.com/watch?v=66Az0YidrtI" target="_blank" rel="noopener noreferrer">長島氏（2026-11-20）</a>の三層分離モデルと月1提案型棚卸し、<a href="https://www.youtube.com/watch?v=eRP10t88oKI" target="_blank" rel="noopener noreferrer">arisan 氏（2026-11-17）</a>の Spaces × メール連動実演。</p>
+      <p class="field-body"><strong>この構成に取り込むと：</strong>すでに Muse を運用している場合は「未導入の入口」ではなく発展維持の観点になりますが、これから個人秘書として触る人にとっては「まず台帳 Spaces を1つだけ作り、定常記憶には詳細を書かずポインタだけ残す」のが壊さずに育てる最短ルートです。</p>
+      <p class="field-body"><strong>導入コスト：</strong><strong>低</strong>（無料プランから試せ、最初にルールを1枚決めるだけで長期劣化を防げる）。</p>
+      <div class="step-box">最初の一歩：「まず1テーマだけ Spaces を作り、詳細はテーマ別ファイルへ分けて保存して。定常記憶には僕の共通方針と詳細ファイルの置き場所だけを残し、月末に不要メモの削除候補を提案して」</div>
+    </div>
+  </section>
+
+  <!-- 導入コスト早見表（Full-bleed band） -->
+  <div class="band" id="cost-map">
+    <h2>導入コストと着手順序の早見表</h2>
+    <p>すべてを一度に入れる必要はありません。導入コストが低く、既存の運用にそのまま噛み合う項目から順に試すのが現実的です。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>コスト</th>
+            <th>現行構成との差分（何が新しくなるか）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>6. 隔離ワーカーの常設化</strong></td>
+            <td><span class="cost-badge cost-low">低</span></td>
+            <td>最終確認を「文脈を知らない別セッション」に変え、検出力を引き上げる</td>
+          </tr>
+          <tr>
+            <td><strong>3. 終了時の自動改善ループ</strong></td>
+            <td><span class="cost-badge cost-low">低</span></td>
+            <td>記憶の保管だけでなく、失敗を指示書・スキルへ1行還流させる</td>
+          </tr>
+          <tr>
+            <td><strong>4. カレンダー駆動タスク</strong></td>
+            <td><span class="cost-badge cost-low">低</span></td>
+            <td>反復ジョブとは別に、特定日に1回だけ表へ出す待機タスクを分離する</td>
+          </tr>
+          <tr>
+            <td><strong>5. 構造強制の発展形</strong></td>
+            <td><span class="cost-badge cost-mid">中</span></td>
+            <td>お願いベースの制約を、Deny リストと自動差し戻し Hook で機械強制する</td>
+          </tr>
+          <tr>
+            <td><strong>1. 夜の指示箱 → 朝に成果物</strong></td>
+            <td><span class="cost-badge cost-mid">中</span></td>
+            <td>定型ではなく「その夜ごとの一回性タスク」を夜間キューで PR 化する</td>
+          </tr>
+          <tr>
+            <td><strong>2. 分野別ボットの分離</strong></td>
+            <td><span class="cost-badge cost-mid">中</span></td>
+            <td>司令塔集約から一部領域を切り出し、文脈純度と権限・コストを最適化する</td>
+          </tr>
+          <tr>
+            <td><strong>7. 4製品の入口ガイド</strong></td>
+            <td><span class="cost-badge cost-low">低</span></td>
+            <td>他製品の強み（先回り監視・承認ハブ等）を1機能だけ安全に試す</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 出典一覧 -->
+  <section id="sources">
+    <h2>出典・元ネタ動画一覧</h2>
+    <p>各項目の元ネタとして参照した先行調査（2026-10-28〜2026-11-28 公開）の動画および公式情報です。</p>
+    <ol class="sources">
+      <li>Greg Isenberg（ゲスト Ross Mike, 2026-11-11）：<a href="https://www.youtube.com/watch?v=1cWZ7Ekff6E" target="_blank" rel="noopener noreferrer">Use Grok Bot Better Than 99% of People (Full Course)</a></li>
+      <li>The Gray Cat（2026-11-03）：<a href="https://www.youtube.com/watch?v=3hF2lVNsXuo" target="_blank" rel="noopener noreferrer">How I Use Claude Code and Codex on a Real Feature in late 2026</a></li>
+      <li>Knock / Scott Strand（2026-11-18）：<a href="https://www.youtube.com/watch?v=dmAKrl-EBs0" target="_blank" rel="noopener noreferrer">How to run marketing with a Grok Bot team</a></li>
+      <li>Leo Tohyama（2026-11-04）：<a href="https://www.youtube.com/watch?v=HM3OfoQqG8k" target="_blank" rel="noopener noreferrer">Grok Botの基本から活用法まで！向こうから提案してくる「自分専用のAIチーム」を作る方法。</a></li>
+      <li>Samautomation（2026-11-22）：<a href="https://www.youtube.com/watch?v=KpUDokvv3NU" target="_blank" rel="noopener noreferrer">Why Claude Code Ignores Your Rules (Tested on 752 Sessions)</a></li>
+      <li>Sura×Asura For AI Agent（2026-11-22）：<a href="https://www.youtube.com/watch?v=wgFpE9lICaM" target="_blank" rel="noopener noreferrer">【Orca Bots】Claude Codeを"呼ぶ"から"任せる"へ</a></li>
+      <li>AI with Tech Dad（2026-11-16）：<a href="https://www.youtube.com/watch?v=7316sjwJpGU" target="_blank" rel="noopener noreferrer">AGENTS.md vs CLAUDE.md vs None: I Tested 3 Coding Agents</a></li>
+      <li>Dangerous Media（2026-11-19）：<a href="https://www.youtube.com/watch?v=YhSne8hFfpQ" target="_blank" rel="noopener noreferrer">Obsidian + Claude Code on Windows: Full Setup, CLAUDE.md, Skills &amp; MCP (2026)</a></li>
+      <li>Nate Herk | AI Automation（2026-11-17）：<a href="https://www.youtube.com/watch?v=8Pg6G5h05hk" target="_blank" rel="noopener noreferrer">Anthropic Just Released the New Rules of Claude Code</a></li>
+      <li>超実践AIエージェント×Webマーケティングスクール WEBMARKS（2026-11-24）：<a href="https://www.youtube.com/watch?v=tIlOF1uqRWk" target="_blank" rel="noopener noreferrer">AIの「完了しました」、信じて大丈夫？ Anthropicの実験に学ぶ、確かめ方3つ</a></li>
+      <li>mapell-dev（2026-11-15）：<a href="https://www.youtube.com/watch?v=bpyMbmzggPg" target="_blank" rel="noopener noreferrer">How to use Claude Code subagents and put a worktree in the right place</a></li>
+      <li>社長のAI実践チャンネル -眼から鱗 長島-（2026-11-21）：<a href="https://www.youtube.com/watch?v=cf8cnkCuNMM" target="_blank" rel="noopener noreferrer">ChatGPT DotsがPlusにも拡大！驚異の先回り事例公開｜Museと違うDotsの真価</a></li>
+      <li>社長のAI実践チャンネル -眼から鱗 長島-（2026-11-20）：<a href="https://www.youtube.com/watch?v=66Az0YidrtI" target="_blank" rel="noopener noreferrer">【大公開】Meta Museを壊さない運用法！記憶の肥大化防止とスペース活用法を徹底解説</a></li>
+      <li>Hostinger Academy（2026-11-10）：<a href="https://www.youtube.com/watch?v=FW5WvY_aoxk" target="_blank" rel="noopener noreferrer">ChatGPT Dots: The ULTIMATE Guide (Everything Explained) - 2026</a></li>
+      <li>Amrit Talks（2026-11-02）：<a href="https://www.youtube.com/watch?v=A8rYejndy6U" target="_blank" rel="noopener noreferrer">How to Use ChatGPT dots (Step-by-Step Tutorial)</a></li>
+      <li>Shaz Mathew（2026-11-17）：<a href="https://www.youtube.com/watch?v=5rHK82vemvc" target="_blank" rel="noopener noreferrer">Master 95% of Claude Duet in 20 Minutes (FULL Guide)</a></li>
+      <li>中村祐太のFindUアカデミー（2026-11-27）：<a href="https://www.youtube.com/watch?v=O7TG9E0gjZo" target="_blank" rel="noopener noreferrer">【神機能】Claude Duet 使い方入門！アプリを閉じても仕事を進めるAI秘書に、経理の記帳を任せてみた</a></li>
+      <li>Marty AI（2026-11-25）：<a href="https://www.youtube.com/watch?v=uNsA7pkpVPg" target="_blank" rel="noopener noreferrer">How to Use Claude Duet: 5 Best Ways for Beginners</a></li>
+      <li>Prompt Vidya AI（2026-11-23）：<a href="https://www.youtube.com/watch?v=-kBfKn_qaEs" target="_blank" rel="noopener noreferrer">Claude Code /loop and Scheduled Tasks Explained: 3 Ways, 30-Day Expiry</a></li>
+      <li>arisan / AI活用・開発・デザイン（2026-11-17）：<a href="https://www.youtube.com/watch?v=eRP10t88oKI" target="_blank" rel="noopener noreferrer">Grok Bot・Muse・dots 比較｜AIエージェント3つを使ってわかった違いと料金</a></li>
+    </ol>
+    <a class="back-top" href="#top">ページの先頭へ戻る ↑</a>
+  </section>
+
+  <footer>
+    作成日：2026-11-28 ／ 活用事例集「未導入編」（単一 HTML・外部 CDN 非依存・ダークモード対応）
+  </footer>
+
+</div>
+</body>
+</html>
