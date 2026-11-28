@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026年12月 練習スケジュール（吉田クラス・知念Aクラス）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      padding: 12px 6px 28px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container-box {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .header-card {
+      background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 50%, #3730a3 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    }
+    .pickup-section {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+    }
+    .pickup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 520px) {
+      .pickup-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pickup-card {
+      background-color: rgba(255, 255, 255, 0.98);
+      color: #0f172a;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #fed7aa;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pickup-event-banner {
+      margin-top: 6px;
+      background-color: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 3px solid #f59e0b;
+      border-radius: 5px;
+      padding: 5px 8px;
+      font-size: 11px;
+      line-height: 1.35;
+      color: #92400e;
+    }
+    .pickup-class-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .box-yoshida {
+      background-color: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .box-chinen {
+      background-color: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .section-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    }
+    .section-title-bar {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title-bar-rose {
+      background-color: #be123c;
+      color: #ffffff;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    table.schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+    table.schedule-table th,
+    table.schedule-table td {
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+      padding: 9px 5px;
+      text-align: center;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+    table.schedule-table th:last-child,
+    table.schedule-table td:last-child {
+      border-right: none;
+    }
+    table.schedule-table thead th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      border-bottom: 2px solid #cbd5e1;
+    }
+    .col-yoshida-head {
+      background-color: #e0f2fe !important;
+      color: #0c4a6e !important;
+    }
+    .col-chinen-head {
+      background-color: #fce7f3 !important;
+      color: #831843 !important;
+    }
+    .cell-yoshida {
+      background-color: rgba(240, 249, 255, 0.45);
+      color: #0c4a6e;
+      font-weight: 700;
+    }
+    .cell-chinen {
+      background-color: rgba(253, 242, 248, 0.45);
+      color: #831843;
+      font-weight: 700;
+    }
+    .row-sun {
+      background-color: rgba(254, 242, 242, 0.55);
+    }
+    .row-sat {
+      background-color: rgba(239, 246, 255, 0.55);
+    }
+    .text-sun {
+      color: #dc2626;
+      font-weight: 700;
+    }
+    .text-sat {
+      color: #2563eb;
+      font-weight: 700;
+    }
+    .badge-off {
+      display: inline-block;
+      background-color: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 2px 10px;
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .badge-event {
+      display: inline-block;
+      background-color: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-weight: 700;
+      font-size: 10px;
+      margin-right: 3px;
+    }
+    .badge-special {
+      display: inline-block;
+      background-color: #fce7f3;
+      color: #9d174d;
+      border: 1px solid #f9a8d4;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-weight: 700;
+      font-size: 10px;
+      margin-right: 3px;
+    }
+    .sub-note {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      color: #475569;
+      margin-top: 2px;
+    }
+    .marker-yellow {
+      background: linear-gradient(transparent 20%, #fef08a 20%, #fde047 85%, transparent 85%);
+      font-weight: 800;
+      padding: 0 3px;
+      border-radius: 2px;
+    }
+    .row-today {
+      outline: 2px solid #f59e0b;
+      outline-offset: -2px;
+      background-color: #fffbeb !important;
+    }
+    .row-tomorrow {
+      outline: 2px dashed #fb923c;
+      outline-offset: -2px;
+      background-color: #fff7ed !important;
+    }
+    .day-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+    .tag-today {
+      background-color: #f59e0b;
+      color: #ffffff;
+    }
+    .tag-tomorrow {
+      background-color: #fb923c;
+      color: #ffffff;
+    }
+    table.meet-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 11px;
+    }
+    table.meet-table th,
+    table.meet-table td {
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+      padding: 8px 8px;
+      text-align: left;
+      line-height: 1.35;
+    }
+    table.meet-table th:last-child,
+    table.meet-table td:last-child {
+      border-right: none;
+    }
+    table.meet-table thead th {
+      background-color: #fff1f2;
+      color: #881337;
+      font-weight: 700;
+      border-bottom: 1px solid #fecdd3;
+    }
+    .notice-box {
+      background-color: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <div class="container-box">
+
+    <!-- ヘッダー -->
+    <header class="header-card">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px;">
+        <div>
+          <span style="display:inline-block; font-size:11px; font-weight:600; background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:999px; margin-bottom:4px;">
+            イトマンSS堺校
+          </span>
+          <h1 style="margin:0; font-size:20px; font-weight:800; letter-spacing:-0.02em;">
+            2026年12月 練習スケジュール
+          </h1>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700;">
+          <span style="background:#e0f2fe; color:#0369a1; border:1px solid #7dd3fc; padding:4px 10px; border-radius:999px;">吉田クラス</span>
+          <span style="background:#fce7f3; color:#be185d; border:1px solid #f9a8d4; padding:4px 10px; border-radius:999px;">知念Aクラス</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 当日・翌日のピックアップ予定（試合・行事情報付き） -->
+    <section class="pickup-section">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+        <h2 style="margin:0; font-size:13px; font-weight:800; display:flex; align-items:center; gap:6px;">
+          <span>⚡</span>
+          <span>当日・翌日のピックアップ予定</span>
+        </h2>
+        <span id="current-date-badge" style="font-size:11px; background:rgba(255,255,255,0.25); padding:2px 8px; border-radius:999px; font-weight:700;">
+          表示中: 12月1日(火)
+        </span>
+      </div>
+
+      <div id="pickup-cards-container" class="pickup-grid">
+        <!-- 初期表示（12/1・12/2）: JS実行時に12月中の閲覧日なら当日・翌日へ自動更新 -->
+        <div class="pickup-card">
+          <div>
+            <div style="font-weight:800; color:#9a3412; font-size:12px;">
+              📌 当日：12月1日(火)
+            </div>
+          </div>
+          <div class="pickup-class-grid">
+            <div class="box-yoshida">
+              <span style="display:block; font-size:10px; font-weight:700; color:#0369a1;">🔵 吉田クラス</span>
+              <span style="font-size:13px; font-weight:800; color:#64748b;">OFF</span>
+            </div>
+            <div class="box-chinen">
+              <span style="display:block; font-size:10px; font-weight:700; color:#be185d;">🌸 知念Aクラス</span>
+              <span style="font-size:13px; font-weight:800; color:#0f172a;">18:50～20:40</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pickup-card">
+          <div>
+            <div style="font-weight:800; color:#9a3412; font-size:12px;">
+              🗓️ 翌日：12月2日(水)
+            </div>
+          </div>
+          <div class="pickup-class-grid">
+            <div class="box-yoshida">
+              <span style="display:block; font-size:10px; font-weight:700; color:#0369a1;">🔵 吉田クラス</span>
+              <span style="font-size:13px; font-weight:800; color:#0f172a;">18:50～20:50</span>
+            </div>
+            <div class="box-chinen">
+              <span style="display:block; font-size:10px; font-weight:700; color:#be185d;">🌸 知念Aクラス</span>
+              <span style="font-size:13px; font-weight:800; color:#0f172a;">17:40～19:20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- メインスケジュールテーブル -->
+    <section class="section-card">
+      <div class="section-title-bar">
+        <span>📅 日別スケジュール一覧</span>
+        <span style="font-size:11px; font-weight:400; color:#cbd5e1;">吉田クラス / 知念Aクラス</span>
+      </div>
+
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th style="width:15%;">日</th>
+            <th style="width:11%;">曜</th>
+            <th class="col-yoshida-head" style="width:37%;">吉田クラス</th>
+            <th class="col-chinen-head" style="width:37%;">知念Aクラス</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-tbody">
+          <tr data-day="1">
+            <td style="font-weight:700;">12/1</td>
+            <td>火</td>
+            <td><span class="badge-off">OFF</span></td>
+            <td class="cell-chinen">18:50～20:40</td>
+          </tr>
+          <tr data-day="2">
+            <td style="font-weight:700;">2</td>
+            <td>水</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">17:40～19:20</td>
+          </tr>
+          <tr data-day="3">
+            <td style="font-weight:700;">3</td>
+            <td>木</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td><span class="badge-off">OFF</span></td>
+          </tr>
+          <tr data-day="4">
+            <td style="font-weight:700;">4</td>
+            <td>金</td>
+            <td class="cell-yoshida">18:50～20:40</td>
+            <td class="cell-chinen">18:50～20:40</td>
+          </tr>
+          <tr data-day="5" class="row-sat">
+            <td class="text-sat">5</td>
+            <td class="text-sat">土</td>
+            <td class="cell-yoshida">6:30～8:00</td>
+            <td class="cell-chinen">6:30～8:00</td>
+          </tr>
+          <tr data-day="6" class="row-sun">
+            <td class="text-sun">6</td>
+            <td class="text-sun">日</td>
+            <td class="cell-yoshida">14:00～16:00</td>
+            <td class="cell-chinen">14:00～16:00</td>
+          </tr>
+          <tr data-day="7">
+            <td style="font-weight:700;">7</td>
+            <td>月</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">18:50～20:50</td>
+          </tr>
+          <tr data-day="8">
+            <td style="font-weight:700;">8</td>
+            <td>火</td>
+            <td><span class="badge-off">OFF</span></td>
+            <td class="cell-chinen">18:50～20:40</td>
+          </tr>
+          <tr data-day="9">
+            <td style="font-weight:700;">9</td>
+            <td>水</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">17:40～19:20</td>
+          </tr>
+          <tr data-day="10">
+            <td style="font-weight:700;">10</td>
+            <td>木</td>
+            <td class="cell-yoshida">18:50～20:20</td>
+            <td><span class="badge-off">OFF</span></td>
+          </tr>
+          <tr data-day="11">
+            <td style="font-weight:700;">11</td>
+            <td>金</td>
+            <td class="cell-yoshida">18:50～20:00</td>
+            <td class="cell-chinen">18:50～20:20</td>
+          </tr>
+          <tr data-day="12" class="row-sat">
+            <td class="text-sat">12</td>
+            <td class="text-sat">土</td>
+            <td class="cell-yoshida"><span class="badge-event">試合</span>8:00～9:00</td>
+            <td class="cell-chinen"><span class="badge-event">試合</span>8:00～9:00</td>
+          </tr>
+          <tr data-day="13" class="row-sun">
+            <td class="text-sun">13</td>
+            <td class="text-sun">日</td>
+            <td class="cell-yoshida">
+              <span class="badge-event">試合 / OFF</span>
+              <span class="sub-note">13歳以上 14:00～16:30</span>
+            </td>
+            <td class="cell-chinen"><span class="badge-event">試合 / OFF</span></td>
+          </tr>
+          <tr data-day="14">
+            <td style="font-weight:700;">14</td>
+            <td>月</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">18:50～20:50</td>
+          </tr>
+          <tr data-day="15">
+            <td style="font-weight:700;">15</td>
+            <td>火</td>
+            <td><span class="badge-off">OFF</span></td>
+            <td class="cell-chinen">18:50～20:40</td>
+          </tr>
+          <tr data-day="16">
+            <td style="font-weight:700;">16</td>
+            <td>水</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">17:40～19:20</td>
+          </tr>
+          <tr data-day="17">
+            <td style="font-weight:700;">17</td>
+            <td>木</td>
+            <td class="cell-yoshida">18:50～20:20</td>
+            <td class="cell-chinen">
+              練習組 18:50～20:20
+              <span class="sub-note">いずみ21組 OFF</span>
+            </td>
+          </tr>
+          <tr data-day="18">
+            <td style="font-weight:700;">18</td>
+            <td>金</td>
+            <td class="cell-yoshida">18:50～20:00</td>
+            <td class="cell-chinen">
+              いずみ組 18:50～20:00
+              <span class="sub-note">練習組 OFF</span>
+            </td>
+          </tr>
+          <tr data-day="19" class="row-sat">
+            <td class="text-sat">19</td>
+            <td class="text-sat">土</td>
+            <td class="cell-yoshida"><span class="badge-event">試合</span>19:30～21:00</td>
+            <td class="cell-chinen"><span class="badge-event">試合</span>19:30～21:00</td>
+          </tr>
+          <tr data-day="20" class="row-sun">
+            <td class="text-sun">20</td>
+            <td class="text-sun">日</td>
+            <td class="cell-yoshida"><span class="badge-event">試合</span>7:00～8:30</td>
+            <td class="cell-chinen"><span class="badge-event">試合</span>7:00～8:30</td>
+          </tr>
+          <tr data-day="21">
+            <td style="font-weight:700;">21</td>
+            <td>月</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">18:50～20:50</td>
+          </tr>
+          <tr data-day="22">
+            <td style="font-weight:700;">22</td>
+            <td>火</td>
+            <td><span class="badge-off">OFF</span></td>
+            <td class="cell-chinen">18:50～20:40</td>
+          </tr>
+          <tr data-day="23">
+            <td style="font-weight:700;">23</td>
+            <td>水</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td class="cell-chinen">17:40～19:20</td>
+          </tr>
+          <tr data-day="24">
+            <td style="font-weight:700;">24</td>
+            <td>木</td>
+            <td class="cell-yoshida">18:50～20:50</td>
+            <td><span class="badge-off">OFF</span></td>
+          </tr>
+          <tr data-day="25">
+            <td style="font-weight:700;">25</td>
+            <td>金</td>
+            <td class="cell-yoshida">18:50～20:40</td>
+            <td class="cell-chinen">18:50～20:20</td>
+          </tr>
+          <tr data-day="26" class="row-sat">
+            <td class="text-sat">26</td>
+            <td class="text-sat">土</td>
+            <td class="cell-yoshida">7:00～9:00</td>
+            <td class="cell-chinen">7:00～9:00</td>
+          </tr>
+          <tr data-day="27" class="row-sun">
+            <td class="text-sun">27</td>
+            <td class="text-sun">日</td>
+            <td class="cell-yoshida">6:30～8:30</td>
+            <td class="cell-chinen">7:00～8:30</td>
+          </tr>
+          <tr data-day="28">
+            <td style="font-weight:700;">28</td>
+            <td>月</td>
+            <td class="cell-yoshida">8:30～10:30</td>
+            <td class="cell-chinen">9:00～11:00</td>
+          </tr>
+          <tr data-day="29">
+            <td style="font-weight:700;">29</td>
+            <td>火</td>
+            <td class="cell-yoshida">
+              <span class="badge-special">タイムトライ</span>9:00～11:30
+              <span class="sub-note">お楽しみ会 12:00～15:30</span>
+            </td>
+            <td class="cell-chinen">
+              <span class="badge-special">タイムトライ</span>9:00～11:30
+              <span class="sub-note">お楽しみ会 12:00～15:30</span>
+            </td>
+          </tr>
+          <tr data-day="30">
+            <td style="font-weight:700;">30</td>
+            <td>水</td>
+            <td class="cell-yoshida">7:30～9:30</td>
+            <td><span class="badge-off">OFF</span></td>
+          </tr>
+          <tr data-day="31">
+            <td style="font-weight:700;">31</td>
+            <td>木</td>
+            <td><span class="badge-off">OFF</span></td>
+            <td><span class="badge-off">OFF</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 出場予定競技会日程（1月～2月） -->
+    <section class="section-card">
+      <div class="section-title-bar-rose">
+        <span>🏊 出場予定競技会日程（1月～2月）</span>
+      </div>
+      <table class="meet-table">
+        <thead>
+          <tr>
+            <th style="width:30%;">期日</th>
+            <th style="width:45%;">大会名</th>
+            <th style="width:25%;">会場</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">1月9日(土)～1月10日(日)</td>
+            <td><span class="marker-yellow">第56回和歌山県短水路選手権水泳競技大会</span></td>
+            <td style="color:#334155;">秋葉山公園県民水泳場</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">1月10日(日)</td>
+            <td><span class="marker-yellow">第5回大阪府ジュニア公認記録会</span></td>
+            <td style="color:#334155;">大阪水泳学校長吉プール</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">1月23日(土)～1月24日(日)</td>
+            <td><span class="marker-yellow">大阪ジュニア水泳競技大会</span></td>
+            <td style="color:#334155;">東大阪アリーナプール</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">1月24日(日)</td>
+            <td><span class="marker-yellow">第53回滋賀県春季室内選手権水泳競技大会</span></td>
+            <td style="color:#334155;">インフロニア草津</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">1月30日(土)～1月31日(日)</td>
+            <td><span class="marker-yellow">第12回わかやまオープン水泳競技大会</span></td>
+            <td style="color:#334155;">秋葉山公園県民水泳場</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:#1e293b;">2月7日(日)</td>
+            <td><span class="marker-yellow">第6回大阪府公認記録会</span></td>
+            <td style="color:#334155;">大阪水泳学校長吉プール</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="background:#f8fafc; padding:8px 12px; font-size:11px; color:#475569;">
+        ※上記大会への出場は予定であり確定ではありません。スクール状況によって出場しない場合もあることをご了承ください。
+      </div>
+    </section>
+
+    <!-- お知らせ・注意事項セクション -->
+    <section class="notice-box">
+      <h2 style="margin:0 0 8px 0; font-size:13px; font-weight:800; color:#78350f; display:flex; align-items:center; gap:6px;">
+        <span>📢</span>
+        <span>お知らせ・注意事項</span>
+      </h2>
+      <ul style="margin:0; padding:0; list-style:none; font-size:11.5px; color:#1e293b; line-height:1.55; display:flex; flex-direction:column; gap:6px;">
+        <li style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="font-weight:700; color:#92400e; flex-shrink:0;">①</span>
+          <span>2024年1月より<strong>写真・動画の撮影は全館禁止</strong>となっております。ご理解・ご協力の程宜しくお願い致します。</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="font-weight:700; color:#92400e; flex-shrink:0;">②</span>
+          <div>
+            <div><strong>競技会同意書の締切日を厳守</strong>して下さい。（チームエントリーが出来なくなり、出場できなくなります）</div>
+            <div style="color:#78350f; font-weight:600; margin-top:2px;">※2026年12月～キャッシュレス化に伴い、変更事項がございます。詳細は手紙をご参照下さい。</div>
+          </div>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="font-weight:700; color:#92400e; flex-shrink:0;">③</span>
+          <div>
+            <div>2027年1月～<strong>知念Bクラスは水曜日が休み</strong>となります。木曜日の基本練習時間は17:40～19:30となります。ご理解ご協力宜しくお願い致します。</div>
+            <div style="color:#475569; font-size:11px; margin-top:2px;">（12月進級テスト：研修 12/27(日), 12/29(火)タイムトライ50m自由形 ／ 育成 12/14(月), 12/27(日), 12/29(火)タイムトライ）</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+
+  <script>
+    const scheduleData202612 = [
+      { day: 1, dow: '火', yoshida: 'OFF', chinen: '18:50～20:40', event: '', note: '' },
+      { day: 2, dow: '水', yoshida: '18:50～20:50', chinen: '17:40～19:20', event: '', note: '' },
+      { day: 3, dow: '木', yoshida: '18:50～20:50', chinen: 'OFF', event: '', note: '' },
+      { day: 4, dow: '金', yoshida: '18:50～20:40', chinen: '18:50～20:40', event: '', note: '研修会：藤本' },
+      { day: 5, dow: '土', yoshida: '6:30～8:00', chinen: '6:30～8:00', event: '', note: '合宿：知念' },
+      { day: 6, dow: '日', yoshida: '14:00～16:00', chinen: '14:00～16:00', event: '', note: '合宿：知念' },
+      { day: 7, dow: '月', yoshida: '18:50～20:50', chinen: '18:50～20:50', event: '', note: '' },
+      { day: 8, dow: '火', yoshida: 'OFF', chinen: '18:50～20:40', event: '', note: '' },
+      { day: 9, dow: '水', yoshida: '18:50～20:50', chinen: '17:40～19:20', event: '', note: '' },
+      { day: 10, dow: '木', yoshida: '18:50～20:20', chinen: 'OFF', event: '', note: '' },
+      { day: 11, dow: '金', yoshida: '18:50～20:00', chinen: '18:50～20:20', event: '', note: '' },
+      { day: 12, dow: '土', yoshida: '試合 / 8:00～9:00', chinen: '試合 / 8:00～9:00', event: '第3回和歌山冬季水泳記録会（13歳以上）', note: '試合：藤本・吉田' },
+      { day: 13, dow: '日', yoshida: '試合 / OFF（13歳以上 14:00～16:30）', chinen: '試合 / OFF', event: '第3回和歌山冬季水泳記録会（12歳以下）', note: '試合：吉田・知念' },
+      { day: 14, dow: '月', yoshida: '18:50～20:50', chinen: '18:50～20:50', event: '', note: '' },
+      { day: 15, dow: '火', yoshida: 'OFF', chinen: '18:50～20:40', event: '', note: '' },
+      { day: 16, dow: '水', yoshida: '18:50～20:50', chinen: '17:40～19:20', event: '', note: '' },
+      { day: 17, dow: '木', yoshida: '18:50～20:20', chinen: '練習組 18:50～20:20 / いずみ組 OFF', event: '', note: '' },
+      { day: 18, dow: '金', yoshida: '18:50～20:00', chinen: 'いずみ組 18:50～20:00 / 練習組 OFF', event: '', note: '会議：藤本・吉田' },
+      { day: 19, dow: '土', yoshida: '試合 / 19:30～21:00', chinen: '試合 / 19:30～21:00', event: '大橋悠依杯 第5回 いずみ21オープン水泳競技大会', note: '試合：藤本・知念' },
+      { day: 20, dow: '日', yoshida: '試合 / 7:00～8:30', chinen: '試合 / 7:00～8:30', event: '大橋悠依杯 第5回 いずみ21オープン水泳競技大会', note: '試合：藤本・知念' },
+      { day: 21, dow: '月', yoshida: '18:50～20:50', chinen: '18:50～20:50', event: '', note: '' },
+      { day: 22, dow: '火', yoshida: 'OFF', chinen: '18:50～20:40', event: '', note: '' },
+      { day: 23, dow: '水', yoshida: '18:50～20:50', chinen: '17:40～19:20', event: '', note: '' },
+      { day: 24, dow: '木', yoshida: '18:50～20:50', chinen: 'OFF', event: '', note: '' },
+      { day: 25, dow: '金', yoshida: '18:50～20:40', chinen: '18:50～20:20', event: '', note: '' },
+      { day: 26, dow: '土', yoshida: '7:00～9:00', chinen: '7:00～9:00', event: '', note: '' },
+      { day: 27, dow: '日', yoshida: '6:30～8:30', chinen: '7:00～8:30', event: '', note: '' },
+      { day: 28, dow: '月', yoshida: '8:30～10:30', chinen: '9:00～11:00', event: '', note: '' },
+      { day: 29, dow: '火', yoshida: 'タイムトライ 9:00～11:30 / お楽しみ会 12:00～15:30', chinen: 'タイムトライ 9:00～11:30 / お楽しみ会 12:00～15:30', event: 'お楽しみ会・年間表彰', note: '' },
+      { day: 30, dow: '水', yoshida: '7:30～9:30', chinen: 'OFF', event: '', note: '' },
+      { day: 31, dow: '木', yoshida: 'OFF', chinen: 'OFF', event: '', note: '' }
+    ];
+
+    function initPickupSchedules() {
+      const now = new Date();
+      const isDec = (now.getMonth() + 1) === 12;
+      let currentDay = isDec ? now.getDate() : 1;
+      if (currentDay < 1 || currentDay > 31) {
+        currentDay = 1;
+      }
+      const nextDay = currentDay < 31 ? currentDay + 1 : 1;
+
+      const todayItem = scheduleData202612.find(d => d.day === currentDay);
+      const badgeEl = document.getElementById('current-date-badge');
+      if (badgeEl && todayItem) {
+        badgeEl.textContent = (isDec ? '本日: ' : '表示中: ') + '12月' + currentDay + '日(' + todayItem.dow + ')';
+      }
+
+      const container = document.getElementById('pickup-cards-container');
+      if (container) {
+        container.innerHTML = '';
+        [
+          { label: '📌 当日：12月' + currentDay + '日', dayNum: currentDay },
+          { label: '🗓️ 翌日：12月' + nextDay + '日', dayNum: nextDay }
+        ].forEach(target => {
+          const item = scheduleData202612.find(d => d.day === target.dayNum);
+          if (!item) return;
+
+          let eventHtml = '';
+          if (item.event || item.note) {
+            eventHtml = '<div class="pickup-event-banner">';
+            if (item.event) {
+              eventHtml += '<div style="font-weight:800;">🏆 ' + item.event + '</div>';
+            }
+            if (item.note) {
+              eventHtml += '<div style="font-size:10px; color:#b45309; margin-top:2px;">備考：' + item.note + '</div>';
+            }
+            eventHtml += '</div>';
+          }
+
+          const card = document.createElement('div');
+          card.className = 'pickup-card';
+          card.innerHTML =
+            '<div>' +
+              '<div style="font-weight:800; color:#9a3412; font-size:12px;">' +
+                target.label + '(' + item.dow + ')' +
+              '</div>' +
+              eventHtml +
+            '</div>' +
+            '<div class="pickup-class-grid">' +
+              '<div class="box-yoshida">' +
+                '<span style="display:block; font-size:10px; font-weight:700; color:#0369a1;">🔵 吉田クラス</span>' +
+                '<span style="font-size:12.5px; font-weight:800; color:#0f172a;">' + item.yoshida + '</span>' +
+              '</div>' +
+              '<div class="box-chinen">' +
+                '<span style="display:block; font-size:10px; font-weight:700; color:#be185d;">🌸 知念Aクラス</span>' +
+                '<span style="font-size:12.5px; font-weight:800; color:#0f172a;">' + item.chinen + '</span>' +
+              '</div>' +
+            '</div>';
+          container.appendChild(card);
+        });
+      }
+
+      const rows = document.querySelectorAll('#schedule-tbody tr');
+      rows.forEach(row => {
+        const d = parseInt(row.getAttribute('data-day'), 10);
+        const firstCell = row.querySelector('td');
+        if (d === currentDay) {
+          row.classList.add('row-today');
+          if (firstCell && !firstCell.querySelector('.day-tag')) {
+            firstCell.insertAdjacentHTML('beforeend', '<span class="day-tag tag-today">今日</span>');
+          }
+        } else if (d === nextDay) {
+          row.classList.add('row-tomorrow');
+          if (firstCell && !firstCell.querySelector('.day-tag')) {
+            firstCell.insertAdjacentHTML('beforeend', '<span class="day-tag tag-tomorrow">明日</span>');
+          }
+        }
+      });
+    }
+
+    initPickupSchedules();
+  </script>
+</body>
+</html>
